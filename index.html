@@ -171,6 +171,154 @@
       font-weight: 700;
     }
 
+    /* ── INSIGHTS SUMMARY ── */
+    .insights-section {
+      max-width: 1200px;
+      margin: 0 auto 80px;
+      padding: 0 48px;
+    }
+    .insights-section h2 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 24px;
+      letter-spacing: -0.3px;
+    }
+    .insights-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .insight-col h3 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .insight-col h3.challenges-title { color: var(--red); }
+    .insight-col h3.opportunities-title { color: var(--blue); }
+    .insight-col h3 .ico {
+      font-size: 18px;
+      line-height: 1;
+    }
+    .insight-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .insight-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .insight-pill:hover {
+      border-color: var(--accent-border);
+      background: var(--surface-2);
+    }
+    .insight-pill .pill-arrow {
+      color: var(--text-muted);
+      font-size: 16px;
+      flex-shrink: 0;
+      transition: color 0.2s;
+    }
+    .insight-pill:hover .pill-arrow { color: var(--accent); }
+    .insight-pill.challenge { border-left: 3px solid var(--red); }
+    .insight-pill.opportunity { border-left: 3px solid var(--blue); }
+
+    /* ── BOTTOM SHEET ── */
+    .sheet-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .sheet-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .bottom-sheet {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 201;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-radius: 24px 24px 0 0;
+      max-height: 70vh;
+      overflow-y: auto;
+      padding: 32px 48px 48px;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .bottom-sheet.open {
+      transform: translateY(0);
+    }
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .sheet-header h3 {
+      font-size: 18px;
+      font-weight: 800;
+    }
+    .sheet-close {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .sheet-close:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .sheet-points {
+      list-style: none;
+      padding: 0;
+    }
+    .sheet-points li {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-dim);
+    }
+    .sheet-points li:last-child { border-bottom: none; }
+    .sheet-points li strong {
+      display: block;
+      color: var(--text);
+      font-weight: 700;
+      margin-bottom: 4px;
+      font-size: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .insights-section { padding: 0 24px; }
+      .insights-row { grid-template-columns: 1fr; }
+      .bottom-sheet { padding: 24px; }
+    }
+
     /* ── DETAIL VIEW ── */
     .detail-header {
       padding: 100px 48px 0;
@@ -462,6 +610,94 @@
     </div>
   </div>
 
+  <!-- INSIGHTS SUMMARY -->
+  <div class="insights-section">
+    <h2>Key Findings at a Glance</h2>
+    <div class="insights-row">
+
+      <!-- CHALLENGES COLUMN -->
+      <div class="insight-col">
+        <h3 class="challenges-title"><span class="ico">⚠</span> Top Challenges</h3>
+        <div class="insight-list">
+          <div class="insight-pill challenge" onclick="openSheet('c1')">
+            <span>Onboarding is fragmented and confusing</span>
+            <span class="pill-arrow">→</span>
+          </div>
+          <div class="insight-pill challenge" onclick="openSheet('c2')">
+            <span>No multilingual support for low-literacy riders</span>
+            <span class="pill-arrow">→</span>
+          </div>
+          <div class="insight-pill challenge" onclick="openSheet('c3')">
+            <span>Shipment list lacks information hierarchy</span>
+            <span class="pill-arrow">→</span>
+          </div>
+          <div class="insight-pill challenge" onclick="openSheet('c4')">
+            <span>No route optimization for deliveries</span>
+            <span class="pill-arrow">→</span>
+          </div>
+          <div class="insight-pill challenge" onclick="openSheet('c5')">
+            <span>Payment and verification flows break mid-delivery</span>
+            <span class="pill-arrow">→</span>
+          </div>
+          <div class="insight-pill challenge" onclick="openSheet('c6')">
+            <span>Cancellation flow is unreliable</span>
+            <span class="pill-arrow">→</span>
+          </div>
+          <div class="insight-pill challenge" onclick="openSheet('c7')">
+            <span>Earnings and summary screens lack clarity</span>
+            <span class="pill-arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- OPPORTUNITIES COLUMN -->
+      <div class="insight-col">
+        <h3 class="opportunities-title"><span class="ico">✦</span> Top Opportunities</h3>
+        <div class="insight-list">
+          <div class="insight-pill opportunity" onclick="openSheet('o1')">
+            <span>Unified guided onboarding wizard</span>
+            <span class="pill-arrow">→</span>
+          </div>
+          <div class="insight-pill opportunity" onclick="openSheet('o2')">
+            <span>Multilingual support and accessibility</span>
+            <span class="pill-arrow">→</span>
+          </div>
+          <div class="insight-pill opportunity" onclick="openSheet('o3')">
+            <span>Smart shipment list with route optimization</span>
+            <span class="pill-arrow">→</span>
+          </div>
+          <div class="insight-pill opportunity" onclick="openSheet('o4')">
+            <span>Streamlined COD payment flow</span>
+            <span class="pill-arrow">→</span>
+          </div>
+          <div class="insight-pill opportunity" onclick="openSheet('o5')">
+            <span>Reliable cancellation with OTP fallbacks</span>
+            <span class="pill-arrow">→</span>
+          </div>
+          <div class="insight-pill opportunity" onclick="openSheet('o6')">
+            <span>Transparent earnings and filtering</span>
+            <span class="pill-arrow">→</span>
+          </div>
+          <div class="insight-pill opportunity" onclick="openSheet('o7')">
+            <span>Guided end-of-day reconciliation flow</span>
+            <span class="pill-arrow">→</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM SHEET -->
+<div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
+<div class="bottom-sheet" id="bottom-sheet">
+  <div class="sheet-header">
+    <h3 id="sheet-title"></h3>
+    <button class="sheet-close" onclick="closeSheet()" aria-label="Close">✕</button>
+  </div>
+  <ul class="sheet-points" id="sheet-points"></ul>
 </div>
 
 <!-- ═══════════════════════════════════════ -->
@@ -885,6 +1121,152 @@
     'Views details of shipments done'
   ];
 
+  // Bottom sheet data
+  const sheetData = {
+    c1: {
+      title: '⚠ Onboarding is fragmented and confusing',
+      points: [
+        { bold: 'Two-app fragmentation', desc: 'Riders start on Partner App, then must switch to FE App — the transition is unclear and the FE App may show as downloaded but isn\'t accessible.' },
+        { bold: 'Inconsistent document stepper', desc: 'Steps 1 and 2 are document uploads while step 3 is a form. DL is shown as a "Number" field when it\'s a 15-digit alphanumeric code.' },
+        { bold: 'No error recovery', desc: 'Can\'t go back to edit phone number once entered. OTP fields are too small. New users go directly to PIN setup without any indication they\'re new.' },
+        { bold: 'Landing page fails to orient', desc: '"Good morning" is prioritized over pending document verification. Only one CTA, no navigation, concepts like "LastMile Pro" unexplained.' }
+      ]
+    },
+    c2: {
+      title: '⚠ No multilingual support for low-literacy riders',
+      points: [
+        { bold: 'Zero language options', desc: 'The entire app is in English with no regional language support, despite the target user base including riders with lower literacy levels.' },
+        { bold: 'No accessibility accommodations', desc: 'No icon-led navigation, no voice guidance, no simplified UI patterns for users who struggle with text-heavy interfaces.' },
+        { bold: 'Critical for Tier 2/3 expansion', desc: 'Delhivery operates heavily in smaller cities where English proficiency is lower — this directly impacts onboarding completion rates.' }
+      ]
+    },
+    c3: {
+      title: '⚠ Shipment list lacks information hierarchy',
+      points: [
+        { bold: 'Key data is secondary or missing', desc: 'Number of packages, proximity from current location, and potential earnings are not prominently shown.' },
+        { bold: 'No priority filtering', desc: 'Users can\'t easily filter by priority, and there\'s no education on what FWD, RVP, and P2P mean — requiring a learning curve.' },
+        { bold: 'Inconsistent visual cues', desc: 'Lightning icon purpose is unclear, amount tags shown inconsistently, shipment/summary icons are off in size and weight.' },
+        { bold: 'Dispatch flow gaps', desc: '"Create dispatch" CTA is prominent but "punch out" is buried. Empty states persist after packages are added.' }
+      ]
+    },
+    c4: {
+      title: '⚠ No route optimization for deliveries',
+      points: [
+        { bold: 'Manual direction-finding', desc: 'Riders have to manually find directions for each delivery location one by one — no shortest-path guidance exists.' },
+        { bold: 'Map vs actual location mismatch', desc: 'The app shows inaccurate map locations for many customers and highlights the inaccuracy without helping resolve it, causing delivery delays.' },
+        { bold: 'Inflated delivery times', desc: 'Without route optimization, average delivery time per shipment is unnecessarily high, directly impacting daily delivery capacity.' }
+      ]
+    },
+    c5: {
+      title: '⚠ Payment and verification flows break mid-delivery',
+      points: [
+        { bold: 'COD payment confusion', desc: 'Warning shown before payment, UPI options don\'t feel like CTAs, "Payer" label confuses customer with rider, cash allowed after digital link triggered.' },
+        { bold: 'Selfie requirement appears late', desc: 'The selfie verification step shows up after deliveries have already started, disrupting the flow.' },
+        { bold: 'Self-signature loophole', desc: 'For prepaid orders, reluctant customers lead to self-signatures — defeating the entire verification purpose.' },
+        { bold: 'App updates mid-delivery', desc: 'Updates happen anytime during the day, rendering the app unusable. For a field app, even 2 minutes of downtime is a failed delivery.' }
+      ]
+    },
+    c6: {
+      title: '⚠ Cancellation flow is unreliable',
+      points: [
+        { bold: 'Cancel doesn\'t work for some orders', desc: 'The cancel function simply fails for certain orders with no explanation or alternative path.' },
+        { bold: 'OTP delivery failures', desc: 'Cancellation OTP doesn\'t reach some customers via WhatsApp/SMS, and there\'s no fallback mechanism.' },
+        { bold: 'No post-cancellation clarity', desc: 'No refund notification, no clear next steps after cancelling — riders and customers are left in limbo.' }
+      ]
+    },
+    c7: {
+      title: '⚠ Earnings and summary screens lack clarity',
+      points: [
+        { bold: 'Unclear incentive charts', desc: 'Values like "50" and "60" on milestone charts aren\'t explained. Productivity calculation (e.g., "21") is not clarified.' },
+        { bold: 'Missing time-based breakdowns', desc: 'No month-wise, week-wise, or day-wise productivity breakdowns. No filtering by time period.' },
+        { bold: 'POD flagging contradiction', desc: 'POD issues shown in summary, but if PODs had issues, delivery shouldn\'t have been possible — creates confusion.' },
+        { bold: 'Systemic design debt', desc: 'Users didn\'t flag these issues directly, suggesting they\'re less immediately felt but erode trust over time.' }
+      ]
+    },
+    o1: {
+      title: '✦ Unified guided onboarding wizard',
+      points: [
+        { bold: 'Single linear flow', desc: 'Merge the Partner App → FE App transition into one guided experience with proper input masks, inline validation, and clear progress indication.' },
+        { bold: 'Smart document verification', desc: 'Show DL as alphanumeric (not "Number"), add PAN-Aadhaar linking guidance, provide help for users who don\'t have cards linked.' },
+        { bold: 'Error recovery built in', desc: 'Allow going back to edit phone number, show clear error states in red (not yellow), explain PIN setup for new users.' },
+        { bold: 'Impact', desc: 'Directly reduces document verification error rate and first-week attrition — the two biggest onboarding leaks.' }
+      ]
+    },
+    o2: {
+      title: '✦ Multilingual support and accessibility',
+      points: [
+        { bold: 'Regional language options', desc: 'Add Hindi, Tamil, Telugu, Kannada, and other regional languages based on operational geography.' },
+        { bold: 'Icon-led navigation', desc: 'Reduce dependency on text with visual cues, icon-based menus, and simplified UI patterns.' },
+        { bold: 'Voice guidance', desc: 'Audio instructions for key flows (onboarding, delivery steps) to support riders with lower literacy.' },
+        { bold: 'Impact', desc: 'Improves onboarding completion rate across Tier 2/3 cities and reduces support ticket volume.' }
+      ]
+    },
+    o3: {
+      title: '✦ Smart shipment list with route optimization',
+      points: [
+        { bold: 'Earnings-first hierarchy', desc: 'Surface potential earnings, distance from current location, and package count as primary information on each shipment card.' },
+        { bold: 'Inline education', desc: 'Tooltips or first-time walkthroughs explaining FWD, RVP, P2P, priority vs flash — reducing the learning curve.' },
+        { bold: 'Route suggestion', desc: 'Even a basic ordered delivery sequence based on proximity would dramatically reduce average delivery time and dwell time.' },
+        { bold: 'Impact', desc: 'Reduces dispatch creation time, average delivery time per shipment, and dwell time at dispatch center.' }
+      ]
+    },
+    o4: {
+      title: '✦ Streamlined COD payment flow',
+      points: [
+        { bold: 'Single payment path per order', desc: 'Cash OR digital — not both simultaneously. Remove the split logic that confuses riders and customers.' },
+        { bold: 'Clear UPI CTAs', desc: 'Make payment options look and feel like actionable buttons. Fix the "Payer" label confusion.' },
+        { bold: 'Remove pre-payment warnings', desc: 'The warning before COD payment creates unnecessary anxiety. Replace with a confirmation step after.' },
+        { bold: 'Impact', desc: 'Improves COD collection success rate and reduces customer escalation around payment.' }
+      ]
+    },
+    o5: {
+      title: '✦ Reliable cancellation with OTP fallbacks',
+      points: [
+        { bold: 'Multi-channel OTP', desc: 'SMS + WhatsApp + in-app notification as fallback channels for cancellation OTP delivery.' },
+        { bold: 'Consistent cancel functionality', desc: 'Fix the cases where cancel simply doesn\'t work — every order should have a cancellation path.' },
+        { bold: 'Post-cancellation clarity', desc: 'Show refund notification, clear next steps, and updated order status immediately after cancellation.' },
+        { bold: 'Impact', desc: 'Reduces customer escalation rate and RTO rate — both direct cost drivers.' }
+      ]
+    },
+    o6: {
+      title: '✦ Transparent earnings and filtering',
+      points: [
+        { bold: 'Clear value labels', desc: 'Explain what incentive milestone values represent. Show productivity calculation breakdowns.' },
+        { bold: 'Time-based filters', desc: 'Add this week / this month / this year filtering. Stop forcing experienced riders to scroll through dates.' },
+        { bold: 'Payout visibility', desc: 'Show pending vs completed payouts clearly. Make deductions transparent.' },
+        { bold: 'Impact', desc: 'Improves rider earnings accuracy, builds trust, and directly impacts Rider NPS and retention.' }
+      ]
+    },
+    o7: {
+      title: '✦ Guided end-of-day reconciliation flow',
+      points: [
+        { bold: 'Defined sequence', desc: 'Finish deliveries → review summary → submit collections → punch out. A clear, guided flow instead of scattered actions.' },
+        { bold: 'Punch-out parity', desc: 'Elevate punch-out to the same hierarchy level as create dispatch — it\'s used daily and shouldn\'t be buried.' },
+        { bold: 'Pending items surfaced', desc: 'Flag pending collections, unresolved POD issues, and incomplete submissions before allowing punch-out.' },
+        { bold: 'Impact', desc: 'Reduces reconciliation time and unpaid admin burden on riders — a retention lever.' }
+      ]
+    }
+  };
+
+  function openSheet(id) {
+    const data = sheetData[id];
+    if (!data) return;
+    document.getElementById('sheet-title').textContent = data.title;
+    const list = document.getElementById('sheet-points');
+    list.innerHTML = data.points.map(p =>
+      '<li><strong>' + p.bold + '</strong>' + p.desc + '</li>'
+    ).join('');
+    document.getElementById('sheet-overlay').classList.add('open');
+    document.getElementById('bottom-sheet').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSheet() {
+    document.getElementById('sheet-overlay').classList.remove('open');
+    document.getElementById('bottom-sheet').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   let currentStep = 0;
 
   function showView(view) {
@@ -940,6 +1322,7 @@
 
   // Keyboard navigation
   document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSheet();
     if (document.getElementById('view-detail').classList.contains('active')) {
       if (e.key === 'ArrowLeft') prevStep();
       if (e.key === 'ArrowRight') nextStep();

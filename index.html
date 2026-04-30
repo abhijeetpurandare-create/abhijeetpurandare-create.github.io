@@ -43,9 +43,25 @@
       border-bottom: 1px solid var(--border);
       padding: 0 48px;
       height: 64px;
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex; align-items: center; justify-content: center;
     }
-    nav .logo { font-weight: 800; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
+    nav .nav-inner {
+      max-width: 1200px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    nav .logo {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 8px 0;
+    }
+    nav .logo img {
+      height: 20px;
+      width: auto;
+    }
     nav .nav-links { display: flex; gap: 32px; }
     nav .nav-links a {
       color: var(--text-dim); text-decoration: none; font-size: 13px; font-weight: 500;
@@ -524,10 +540,14 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo">LM-FE Research</div>
-  <div class="nav-links">
-    <a onclick="showView('summary')" class="active" id="nav-summary">Summary</a>
-    <a onclick="showView('detail')" id="nav-detail">Detailed Information</a>
+  <div class="nav-inner">
+    <div class="logo" onclick="showView('summary')">
+      <img src="delhivery-logo.svg" alt="Delhivery">
+    </div>
+    <div class="nav-links">
+      <a onclick="showView('summary')" class="active" id="nav-summary">Summary</a>
+      <a onclick="showView('detail')" id="nav-detail">Detailed Information</a>
+    </div>
   </div>
 </nav>
 

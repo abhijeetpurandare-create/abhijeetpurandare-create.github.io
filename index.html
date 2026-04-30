@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LM-FE App — User Journey Research</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Sen:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -28,7 +28,7 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: 'Sen', -apple-system, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
@@ -90,6 +90,11 @@
 
     /* ── STAT BAR ── */
     .stat-bar {
+      max-width: 1200px;
+      margin: 0 auto 80px;
+      padding: 0 48px;
+    }
+    .stat-bar-inner {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 1px;
@@ -97,8 +102,6 @@
       border: 1px solid var(--border);
       border-radius: 16px;
       overflow: hidden;
-      max-width: 1200px;
-      margin: 0 auto 80px;
     }
     .stat-item {
       background: var(--surface);
@@ -392,6 +395,7 @@
   </div>
 
   <div class="stat-bar">
+    <div class="stat-bar-inner">
     <div class="stat-item">
       <div class="number">4</div>
       <div class="label">Journey Stages</div>
@@ -411,6 +415,7 @@
     <div class="stat-item">
       <div class="number">15</div>
       <div class="label">Opportunity Areas</div>
+    </div>
     </div>
   </div>
 

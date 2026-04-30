@@ -83,7 +83,7 @@
     /* ── STAT BAR ── */
     .stat-bar {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 1px;
       background: var(--border);
       border: 1px solid var(--border);
@@ -240,22 +240,13 @@
       line-height: 1.6;
     }
 
-    /* ── OPPORTUNITY SECTION ── */
-    .opportunity-bar {
-      background: var(--accent-dim);
-      border: 1px solid var(--accent-border);
-      border-radius: 16px;
-      padding: 40px;
-      text-align: center;
-      margin-top: 20px;
+    /* ── OPPORTUNITY CARD ── */
+    .card-label.opportunity {
+      color: #7dd3fc;
     }
-    .opportunity-bar p {
-      font-size: 15px;
-      color: var(--text-dim);
-      line-height: 1.7;
-    }
-    .opportunity-bar strong {
-      color: var(--accent);
+    .card.opportunity-card {
+      background: var(--surface);
+      border: 1px solid rgba(125, 211, 252, 0.15);
     }
 
     /* ── DIVIDER ── */
@@ -327,6 +318,10 @@
   <div class="stat-item">
     <div class="number">18</div>
     <div class="label">Metrics Identified</div>
+  </div>
+  <div class="stat-item">
+    <div class="number">15</div>
+    <div class="label">Opportunity Areas</div>
   </div>
 </div>
 
@@ -412,6 +407,26 @@
         </div>
       </div>
     </div>
+    <!-- Opportunity Areas -->
+    <div class="cards-row">
+      <div class="card full opportunity-card">
+        <div class="card-label opportunity">Opportunity Areas</div>
+        <ol>
+          <li>
+            <strong>Redesign the login and document verification flow as a single guided experience</strong>
+            <span class="detail">The current onboarding is fragmented across two apps (Partner App → FE App) with inconsistent steppers, missing input guidance (DL shown as "Number" when it's a 15-digit alphanumeric code), and no error recovery (can't go back to edit phone number). A unified, linear onboarding wizard with proper input masks, inline validation, and clear progress indication would directly reduce the document verification error rate and first-week attrition.</span>
+          </li>
+          <li>
+            <strong>Build a meaningful post-login landing experience</strong>
+            <span class="detail">The landing page currently prioritizes "Good morning" over pending document verification, has a single CTA, and hides everything under a menu. There's no explanation of concepts like "LastMile Pro" or "permission to auto-start." Restructuring the landing page to surface pending actions, explain key concepts, and provide primary navigation would reduce support ticket volume and help new riders orient themselves faster.</span>
+          </li>
+          <li>
+            <strong>Introduce multilingual support and accessibility accommodations</strong>
+            <span class="detail">The target user base includes riders with lower literacy levels, and there's zero language support or accessibility features. Adding regional language options and simplified UI patterns (icon-led navigation, voice guidance) would improve onboarding completion rate across Tier 2/3 cities where Delhivery operates heavily.</span>
+          </li>
+        </ol>
+      </div>
+    </div>
   </div>
 
   <div class="divider" style="margin: 0 0 80px 0;"></div>
@@ -489,6 +504,26 @@
             <div class="m-desc">% of shipments sitting at the depot without being assigned to a rider. Customer complaints about parcels stuck at depots for days point to this being a real problem. This metric connects rider-side capacity to customer-side delivery promises.</div>
           </div>
         </div>
+      </div>
+    </div>
+    <!-- Opportunity Areas -->
+    <div class="cards-row">
+      <div class="card full opportunity-card">
+        <div class="card-label opportunity">Opportunity Areas</div>
+        <ol>
+          <li>
+            <strong>Redesign the shipment list with an information hierarchy that supports decision-making</strong>
+            <span class="detail">Currently, package count, proximity from current location, and potential earnings are secondary or missing. Riders can't filter by priority, and terms like FWD, RVP, P2P are unexplained. Surfacing earnings potential, distance, and shipment type with inline education (tooltips or first-time walkthroughs) would reduce dispatch creation time and the learning curve for new riders.</span>
+          </li>
+          <li>
+            <strong>Introduce route optimization for multiple delivery points</strong>
+            <span class="detail">There's no shortest-path guidance — riders manually find directions for each location one by one. This is the single biggest efficiency gap in the assignment phase. Even a basic route suggestion (ordered delivery sequence based on proximity) would reduce average delivery time per shipment and dwell time at the dispatch center.</span>
+          </li>
+          <li>
+            <strong>Fix the create dispatch and punch-in/punch-out flow hierarchy</strong>
+            <span class="detail">The "create dispatch" CTA is prominent but "punch out" is buried, despite being used daily. Empty states persist even after packages are added, and there's no package count visibility. Equalizing the hierarchy of daily-use actions (punch in, create dispatch, punch out) and fixing state management would streamline the DC-to-field transition.</span>
+          </li>
+        </ol>
       </div>
     </div>
   </div>
@@ -591,6 +626,34 @@
         </div>
       </div>
     </div>
+    <!-- Opportunity Areas -->
+    <div class="cards-row">
+      <div class="card full opportunity-card">
+        <div class="card-label opportunity">Opportunity Areas</div>
+        <ol>
+          <li>
+            <strong>Overhaul the payment collection flow for COD orders</strong>
+            <span class="detail">The current flow shows warnings before payment, has unclear UPI CTAs, confuses "Payer" labels between customer and rider, and allows cash collection even after a digital payment link is triggered — creating split logic. A single, clear payment path per order (cash OR digital, not both simultaneously) with proper confirmation states would improve COD collection success rate.</span>
+          </li>
+          <li>
+            <strong>Rethink delivery verification to close loopholes while reducing friction</strong>
+            <span class="detail">The selfie requirement appears too late in the flow. For prepaid orders, the self-signature workaround defeats the verification purpose entirely. Meanwhile, OTP for cancellations doesn't reach some customers, and there's no fallback. The verification flow needs to be resequenced (selfie upfront), self-signature loophole closed, and alternative verification methods added (photo of doorstep, location-based confirmation) to reduce fake attempt rate without adding rider friction.</span>
+          </li>
+          <li>
+            <strong>Build a reliable cancellation flow with fallback mechanisms</strong>
+            <span class="detail">Cancel doesn't work for some orders, there's no refund notification, no clear next steps after cancelling, and the OTP requirement adds friction when OTPs don't arrive via WhatsApp/SMS. A cancellation flow that works consistently, with SMS/WhatsApp/in-app OTP fallbacks and clear post-cancellation status, would reduce customer escalation rate and RTO rate.</span>
+          </li>
+          <li>
+            <strong>Address the map-to-actual-location discrepancy actively</strong>
+            <span class="detail">The app shows inaccurate map locations but doesn't help resolve them. This causes delivery delays across a large number of orders. Allowing riders to flag and correct addresses, showing customer-provided landmarks, or enabling a quick call/chat before arrival would improve FADR and reduce wasted time on wrong locations.</span>
+          </li>
+          <li>
+            <strong>Move app updates to off-peak hours</strong>
+            <span class="detail">App updates currently happen anytime during the day, rendering the app unusable mid-delivery. For a field app, this is a critical failure. Scheduling updates to non-delivery hours (late night/early morning) or enabling background updates would directly reduce app crash/downtime during delivery hours.</span>
+          </li>
+        </ol>
+      </div>
+    </div>
   </div>
 
   <div class="divider" style="margin: 0 0 80px 0;"></div>
@@ -666,16 +729,30 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- ─── OPPORTUNITY AREAS ─── -->
-  <div class="divider" style="margin: 0 0 80px 0;"></div>
-
-  <div class="section-header">
-    <div class="section-title">Opportunity Areas</div>
-  </div>
-  <div class="opportunity-bar">
-    <p><strong>Opportunity areas are to be defined</strong> based on the findings above. The containers exist in the research artifact but have not yet been populated — this is the next step in the research-to-design pipeline.</p>
+    <!-- Opportunity Areas -->
+    <div class="cards-row">
+      <div class="card full opportunity-card">
+        <div class="card-label opportunity">Opportunity Areas</div>
+        <ol>
+          <li>
+            <strong>Make earnings and productivity data transparent and filterable</strong>
+            <span class="detail">The incentive milestone chart doesn't explain what values represent, productivity calculations are unclear, and there's no week/month/year filtering. Experienced riders have to scroll through dates manually. Adding clear labels, calculation breakdowns, and time-based filters would improve rider earnings accuracy and reduce end-of-day reconciliation time.</span>
+          </li>
+          <li>
+            <strong>Resolve the POD flagging contradiction</strong>
+            <span class="detail">POD issues are shown under summary, but if PODs had issues, delivery shouldn't have been marked complete in the first place. This creates confusion about when and why it's flagged. Either enforce POD quality at the point of delivery (before marking complete) or clearly explain post-delivery POD flags with actionable next steps — don't leave it ambiguous.</span>
+          </li>
+          <li>
+            <strong>Create a clear end-of-day flow from delivery completion to punch-out</strong>
+            <span class="detail">There's no defined flow from finishing deliveries → reviewing summary → submitting collections → punching out. Punch-out isn't at the same hierarchy level as create dispatch. A guided end-of-day sequence that surfaces pending collections, flags issues, and leads to punch-out would reduce reconciliation time and the unpaid admin burden on riders.</span>
+          </li>
+          <li>
+            <strong>Address systemic design debt as a retention lever</strong>
+            <span class="detail">Users didn't point out issues in this phase, which suggests the problems are less immediately felt but still real — unclear data, missing filters, confusing POD flags. These are the kind of issues that erode trust over time and contribute to low Rider NPS. Treating this phase as a retention lever (clear pay → trust → lower churn) rather than just a summary screen would have outsized impact on rider retention.</span>
+          </li>
+        </ol>
+      </div>
+    </div>
   </div>
 
 </section>

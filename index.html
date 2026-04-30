@@ -199,60 +199,52 @@
       margin-bottom: 24px;
       letter-spacing: -0.3px;
     }
-    .insights-row {
+    .insights-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
     }
-    .insight-col h3 {
-      font-size: 13px;
+    .finding-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .finding-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-2px);
+    }
+    .finding-card .fc-icon {
+      font-size: 24px;
+      margin-bottom: 14px;
+      display: block;
+    }
+    .finding-card .fc-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .finding-card .fc-tag {
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-block;
     }
-    .insight-col h3.challenges-title { color: var(--red); }
-    .insight-col h3.opportunities-title { color: var(--blue); }
-    .insight-col h3 .ico {
-      font-size: 18px;
-      line-height: 1;
+    .finding-card.challenge .fc-tag {
+      color: var(--red);
+      background: rgba(255, 107, 107, 0.1);
     }
-    .insight-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .finding-card.opportunity .fc-tag {
+      color: var(--blue);
+      background: rgba(125, 211, 252, 0.1);
     }
-    .insight-pill {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 20px;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .insight-pill:hover {
-      border-color: var(--accent-border);
-      background: var(--surface-2);
-    }
-    .insight-pill .pill-arrow {
-      color: var(--text-muted);
-      font-size: 16px;
-      flex-shrink: 0;
-      transition: color 0.2s;
-    }
-    .insight-pill:hover .pill-arrow { color: var(--accent); }
-    .insight-pill.challenge { border-left: 3px solid var(--red); }
-    .insight-pill.opportunity { border-left: 3px solid var(--blue); }
 
     /* ── BOTTOM SHEET ── */
     .sheet-overlay {
@@ -270,19 +262,21 @@
     }
     .bottom-sheet {
       position: fixed;
-      bottom: 0; left: 0; right: 0;
+      bottom: 0; left: 50%; 
       z-index: 201;
       background: var(--surface);
       border-top: 1px solid var(--border);
       border-radius: 24px 24px 0 0;
       max-height: 70vh;
+      max-width: 1200px;
+      width: 100%;
       overflow-y: auto;
       padding: 32px 48px 48px;
-      transform: translateY(100%);
+      transform: translate(-50%, 100%);
       transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
     }
     .bottom-sheet.open {
-      transform: translateY(0);
+      transform: translate(-50%, 0);
     }
     .sheet-header {
       display: flex;
@@ -331,8 +325,8 @@
 
     @media (max-width: 768px) {
       .insights-section { padding: 0 24px; }
-      .insights-row { grid-template-columns: 1fr; }
-      .bottom-sheet { padding: 24px; }
+      .insights-grid { grid-template-columns: 1fr 1fr; }
+      .bottom-sheet { padding: 24px; max-width: 100%; }
     }
 
     /* ── DETAIL VIEW ── */
@@ -587,6 +581,89 @@
     </div>
   </div>
 
+  <!-- INSIGHTS SUMMARY -->
+  <div class="insights-section">
+    <h2>Key Findings at a Glance</h2>
+
+    <h3 style="font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--red); margin-bottom:16px;">⚠ Top Challenges</h3>
+    <div class="insights-grid" style="margin-bottom:32px;">
+      <div class="finding-card challenge" onclick="openSheet('c1')">
+        <span class="fc-icon">🔗</span>
+        <div class="fc-title">Onboarding is fragmented and confusing</div>
+        <span class="fc-tag">Challenge</span>
+      </div>
+      <div class="finding-card challenge" onclick="openSheet('c2')">
+        <span class="fc-icon">🌐</span>
+        <div class="fc-title">No multilingual support for low-literacy riders</div>
+        <span class="fc-tag">Challenge</span>
+      </div>
+      <div class="finding-card challenge" onclick="openSheet('c3')">
+        <span class="fc-icon">📋</span>
+        <div class="fc-title">Shipment list lacks information hierarchy</div>
+        <span class="fc-tag">Challenge</span>
+      </div>
+      <div class="finding-card challenge" onclick="openSheet('c4')">
+        <span class="fc-icon">🗺️</span>
+        <div class="fc-title">No route optimization for deliveries</div>
+        <span class="fc-tag">Challenge</span>
+      </div>
+      <div class="finding-card challenge" onclick="openSheet('c5')">
+        <span class="fc-icon">💳</span>
+        <div class="fc-title">Payment and verification flows break mid-delivery</div>
+        <span class="fc-tag">Challenge</span>
+      </div>
+      <div class="finding-card challenge" onclick="openSheet('c6')">
+        <span class="fc-icon">❌</span>
+        <div class="fc-title">Cancellation flow is unreliable</div>
+        <span class="fc-tag">Challenge</span>
+      </div>
+      <div class="finding-card challenge" onclick="openSheet('c7')">
+        <span class="fc-icon">📊</span>
+        <div class="fc-title">Earnings and summary screens lack clarity</div>
+        <span class="fc-tag">Challenge</span>
+      </div>
+    </div>
+
+    <h3 style="font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--blue); margin-bottom:16px;">✦ Top Opportunities</h3>
+    <div class="insights-grid">
+      <div class="finding-card opportunity" onclick="openSheet('o1')">
+        <span class="fc-icon">🧭</span>
+        <div class="fc-title">Unified guided onboarding wizard</div>
+        <span class="fc-tag">Opportunity</span>
+      </div>
+      <div class="finding-card opportunity" onclick="openSheet('o2')">
+        <span class="fc-icon">🗣️</span>
+        <div class="fc-title">Multilingual support and accessibility</div>
+        <span class="fc-tag">Opportunity</span>
+      </div>
+      <div class="finding-card opportunity" onclick="openSheet('o3')">
+        <span class="fc-icon">📍</span>
+        <div class="fc-title">Smart shipment list with route optimization</div>
+        <span class="fc-tag">Opportunity</span>
+      </div>
+      <div class="finding-card opportunity" onclick="openSheet('o4')">
+        <span class="fc-icon">💰</span>
+        <div class="fc-title">Streamlined COD payment flow</div>
+        <span class="fc-tag">Opportunity</span>
+      </div>
+      <div class="finding-card opportunity" onclick="openSheet('o5')">
+        <span class="fc-icon">🔄</span>
+        <div class="fc-title">Reliable cancellation with OTP fallbacks</div>
+        <span class="fc-tag">Opportunity</span>
+      </div>
+      <div class="finding-card opportunity" onclick="openSheet('o6')">
+        <span class="fc-icon">💵</span>
+        <div class="fc-title">Transparent earnings and filtering</div>
+        <span class="fc-tag">Opportunity</span>
+      </div>
+      <div class="finding-card opportunity" onclick="openSheet('o7')">
+        <span class="fc-icon">✅</span>
+        <div class="fc-title">Guided end-of-day reconciliation flow</div>
+        <span class="fc-tag">Opportunity</span>
+      </div>
+    </div>
+  </div>
+
   <div class="summary-grid">
     <div class="summary-card" onclick="goToStep(0)">
       <div class="sc-num">1</div>
@@ -627,84 +704,6 @@
         <div class="sc-stat"><strong>4</strong> metrics</div>
         <div class="sc-stat"><strong>4</strong> opportunities</div>
       </div>
-    </div>
-  </div>
-
-  <!-- INSIGHTS SUMMARY -->
-  <div class="insights-section">
-    <h2>Key Findings at a Glance</h2>
-    <div class="insights-row">
-
-      <!-- CHALLENGES COLUMN -->
-      <div class="insight-col">
-        <h3 class="challenges-title"><span class="ico">⚠</span> Top Challenges</h3>
-        <div class="insight-list">
-          <div class="insight-pill challenge" onclick="openSheet('c1')">
-            <span>Onboarding is fragmented and confusing</span>
-            <span class="pill-arrow">→</span>
-          </div>
-          <div class="insight-pill challenge" onclick="openSheet('c2')">
-            <span>No multilingual support for low-literacy riders</span>
-            <span class="pill-arrow">→</span>
-          </div>
-          <div class="insight-pill challenge" onclick="openSheet('c3')">
-            <span>Shipment list lacks information hierarchy</span>
-            <span class="pill-arrow">→</span>
-          </div>
-          <div class="insight-pill challenge" onclick="openSheet('c4')">
-            <span>No route optimization for deliveries</span>
-            <span class="pill-arrow">→</span>
-          </div>
-          <div class="insight-pill challenge" onclick="openSheet('c5')">
-            <span>Payment and verification flows break mid-delivery</span>
-            <span class="pill-arrow">→</span>
-          </div>
-          <div class="insight-pill challenge" onclick="openSheet('c6')">
-            <span>Cancellation flow is unreliable</span>
-            <span class="pill-arrow">→</span>
-          </div>
-          <div class="insight-pill challenge" onclick="openSheet('c7')">
-            <span>Earnings and summary screens lack clarity</span>
-            <span class="pill-arrow">→</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- OPPORTUNITIES COLUMN -->
-      <div class="insight-col">
-        <h3 class="opportunities-title"><span class="ico">✦</span> Top Opportunities</h3>
-        <div class="insight-list">
-          <div class="insight-pill opportunity" onclick="openSheet('o1')">
-            <span>Unified guided onboarding wizard</span>
-            <span class="pill-arrow">→</span>
-          </div>
-          <div class="insight-pill opportunity" onclick="openSheet('o2')">
-            <span>Multilingual support and accessibility</span>
-            <span class="pill-arrow">→</span>
-          </div>
-          <div class="insight-pill opportunity" onclick="openSheet('o3')">
-            <span>Smart shipment list with route optimization</span>
-            <span class="pill-arrow">→</span>
-          </div>
-          <div class="insight-pill opportunity" onclick="openSheet('o4')">
-            <span>Streamlined COD payment flow</span>
-            <span class="pill-arrow">→</span>
-          </div>
-          <div class="insight-pill opportunity" onclick="openSheet('o5')">
-            <span>Reliable cancellation with OTP fallbacks</span>
-            <span class="pill-arrow">→</span>
-          </div>
-          <div class="insight-pill opportunity" onclick="openSheet('o6')">
-            <span>Transparent earnings and filtering</span>
-            <span class="pill-arrow">→</span>
-          </div>
-          <div class="insight-pill opportunity" onclick="openSheet('o7')">
-            <span>Guided end-of-day reconciliation flow</span>
-            <span class="pill-arrow">→</span>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 

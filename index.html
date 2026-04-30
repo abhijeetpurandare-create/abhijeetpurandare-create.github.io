@@ -57,10 +57,23 @@
       display: flex;
       align-items: center;
       padding: 8px 0;
+      gap: 16px;
     }
     nav .logo img {
       height: 20px;
       width: auto;
+    }
+    nav .logo .logo-divider {
+      width: 1px;
+      height: 24px;
+      background: rgba(255,255,255,0.1);
+    }
+    nav .logo .logo-text {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-dim);
     }
     nav .nav-links { display: flex; gap: 32px; }
     nav .nav-links a {
@@ -226,24 +239,6 @@
       font-weight: 700;
       color: var(--text);
       line-height: 1.5;
-      margin-bottom: 10px;
-    }
-    .finding-card .fc-tag {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: 4px;
-      display: inline-block;
-    }
-    .finding-card.challenge .fc-tag {
-      color: var(--red);
-      background: rgba(255, 107, 107, 0.1);
-    }
-    .finding-card.opportunity .fc-tag {
-      color: var(--blue);
-      background: rgba(125, 211, 252, 0.1);
     }
 
     /* ── BOTTOM SHEET ── */
@@ -552,6 +547,8 @@
   <div class="nav-inner">
     <div class="logo" onclick="showView('summary')">
       <img src="delhivery-logo.svg" alt="Delhivery">
+      <div class="logo-divider"></div>
+      <span class="logo-text">LMFE Research</span>
     </div>
     <div class="nav-links">
       <a onclick="showView('summary')" class="active" id="nav-summary">Summary</a>
@@ -604,78 +601,50 @@
     <div class="insights-grid" style="margin-bottom:32px;">
       <div class="finding-card challenge" onclick="openSheet('c1')">
         <span class="fc-icon">🔗</span>
-        <div class="fc-title">Onboarding is fragmented and confusing</div>
-        <span class="fc-tag">Challenge</span>
-      </div>
+        <div class="fc-title">Onboarding is fragmented and confusing</div>      </div>
       <div class="finding-card challenge" onclick="openSheet('c2')">
         <span class="fc-icon">🌐</span>
-        <div class="fc-title">No multilingual support for low-literacy riders</div>
-        <span class="fc-tag">Challenge</span>
-      </div>
+        <div class="fc-title">No multilingual support for low-literacy riders</div>      </div>
       <div class="finding-card challenge" onclick="openSheet('c3')">
         <span class="fc-icon">📋</span>
-        <div class="fc-title">Shipment list lacks information hierarchy</div>
-        <span class="fc-tag">Challenge</span>
-      </div>
+        <div class="fc-title">Shipment list lacks information hierarchy</div>      </div>
       <div class="finding-card challenge" onclick="openSheet('c4')">
         <span class="fc-icon">🗺️</span>
-        <div class="fc-title">No route optimization for deliveries</div>
-        <span class="fc-tag">Challenge</span>
-      </div>
+        <div class="fc-title">No route optimization for deliveries</div>      </div>
       <div class="finding-card challenge" onclick="openSheet('c5')">
         <span class="fc-icon">💳</span>
-        <div class="fc-title">Payment and verification flows break mid-delivery</div>
-        <span class="fc-tag">Challenge</span>
-      </div>
+        <div class="fc-title">Payment and verification flows break mid-delivery</div>      </div>
       <div class="finding-card challenge" onclick="openSheet('c6')">
         <span class="fc-icon">❌</span>
-        <div class="fc-title">Cancellation flow is unreliable</div>
-        <span class="fc-tag">Challenge</span>
-      </div>
+        <div class="fc-title">Cancellation flow is unreliable</div>      </div>
       <div class="finding-card challenge" onclick="openSheet('c7')">
         <span class="fc-icon">📊</span>
-        <div class="fc-title">Earnings and summary screens lack clarity</div>
-        <span class="fc-tag">Challenge</span>
-      </div>
+        <div class="fc-title">Earnings and summary screens lack clarity</div>      </div>
     </div>
 
     <h3 style="font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--blue); margin-bottom:16px;">✦ Top Opportunities</h3>
     <div class="insights-grid">
       <div class="finding-card opportunity" onclick="openSheet('o1')">
         <span class="fc-icon">🧭</span>
-        <div class="fc-title">Unified guided onboarding wizard</div>
-        <span class="fc-tag">Opportunity</span>
-      </div>
+        <div class="fc-title">Unified guided onboarding wizard</div>      </div>
       <div class="finding-card opportunity" onclick="openSheet('o2')">
         <span class="fc-icon">🗣️</span>
-        <div class="fc-title">Multilingual support and accessibility</div>
-        <span class="fc-tag">Opportunity</span>
-      </div>
+        <div class="fc-title">Multilingual support and accessibility</div>      </div>
       <div class="finding-card opportunity" onclick="openSheet('o3')">
         <span class="fc-icon">📍</span>
-        <div class="fc-title">Smart shipment list with route optimization</div>
-        <span class="fc-tag">Opportunity</span>
-      </div>
+        <div class="fc-title">Smart shipment list with route optimization</div>      </div>
       <div class="finding-card opportunity" onclick="openSheet('o4')">
         <span class="fc-icon">💰</span>
-        <div class="fc-title">Streamlined COD payment flow</div>
-        <span class="fc-tag">Opportunity</span>
-      </div>
+        <div class="fc-title">Streamlined COD payment flow</div>      </div>
       <div class="finding-card opportunity" onclick="openSheet('o5')">
         <span class="fc-icon">🔄</span>
-        <div class="fc-title">Reliable cancellation with OTP fallbacks</div>
-        <span class="fc-tag">Opportunity</span>
-      </div>
+        <div class="fc-title">Reliable cancellation with OTP fallbacks</div>      </div>
       <div class="finding-card opportunity" onclick="openSheet('o6')">
         <span class="fc-icon">💵</span>
-        <div class="fc-title">Transparent earnings and filtering</div>
-        <span class="fc-tag">Opportunity</span>
-      </div>
+        <div class="fc-title">Transparent earnings and filtering</div>      </div>
       <div class="finding-card opportunity" onclick="openSheet('o7')">
         <span class="fc-icon">✅</span>
-        <div class="fc-title">Guided end-of-day reconciliation flow</div>
-        <span class="fc-tag">Opportunity</span>
-      </div>
+        <div class="fc-title">Guided end-of-day reconciliation flow</div>      </div>
     </div>
   </div>
 

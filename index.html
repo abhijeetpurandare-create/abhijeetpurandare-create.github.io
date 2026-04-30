@@ -22,6 +22,7 @@
       --text-muted: #555;
       --red: #ff6b6b;
       --yellow: #ffd93d;
+      --blue: #7dd3fc;
     }
 
     html { scroll-behavior: smooth; }
@@ -46,8 +47,15 @@
     }
     nav .logo { font-weight: 800; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); }
     nav .nav-links { display: flex; gap: 32px; }
-    nav .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
-    nav .nav-links a:hover { color: var(--accent); }
+    nav .nav-links a {
+      color: var(--text-dim); text-decoration: none; font-size: 13px; font-weight: 500;
+      transition: color 0.2s; cursor: pointer;
+    }
+    nav .nav-links a:hover, nav .nav-links a.active { color: var(--accent); }
+
+    /* ── VIEWS ── */
+    .view { display: none; }
+    .view.active { display: block; }
 
     /* ── HERO ── */
     .hero {
@@ -110,44 +118,79 @@
       font-weight: 500;
     }
 
-    /* ── SECTION ── */
-    section {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 48px 100px;
-    }
-    .section-header {
-      display: flex;
-      align-items: baseline;
+    /* ── SUMMARY JOURNEY CARDS ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
-      margin-bottom: 48px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
+      max-width: 1200px;
+      margin: 0 auto 80px;
+      padding: 0 48px;
     }
-    .section-number {
-      font-size: 80px;
-      font-weight: 900;
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .summary-card:hover {
+      border-color: var(--accent-border);
+      transform: translateY(-2px);
+    }
+    .summary-card .sc-num {
+      width: 36px; height: 36px;
+      background: var(--accent);
+      color: var(--bg);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 900; font-size: 16px;
+      margin-bottom: 16px;
+    }
+    .summary-card .sc-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+    .summary-card .sc-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .summary-card .sc-stat {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+    .summary-card .sc-stat strong {
       color: var(--accent);
-      line-height: 1;
-      opacity: 0.3;
-    }
-    .section-title {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
+      font-weight: 700;
     }
 
-    /* ── JOURNEY STEP ── */
-    .journey-step {
-      margin-bottom: 100px;
+    /* ── DETAIL VIEW ── */
+    .detail-header {
+      padding: 100px 48px 0;
+      max-width: 1200px;
+      margin: 0 auto;
     }
-    .step-header {
+
+    /* ── STEP NAV BAR ── */
+    .step-nav {
       display: flex;
       align-items: center;
-      gap: 20px;
-      margin-bottom: 40px;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto 40px;
+      padding: 0 48px;
+      padding-top: 100px;
     }
-    .step-num {
+    .step-nav .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .step-nav .step-indicator .step-num {
       width: 48px; height: 48px;
       background: var(--accent);
       color: var(--bg);
@@ -156,10 +199,77 @@
       font-weight: 900; font-size: 20px;
       flex-shrink: 0;
     }
-    .step-name {
+    .step-nav .step-indicator .step-name {
       font-size: 24px;
       font-weight: 800;
       letter-spacing: -0.3px;
+    }
+    .step-arrows {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .step-arrows button {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 20px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .step-arrows button:hover:not(:disabled) {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .step-arrows button:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+    .step-arrows .step-count {
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 600;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    /* ── STEP DOTS ── */
+    .step-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .step-dots .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .step-dots .dot.active {
+      background: var(--accent);
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    /* ── SECTION ── */
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px 100px;
+    }
+
+    /* ── JOURNEY STEP ── */
+    .journey-step {
+      display: none;
+    }
+    .journey-step.active {
+      display: block;
     }
 
     /* ── CARDS GRID ── */
@@ -187,10 +297,14 @@
     .card-label.accent { color: var(--accent); }
     .card-label.warn { color: var(--red); }
     .card-label.metric { color: var(--yellow); }
+    .card-label.opportunity { color: var(--blue); }
 
-    .card ol {
-      padding-left: 20px;
+    .card.opportunity-card {
+      background: var(--surface);
+      border: 1px solid rgba(125, 211, 252, 0.15);
     }
+
+    .card ol { padding-left: 20px; }
     .card ol li {
       margin-bottom: 16px;
       font-size: 15px;
@@ -198,10 +312,7 @@
       line-height: 1.7;
     }
     .card ol li:last-child { margin-bottom: 0; }
-    .card ol li strong {
-      color: #fff;
-      font-weight: 700;
-    }
+    .card ol li strong { color: #fff; font-weight: 700; }
     .card ol li .detail {
       display: block;
       font-size: 13px;
@@ -209,7 +320,6 @@
       margin-top: 4px;
       line-height: 1.6;
     }
-
     .card p {
       font-size: 15px;
       color: var(--text-dim);
@@ -229,32 +339,10 @@
       padding: 24px;
     }
     .metric-item .m-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 8px;
+      font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 8px;
     }
     .metric-item .m-desc {
-      font-size: 13px;
-      color: var(--text-dim);
-      line-height: 1.6;
-    }
-
-    /* ── OPPORTUNITY CARD ── */
-    .card-label.opportunity {
-      color: #7dd3fc;
-    }
-    .card.opportunity-card {
-      background: var(--surface);
-      border: 1px solid rgba(125, 211, 252, 0.15);
-    }
-
-    /* ── DIVIDER ── */
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 80px auto;
-      max-width: 1200px;
+      font-size: 13px; color: var(--text-dim); line-height: 1.6;
     }
 
     /* ── FOOTER ── */
@@ -271,496 +359,588 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       nav { padding: 0 24px; }
-      nav .nav-links { display: none; }
       .hero { padding: 120px 24px 60px; }
-      section { padding: 0 24px 80px; }
       .stat-bar { grid-template-columns: repeat(2, 1fr); }
+      .summary-grid { grid-template-columns: 1fr; padding: 0 24px; }
+      section { padding: 0 24px 80px; }
+      .step-nav { padding: 0 24px; padding-top: 100px; flex-direction: column; gap: 20px; }
       .cards-row { grid-template-columns: 1fr; }
       .metric-grid { grid-template-columns: 1fr; }
-      .section-number { font-size: 48px; }
     }
   </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <div class="logo">LM-FE Research</div>
   <div class="nav-links">
-    <a href="#journey">Journey</a>
-    <a href="#step-1">Onboarding</a>
-    <a href="#step-2">Assignment</a>
-    <a href="#step-3">Delivery</a>
-    <a href="#step-4">Summary</a>
+    <a onclick="showView('summary')" class="active" id="nav-summary">Summary</a>
+    <a onclick="showView('detail')" id="nav-detail">Detailed Information</a>
   </div>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="tag">Delhivery · Last Mile FE App</div>
-  <h1>User Journey<br><span>Mapping to Goals</span></h1>
-  <p class="subtitle">A comprehensive research artifact documenting the delivery executive's journey — from onboarding through completing deliveries — with touchpoints, challenges, design insights, and metrics mapped at every step.</p>
+<!-- ═══════════════════════════════════════ -->
+<!-- SUMMARY VIEW                            -->
+<!-- ═══════════════════════════════════════ -->
+<div id="view-summary" class="view active">
+
+  <div class="hero">
+    <div class="tag">Delhivery · Last Mile FE App</div>
+    <h1>User Journey<br><span>Mapping to Goals</span></h1>
+    <p class="subtitle">A comprehensive research artifact documenting the delivery executive's journey — from onboarding through completing deliveries — with touchpoints, challenges, design insights, and metrics mapped at every step.</p>
+  </div>
+
+  <div class="stat-bar">
+    <div class="stat-item">
+      <div class="number">4</div>
+      <div class="label">Journey Stages</div>
+    </div>
+    <div class="stat-item">
+      <div class="number">21</div>
+      <div class="label">Touchpoints Mapped</div>
+    </div>
+    <div class="stat-item">
+      <div class="number">15</div>
+      <div class="label">Design Challenges</div>
+    </div>
+    <div class="stat-item">
+      <div class="number">18</div>
+      <div class="label">Metrics Identified</div>
+    </div>
+    <div class="stat-item">
+      <div class="number">15</div>
+      <div class="label">Opportunity Areas</div>
+    </div>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-card" onclick="goToStep(0)">
+      <div class="sc-num">1</div>
+      <div class="sc-title">User onboards to the application</div>
+      <div class="sc-stats">
+        <div class="sc-stat"><strong>5</strong> touchpoints</div>
+        <div class="sc-stat"><strong>4</strong> design challenges</div>
+        <div class="sc-stat"><strong>4</strong> metrics</div>
+        <div class="sc-stat"><strong>3</strong> opportunities</div>
+      </div>
+    </div>
+    <div class="summary-card" onclick="goToStep(1)">
+      <div class="sc-num">2</div>
+      <div class="sc-title">Assigning shipment to the driver</div>
+      <div class="sc-stats">
+        <div class="sc-stat"><strong>6</strong> touchpoints</div>
+        <div class="sc-stat"><strong>4</strong> design challenges</div>
+        <div class="sc-stat"><strong>3</strong> metrics</div>
+        <div class="sc-stat"><strong>3</strong> opportunities</div>
+      </div>
+    </div>
+    <div class="summary-card" onclick="goToStep(2)">
+      <div class="sc-num">3</div>
+      <div class="sc-title">Driver leaves for deliveries &amp; Completes them</div>
+      <div class="sc-stats">
+        <div class="sc-stat"><strong>8</strong> touchpoints</div>
+        <div class="sc-stat"><strong>4</strong> design challenges</div>
+        <div class="sc-stat"><strong>7</strong> metrics</div>
+        <div class="sc-stat"><strong>5</strong> opportunities</div>
+      </div>
+    </div>
+    <div class="summary-card" onclick="goToStep(3)">
+      <div class="sc-num">4</div>
+      <div class="sc-title">Views details of shipments done</div>
+      <div class="sc-stats">
+        <div class="sc-stat"><strong>2</strong> touchpoints</div>
+        <div class="sc-stat"><strong>4</strong> design challenges</div>
+        <div class="sc-stat"><strong>4</strong> metrics</div>
+        <div class="sc-stat"><strong>4</strong> opportunities</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<!-- STAT BAR -->
-<div class="stat-bar">
-  <div class="stat-item">
-    <div class="number">4</div>
-    <div class="label">Journey Stages</div>
+<!-- ═══════════════════════════════════════ -->
+<!-- DETAIL VIEW                             -->
+<!-- ═══════════════════════════════════════ -->
+<div id="view-detail" class="view">
+
+  <!-- Step Navigation -->
+  <div class="step-nav">
+    <div class="step-indicator">
+      <div class="step-num" id="detail-step-num">1</div>
+      <div class="step-name" id="detail-step-name">User onboards to the application</div>
+    </div>
+    <div class="step-arrows">
+      <button onclick="prevStep()" id="btn-prev" aria-label="Previous step">←</button>
+      <span class="step-count" id="step-count">1 / 4</span>
+      <button onclick="nextStep()" id="btn-next" aria-label="Next step">→</button>
+    </div>
   </div>
-  <div class="stat-item">
-    <div class="number">21</div>
-    <div class="label">Touchpoints Mapped</div>
+
+  <div class="step-dots" id="step-dots">
+    <div class="dot active" onclick="setStep(0)"></div>
+    <div class="dot" onclick="setStep(1)"></div>
+    <div class="dot" onclick="setStep(2)"></div>
+    <div class="dot" onclick="setStep(3)"></div>
   </div>
-  <div class="stat-item">
-    <div class="number">15</div>
-    <div class="label">Design Challenges</div>
-  </div>
-  <div class="stat-item">
-    <div class="number">18</div>
-    <div class="label">Metrics Identified</div>
-  </div>
-  <div class="stat-item">
-    <div class="number">15</div>
-    <div class="label">Opportunity Areas</div>
-  </div>
+
+  <section>
+
+    <!-- ─── STEP 1: ONBOARDING ─── -->
+    <div class="journey-step active" data-step="0">
+      <div class="cards-row">
+        <div class="card">
+          <div class="card-label accent">Touchpoints</div>
+          <ol>
+            <li>User logs into the partner app</li>
+            <li>Applies to work as a Delhivery executive</li>
+            <li>Adds Aadhaar details and completes the application</li>
+            <li>User is prompted to download application and reach workplace</li>
+            <li>User proceeds to add driving license, PAN card, bank details to configure their account on LM-FE App</li>
+          </ol>
+        </div>
+        <div class="card">
+          <div class="card-label warn">Challenges — Users</div>
+          <ol>
+            <li>Accessibility of progressive CTAs while onboarding on the partner app can be improved</li>
+            <li>FE App can be shown as downloaded, but is not accessible in the downloads</li>
+          </ol>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card full">
+          <div class="card-label warn">Challenges — Design</div>
+          <ol>
+            <li>
+              <strong>Login and onboarding flows lack basic usability polish</strong>
+              <span class="detail">Ghost text for phone number format is missing, error states use incorrect colors (yellow instead of red), and there's no option to go back and edit the phone number once entered. OTP fields are too small, and new users are taken directly to PIN setup without any intimation that they're new.</span>
+            </li>
+            <li>
+              <strong>Document verification and account setup is confusing and error-prone</strong>
+              <span class="detail">The stepper for DL, PAN, and Bank Details is inconsistent — steps 1 and 2 are document uploads while step 3 is a form. Driving License is shown as a "Number" field when it's actually a 15-digit alphanumeric code. PAN-Aadhaar linking copy needs refinement, and there's no help or guidance if users don't have their cards linked.</span>
+            </li>
+            <li>
+              <strong>The landing page and post-login experience fails to orient the user</strong>
+              <span class="detail">The page hierarchy is off — "Good morning" is prioritized over pending document verification. The landing page has only one CTA with no other relevant workflow details. Concepts like "LastMile Pro" and "permission to auto-start" are not explained. There's no primary navigation — everything is hidden under a menu.</span>
+            </li>
+            <li>
+              <strong>No multilingual support or accessibility features</strong>
+              <span class="detail">Users with lower literacy levels, which is critical for the target user base, have no language options or accessibility accommodations.</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card full">
+          <div class="card-label metric">Metrics to Track</div>
+          <div class="metric-grid">
+            <div class="metric-item">
+              <div class="m-title">Onboarding Completion Rate</div>
+              <div class="m-desc">% of riders who start the Partner App signup and successfully complete all steps (DL, PAN, bank details) to become active on the FE App. The drop-off between Partner App download and first delivery is likely very high given the friction found.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">First-week Attrition Rate</div>
+              <div class="m-desc">% of riders who leave within 7 days of onboarding. If riders don't understand the app, don't see benefits, and face a cluttered onboarding experience, they churn before generating any value.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">Document Verification Error Rate</div>
+              <div class="m-desc">% of document submissions that fail on first attempt (DL format errors, PAN-Aadhaar linking failures, bank verification failures). The app doesn't guide users through these correctly — wrong input formats, unclear error messages, no help for linking issues.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">Support Ticket Volume During Onboarding</div>
+              <div class="m-desc">Number of help requests raised in the first 7 days. If this is high, the app isn't self-explanatory enough. Missing help documentation, unclear copy, and no multilingual support were found.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card full opportunity-card">
+          <div class="card-label opportunity">Opportunity Areas</div>
+          <ol>
+            <li>
+              <strong>Redesign the login and document verification flow as a single guided experience</strong>
+              <span class="detail">The current onboarding is fragmented across two apps (Partner App → FE App) with inconsistent steppers, missing input guidance (DL shown as "Number" when it's a 15-digit alphanumeric code), and no error recovery (can't go back to edit phone number). A unified, linear onboarding wizard with proper input masks, inline validation, and clear progress indication would directly reduce the document verification error rate and first-week attrition.</span>
+            </li>
+            <li>
+              <strong>Build a meaningful post-login landing experience</strong>
+              <span class="detail">The landing page currently prioritizes "Good morning" over pending document verification, has a single CTA, and hides everything under a menu. There's no explanation of concepts like "LastMile Pro" or "permission to auto-start." Restructuring the landing page to surface pending actions, explain key concepts, and provide primary navigation would reduce support ticket volume and help new riders orient themselves faster.</span>
+            </li>
+            <li>
+              <strong>Introduce multilingual support and accessibility accommodations</strong>
+              <span class="detail">The target user base includes riders with lower literacy levels, and there's zero language support or accessibility features. Adding regional language options and simplified UI patterns (icon-led navigation, voice guidance) would improve onboarding completion rate across Tier 2/3 cities where Delhivery operates heavily.</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── STEP 2: ASSIGNMENT ─── -->
+    <div class="journey-step" data-step="1">
+      <div class="cards-row">
+        <div class="card">
+          <div class="card-label accent">Touchpoints</div>
+          <ol>
+            <li>User proceeds to book slots</li>
+            <li>Selects a week</li>
+            <li>Selects a day where slots are not fully booked yet</li>
+            <li>Views summary of slots and confirms the slot booking</li>
+            <li>Starts delivering by punching in</li>
+            <li>Gets deliveries assigned by the TL, shown on the shipments tab</li>
+          </ol>
+        </div>
+        <div class="card">
+          <div class="card-label warn">Challenges — Users</div>
+          <ol>
+            <li>User needs to be educated what FWD, RVP and Direct orders are, which is not clear from the UI</li>
+            <li>User not able to understand the difference between priority and flash</li>
+            <li>Loading screens while creating a dispatch, or opening the app takes a longer than expected time, leading to user frustration</li>
+          </ol>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card full">
+          <div class="card-label warn">Challenges — Design</div>
+          <ol>
+            <li>
+              <strong>Shipment list lacks critical information hierarchy</strong>
+              <span class="detail">Number of packages, proximity from current location, and potential earnings are secondary or missing. Users can't easily filter by priority, and there's no education on what FWD, RVP, and P2P mean — requiring a learning curve.</span>
+            </li>
+            <li>
+              <strong>Route optimization is absent</strong>
+              <span class="detail">There's no shortest-path guidance for multiple delivery points. Riders have to manually find directions for each location one by one, which is inefficient for their workflow.</span>
+            </li>
+            <li>
+              <strong>Create dispatch flow has navigation and status gaps</strong>
+              <span class="detail">How a user navigates from the homepage to the shipment/dispatch screens is unclear. The "create dispatch" CTA is prominent, but "punch out" is not at the same hierarchical level despite being used daily. When 0 packages are added, no status or count is shown. When packages are added, the empty state still appears.</span>
+            </li>
+            <li>
+              <strong>Iconography and visual cues are inconsistent</strong>
+              <span class="detail">The lightning icon's purpose is unclear, amount tags are inconsistently shown, and the shipment/summary icons look off in terms of size and weight.</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card full">
+          <div class="card-label metric">Metrics to Track</div>
+          <div class="metric-grid">
+            <div class="metric-item">
+              <div class="m-title">Dispatch Creation Time</div>
+              <div class="m-desc">Average time from punch-in to first dispatch created. The navigation from homepage to dispatch is unclear, and the create dispatch flow has multiple usability gaps (no package count visibility, confusing stepper, loading delays).</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">Dwell Time at Dispatch Center</div>
+              <div class="m-desc">Time spent at the DC before leaving for deliveries. Long dwell times indicate app friction (scanning issues, dispatch approval delays, CM approval wait times). Riders can't call the CM if approval is delayed, and there's no confirmation that the request was received.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">Unassigned Shipment Ratio</div>
+              <div class="m-desc">% of shipments sitting at the depot without being assigned to a rider. Customer complaints about parcels stuck at depots for days point to this being a real problem. This metric connects rider-side capacity to customer-side delivery promises.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card full opportunity-card">
+          <div class="card-label opportunity">Opportunity Areas</div>
+          <ol>
+            <li>
+              <strong>Redesign the shipment list with an information hierarchy that supports decision-making</strong>
+              <span class="detail">Currently, package count, proximity from current location, and potential earnings are secondary or missing. Riders can't filter by priority, and terms like FWD, RVP, P2P are unexplained. Surfacing earnings potential, distance, and shipment type with inline education (tooltips or first-time walkthroughs) would reduce dispatch creation time and the learning curve for new riders.</span>
+            </li>
+            <li>
+              <strong>Introduce route optimization for multiple delivery points</strong>
+              <span class="detail">There's no shortest-path guidance — riders manually find directions for each location one by one. This is the single biggest efficiency gap in the assignment phase. Even a basic route suggestion (ordered delivery sequence based on proximity) would reduce average delivery time per shipment and dwell time at the dispatch center.</span>
+            </li>
+            <li>
+              <strong>Fix the create dispatch and punch-in/punch-out flow hierarchy</strong>
+              <span class="detail">The "create dispatch" CTA is prominent but "punch out" is buried, despite being used daily. Empty states persist even after packages are added, and there's no package count visibility. Equalizing the hierarchy of daily-use actions (punch in, create dispatch, punch out) and fixing state management would streamline the DC-to-field transition.</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── STEP 3: DELIVERY ─── -->
+    <div class="journey-step" data-step="2">
+      <div class="cards-row">
+        <div class="card">
+          <div class="card-label accent">Touchpoints</div>
+          <ol>
+            <li>User is able to see all of his deliveries assigned on shipments tab</li>
+            <li>User proceeds to fulfill all deliveries in the order given by the app</li>
+            <li>For COD Deliveries — User takes payment and marks the parcel as delivered</li>
+            <li>User selects delivery recipient</li>
+            <li>User clicks a selfie to ensure helmet is visible</li>
+            <li>If customer is unavailable, user marks as undelivered with a reason, and is prompted to enter customer OTP</li>
+            <li>Once payment is done, user needs to mark as complete</li>
+            <li>For a prepaid order, user needs to get customer signature or click a picture</li>
+          </ol>
+        </div>
+        <div class="card">
+          <div class="card-label warn">Challenges — Users</div>
+          <ol>
+            <li>The map location vs the actual location of the customer is quite different for a lot of customers, and app highlights it that way as well — this results in delivery delays</li>
+            <li>For a prepaid order, some customers are reluctant to give signatures/photos. In that case, self-signature is made for marking a successful delivery, which is a loophole and defeats the purpose of keeping the verification flow</li>
+            <li>Click a selfie appears late when user has made one or few deliveries</li>
+            <li>App updates happen anytime in the day, which renders the app to show an updating status. This is critical for users trying to deliver something while being on the field</li>
+            <li>OTP for cancellations does not appear for some of the customers by WhatsApp/SMS, and there is no other mechanism for cancelling an order</li>
+            <li>For some orders, cancel order does not work for a user</li>
+          </ol>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card full">
+          <div class="card-label warn">Challenges — Design</div>
+          <ol>
+            <li>
+              <strong>Payment collection flows are confusing</strong>
+              <span class="detail">For COD orders, showing a warning before payment creates a poor experience. Payment options for UPI don't feel like clear CTAs. The "Payer" label confuses the customer with the rider. If a digital payment link is already triggered, allowing cash collection creates split logic.</span>
+            </li>
+            <li>
+              <strong>Delivery verification has usability issues</strong>
+              <span class="detail">The selfie requirement appears late in the flow. For prepaid orders, some customers are reluctant to give signatures/photos, and the self-signature workaround defeats the verification purpose. OTP for cancellations doesn't reach some customers via WhatsApp/SMS, and there's no alternative mechanism.</span>
+            </li>
+            <li>
+              <strong>The cancel order flow is problematic</strong>
+              <span class="detail">Cancel doesn't work for some orders. There's no refund notification on cancellation, and no clear next steps after cancelling. The cancellation OTP requirement adds unnecessary friction.</span>
+            </li>
+            <li>
+              <strong>Map location vs actual customer location discrepancy</strong>
+              <span class="detail">Causes delivery delays, and the app highlights this inaccuracy without helping resolve it.</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card full">
+          <div class="card-label metric">Metrics to Track</div>
+          <div class="metric-grid">
+            <div class="metric-item">
+              <div class="m-title">First Attempt Delivery Rate (FADR)</div>
+              <div class="m-desc">% of shipments delivered on the first attempt. The single most important operational metric. Customer complaints about fake attempts, no-call-no-delivery, and repeated "out for delivery" statuses all point to a low FADR. Every failed first attempt costs money.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">Fake Attempt Rate</div>
+              <div class="m-desc">% of delivery attempts marked as "attempted" or "customer refused" without actual contact. Customers on PissedConsumer and Quora consistently report this. The app allows riders to mark attempts without sufficient verification.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">Average Delivery Time per Shipment</div>
+              <div class="m-desc">Time from dispatch to delivery completion. No route optimization, no shortest-path guidance, and manual direction-finding for each location — all inflate this number.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">COD Collection Success Rate</div>
+              <div class="m-desc">% of COD orders where payment is successfully collected on first attempt. Confusing payment flows (QR code issues, Paytm warnings, split cash/digital logic), and customers report OTP harassment and COD scam concerns.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">App Crash/Downtime During Delivery</div>
+              <div class="m-desc">Frequency and duration of app unavailability during active delivery windows. App updates happen mid-day, and loading screens are longer than expected. For a field app, even 2 minutes of downtime during a delivery attempt is a failed delivery.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">Customer Escalation Rate</div>
+              <div class="m-desc">% of deliveries that trigger a customer complaint (call to support, social media post, PissedConsumer review) during or immediately after the delivery attempt. The 1.2★ rating with 3,888 reviews on PissedConsumer suggests this is very high.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">RTO (Return to Origin) Rate</div>
+              <div class="m-desc">% of shipments that go back to the warehouse undelivered. Every RTO is a direct cost — reverse logistics, re-processing, potential customer loss. Fake attempts, address mismatches, OTP failures, and customer unavailability all feed into RTO.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card full opportunity-card">
+          <div class="card-label opportunity">Opportunity Areas</div>
+          <ol>
+            <li>
+              <strong>Overhaul the payment collection flow for COD orders</strong>
+              <span class="detail">The current flow shows warnings before payment, has unclear UPI CTAs, confuses "Payer" labels between customer and rider, and allows cash collection even after a digital payment link is triggered — creating split logic. A single, clear payment path per order (cash OR digital, not both simultaneously) with proper confirmation states would improve COD collection success rate.</span>
+            </li>
+            <li>
+              <strong>Rethink delivery verification to close loopholes while reducing friction</strong>
+              <span class="detail">The selfie requirement appears too late in the flow. For prepaid orders, the self-signature workaround defeats the verification purpose entirely. Meanwhile, OTP for cancellations doesn't reach some customers, and there's no fallback. The verification flow needs to be resequenced (selfie upfront), self-signature loophole closed, and alternative verification methods added (photo of doorstep, location-based confirmation) to reduce fake attempt rate without adding rider friction.</span>
+            </li>
+            <li>
+              <strong>Build a reliable cancellation flow with fallback mechanisms</strong>
+              <span class="detail">Cancel doesn't work for some orders, there's no refund notification, no clear next steps after cancelling, and the OTP requirement adds friction when OTPs don't arrive via WhatsApp/SMS. A cancellation flow that works consistently, with SMS/WhatsApp/in-app OTP fallbacks and clear post-cancellation status, would reduce customer escalation rate and RTO rate.</span>
+            </li>
+            <li>
+              <strong>Address the map-to-actual-location discrepancy actively</strong>
+              <span class="detail">The app shows inaccurate map locations but doesn't help resolve them. This causes delivery delays across a large number of orders. Allowing riders to flag and correct addresses, showing customer-provided landmarks, or enabling a quick call/chat before arrival would improve FADR and reduce wasted time on wrong locations.</span>
+            </li>
+            <li>
+              <strong>Move app updates to off-peak hours</strong>
+              <span class="detail">App updates currently happen anytime during the day, rendering the app unusable mid-delivery. For a field app, this is a critical failure. Scheduling updates to non-delivery hours (late night/early morning) or enabling background updates would directly reduce app crash/downtime during delivery hours.</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── STEP 4: SUMMARY ─── -->
+    <div class="journey-step" data-step="3">
+      <div class="cards-row">
+        <div class="card">
+          <div class="card-label accent">Touchpoints</div>
+          <ol>
+            <li>User views summary of all parcels delivered according to the status</li>
+            <li>User views total collection that corresponds to the deliveries made, and escalations done (if any)</li>
+          </ol>
+        </div>
+        <div class="card">
+          <div class="card-label warn">Challenges — Users</div>
+          <p>Nothing significant was pointed out by users themselves for this step.</p>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card full">
+          <div class="card-label warn">Challenges — Design</div>
+          <ol>
+            <li>
+              <strong>Summary and earnings screens lack clarity</strong>
+              <span class="detail">The incentive milestone chart doesn't clearly explain what values like "50" and "60" represent. Productivity calculation (e.g., "21") is not clarified. Month-wise, week-wise, and day-wise productivity breakdowns are missing. The difference between "picked up" and "pending" orders is not clear.</span>
+            </li>
+            <li>
+              <strong>POD (Proof of Delivery) issues are flagged but not actionable</strong>
+              <span class="detail">POD issues are shown under summary, but if PODs have issues, delivery shouldn't have been possible in the first place — this creates confusion about when and why it's flagged.</span>
+            </li>
+            <li>
+              <strong>Earnings page lacks filtering and payout visibility</strong>
+              <span class="detail">There's no information on how much payout is pending vs completed. Filtering by this week/month/year is missing. For experienced riders, scrolling through dates for earnings is not efficient — a filter mechanism is needed.</span>
+            </li>
+            <li>
+              <strong>Issues here are systemic design debt</strong>
+              <span class="detail">Nothing significant was pointed out by users themselves for this step, which suggests the issues here are more systemic and less immediately felt — but still represent design debt.</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card full">
+          <div class="card-label metric">Metrics to Track</div>
+          <div class="metric-grid">
+            <div class="metric-item">
+              <div class="m-title">Rider Earnings Accuracy</div>
+              <div class="m-desc">Can riders accurately predict their weekly earnings based on what the app shows them? Missing breakdowns, unclear productivity calculations, and no filtering were found. If riders can't understand their pay, they lose trust and churn.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">End-of-day Reconciliation Time</div>
+              <div class="m-desc">Time it takes a rider to complete their summary, submit collections, and punch out. Punch-out isn't at the same hierarchy level as create dispatch, and there's no clear flow from delivery completion to day-end summary. Long reconciliation times mean riders are spending unpaid time on admin.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">Rider NPS (Net Promoter Score)</div>
+              <div class="m-desc">Would riders recommend this job/app to others? Given the Indeed reviews ("employees are being exploited," "too much pressure and less salary"), this is likely very low. Improving the summary experience directly impacts retention.</div>
+            </div>
+            <div class="metric-item">
+              <div class="m-title">Customer CSAT Post-delivery</div>
+              <div class="m-desc">Customer satisfaction score after delivery completion. With a 1.2★ on PissedConsumer and widespread complaints about fake attempts, rude behavior, and no communication, this needs to be tracked per delivery and correlated with specific app flows.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="cards-row">
+        <div class="card full opportunity-card">
+          <div class="card-label opportunity">Opportunity Areas</div>
+          <ol>
+            <li>
+              <strong>Make earnings and productivity data transparent and filterable</strong>
+              <span class="detail">The incentive milestone chart doesn't explain what values represent, productivity calculations are unclear, and there's no week/month/year filtering. Experienced riders have to scroll through dates manually. Adding clear labels, calculation breakdowns, and time-based filters would improve rider earnings accuracy and reduce end-of-day reconciliation time.</span>
+            </li>
+            <li>
+              <strong>Resolve the POD flagging contradiction</strong>
+              <span class="detail">POD issues are shown under summary, but if PODs had issues, delivery shouldn't have been marked complete in the first place. This creates confusion about when and why it's flagged. Either enforce POD quality at the point of delivery (before marking complete) or clearly explain post-delivery POD flags with actionable next steps — don't leave it ambiguous.</span>
+            </li>
+            <li>
+              <strong>Create a clear end-of-day flow from delivery completion to punch-out</strong>
+              <span class="detail">There's no defined flow from finishing deliveries → reviewing summary → submitting collections → punching out. Punch-out isn't at the same hierarchy level as create dispatch. A guided end-of-day sequence that surfaces pending collections, flags issues, and leads to punch-out would reduce reconciliation time and the unpaid admin burden on riders.</span>
+            </li>
+            <li>
+              <strong>Address systemic design debt as a retention lever</strong>
+              <span class="detail">Users didn't point out issues in this phase, which suggests the problems are less immediately felt but still real — unclear data, missing filters, confusing POD flags. These are the kind of issues that erode trust over time and contribute to low Rider NPS. Treating this phase as a retention lever (clear pay → trust → lower churn) rather than just a summary screen would have outsized impact on rider retention.</span>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+  </section>
 </div>
-
-<!-- ═══════════════════════════════════════════════ -->
-<!-- JOURNEY STEPS                                   -->
-<!-- ═══════════════════════════════════════════════ -->
-<section id="journey">
-
-  <!-- ─── STEP 1: ONBOARDING ─── -->
-  <div class="journey-step" id="step-1">
-    <div class="step-header">
-      <div class="step-num">1</div>
-      <div class="step-name">User onboards to the application</div>
-    </div>
-
-    <!-- Touchpoints + User Challenges -->
-    <div class="cards-row">
-      <div class="card">
-        <div class="card-label accent">Touchpoints</div>
-        <ol>
-          <li>User logs into the partner app</li>
-          <li>Applies to work as a Delhivery executive</li>
-          <li>Adds Aadhaar details and completes the application</li>
-          <li>User is prompted to download application and reach workplace</li>
-          <li>User proceeds to add driving license, PAN card, bank details to configure their account on LM-FE App</li>
-        </ol>
-      </div>
-      <div class="card">
-        <div class="card-label warn">Challenges — Users</div>
-        <ol>
-          <li>Accessibility of progressive CTAs while onboarding on the partner app can be improved</li>
-          <li>FE App can be shown as downloaded, but is not accessible in the downloads</li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Design Challenges -->
-    <div class="cards-row">
-      <div class="card full">
-        <div class="card-label warn">Challenges — Design</div>
-        <ol>
-          <li>
-            <strong>Login and onboarding flows lack basic usability polish</strong>
-            <span class="detail">Ghost text for phone number format is missing, error states use incorrect colors (yellow instead of red), and there's no option to go back and edit the phone number once entered. OTP fields are too small, and new users are taken directly to PIN setup without any intimation that they're new.</span>
-          </li>
-          <li>
-            <strong>Document verification and account setup is confusing and error-prone</strong>
-            <span class="detail">The stepper for DL, PAN, and Bank Details is inconsistent — steps 1 and 2 are document uploads while step 3 is a form. Driving License is shown as a "Number" field when it's actually a 15-digit alphanumeric code. PAN-Aadhaar linking copy needs refinement, and there's no help or guidance if users don't have their cards linked.</span>
-          </li>
-          <li>
-            <strong>The landing page and post-login experience fails to orient the user</strong>
-            <span class="detail">The page hierarchy is off — "Good morning" is prioritized over pending document verification. The landing page has only one CTA with no other relevant workflow details. Concepts like "LastMile Pro" and "permission to auto-start" are not explained. There's no primary navigation — everything is hidden under a menu.</span>
-          </li>
-          <li>
-            <strong>No multilingual support or accessibility features</strong>
-            <span class="detail">Users with lower literacy levels, which is critical for the target user base, have no language options or accessibility accommodations.</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Metrics -->
-    <div class="cards-row">
-      <div class="card full">
-        <div class="card-label metric">Metrics to Track</div>
-        <div class="metric-grid">
-          <div class="metric-item">
-            <div class="m-title">Onboarding Completion Rate</div>
-            <div class="m-desc">% of riders who start the Partner App signup and successfully complete all steps (DL, PAN, bank details) to become active on the FE App. The drop-off between Partner App download and first delivery is likely very high given the friction found.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">First-week Attrition Rate</div>
-            <div class="m-desc">% of riders who leave within 7 days of onboarding. If riders don't understand the app, don't see benefits, and face a cluttered onboarding experience, they churn before generating any value.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">Document Verification Error Rate</div>
-            <div class="m-desc">% of document submissions that fail on first attempt (DL format errors, PAN-Aadhaar linking failures, bank verification failures). The app doesn't guide users through these correctly — wrong input formats, unclear error messages, no help for linking issues.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">Support Ticket Volume During Onboarding</div>
-            <div class="m-desc">Number of help requests raised in the first 7 days. If this is high, the app isn't self-explanatory enough. Missing help documentation, unclear copy, and no multilingual support were found.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Opportunity Areas -->
-    <div class="cards-row">
-      <div class="card full opportunity-card">
-        <div class="card-label opportunity">Opportunity Areas</div>
-        <ol>
-          <li>
-            <strong>Redesign the login and document verification flow as a single guided experience</strong>
-            <span class="detail">The current onboarding is fragmented across two apps (Partner App → FE App) with inconsistent steppers, missing input guidance (DL shown as "Number" when it's a 15-digit alphanumeric code), and no error recovery (can't go back to edit phone number). A unified, linear onboarding wizard with proper input masks, inline validation, and clear progress indication would directly reduce the document verification error rate and first-week attrition.</span>
-          </li>
-          <li>
-            <strong>Build a meaningful post-login landing experience</strong>
-            <span class="detail">The landing page currently prioritizes "Good morning" over pending document verification, has a single CTA, and hides everything under a menu. There's no explanation of concepts like "LastMile Pro" or "permission to auto-start." Restructuring the landing page to surface pending actions, explain key concepts, and provide primary navigation would reduce support ticket volume and help new riders orient themselves faster.</span>
-          </li>
-          <li>
-            <strong>Introduce multilingual support and accessibility accommodations</strong>
-            <span class="detail">The target user base includes riders with lower literacy levels, and there's zero language support or accessibility features. Adding regional language options and simplified UI patterns (icon-led navigation, voice guidance) would improve onboarding completion rate across Tier 2/3 cities where Delhivery operates heavily.</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider" style="margin: 0 0 80px 0;"></div>
-
-  <!-- ─── STEP 2: ASSIGNMENT ─── -->
-  <div class="journey-step" id="step-2">
-    <div class="step-header">
-      <div class="step-num">2</div>
-      <div class="step-name">Assigning shipment to the driver</div>
-    </div>
-
-    <!-- Touchpoints + User Challenges -->
-    <div class="cards-row">
-      <div class="card">
-        <div class="card-label accent">Touchpoints</div>
-        <ol>
-          <li>User proceeds to book slots</li>
-          <li>Selects a week</li>
-          <li>Selects a day where slots are not fully booked yet</li>
-          <li>Views summary of slots and confirms the slot booking</li>
-          <li>Starts delivering by punching in</li>
-          <li>Gets deliveries assigned by the TL, shown on the shipments tab</li>
-        </ol>
-      </div>
-      <div class="card">
-        <div class="card-label warn">Challenges — Users</div>
-        <ol>
-          <li>User needs to be educated what FWD, RVP and Direct orders are, which is not clear from the UI</li>
-          <li>User not able to understand the difference between priority and flash</li>
-          <li>Loading screens while creating a dispatch, or opening the app takes a longer than expected time, leading to user frustration</li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Design Challenges -->
-    <div class="cards-row">
-      <div class="card full">
-        <div class="card-label warn">Challenges — Design</div>
-        <ol>
-          <li>
-            <strong>Shipment list lacks critical information hierarchy</strong>
-            <span class="detail">Number of packages, proximity from current location, and potential earnings are secondary or missing. Users can't easily filter by priority, and there's no education on what FWD, RVP, and P2P mean — requiring a learning curve.</span>
-          </li>
-          <li>
-            <strong>Route optimization is absent</strong>
-            <span class="detail">There's no shortest-path guidance for multiple delivery points. Riders have to manually find directions for each location one by one, which is inefficient for their workflow.</span>
-          </li>
-          <li>
-            <strong>Create dispatch flow has navigation and status gaps</strong>
-            <span class="detail">How a user navigates from the homepage to the shipment/dispatch screens is unclear. The "create dispatch" CTA is prominent, but "punch out" is not at the same hierarchical level despite being used daily. When 0 packages are added, no status or count is shown. When packages are added, the empty state still appears.</span>
-          </li>
-          <li>
-            <strong>Iconography and visual cues are inconsistent</strong>
-            <span class="detail">The lightning icon's purpose is unclear, amount tags are inconsistently shown, and the shipment/summary icons look off in terms of size and weight.</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Metrics -->
-    <div class="cards-row">
-      <div class="card full">
-        <div class="card-label metric">Metrics to Track</div>
-        <div class="metric-grid">
-          <div class="metric-item">
-            <div class="m-title">Dispatch Creation Time</div>
-            <div class="m-desc">Average time from punch-in to first dispatch created. The navigation from homepage to dispatch is unclear, and the create dispatch flow has multiple usability gaps (no package count visibility, confusing stepper, loading delays).</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">Dwell Time at Dispatch Center</div>
-            <div class="m-desc">Time spent at the DC before leaving for deliveries. Long dwell times indicate app friction (scanning issues, dispatch approval delays, CM approval wait times). Riders can't call the CM if approval is delayed, and there's no confirmation that the request was received.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">Unassigned Shipment Ratio</div>
-            <div class="m-desc">% of shipments sitting at the depot without being assigned to a rider. Customer complaints about parcels stuck at depots for days point to this being a real problem. This metric connects rider-side capacity to customer-side delivery promises.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Opportunity Areas -->
-    <div class="cards-row">
-      <div class="card full opportunity-card">
-        <div class="card-label opportunity">Opportunity Areas</div>
-        <ol>
-          <li>
-            <strong>Redesign the shipment list with an information hierarchy that supports decision-making</strong>
-            <span class="detail">Currently, package count, proximity from current location, and potential earnings are secondary or missing. Riders can't filter by priority, and terms like FWD, RVP, P2P are unexplained. Surfacing earnings potential, distance, and shipment type with inline education (tooltips or first-time walkthroughs) would reduce dispatch creation time and the learning curve for new riders.</span>
-          </li>
-          <li>
-            <strong>Introduce route optimization for multiple delivery points</strong>
-            <span class="detail">There's no shortest-path guidance — riders manually find directions for each location one by one. This is the single biggest efficiency gap in the assignment phase. Even a basic route suggestion (ordered delivery sequence based on proximity) would reduce average delivery time per shipment and dwell time at the dispatch center.</span>
-          </li>
-          <li>
-            <strong>Fix the create dispatch and punch-in/punch-out flow hierarchy</strong>
-            <span class="detail">The "create dispatch" CTA is prominent but "punch out" is buried, despite being used daily. Empty states persist even after packages are added, and there's no package count visibility. Equalizing the hierarchy of daily-use actions (punch in, create dispatch, punch out) and fixing state management would streamline the DC-to-field transition.</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider" style="margin: 0 0 80px 0;"></div>
-
-  <!-- ─── STEP 3: DELIVERY ─── -->
-  <div class="journey-step" id="step-3">
-    <div class="step-header">
-      <div class="step-num">3</div>
-      <div class="step-name">Driver leaves for deliveries &amp; Completes them</div>
-    </div>
-
-    <!-- Touchpoints + User Challenges -->
-    <div class="cards-row">
-      <div class="card">
-        <div class="card-label accent">Touchpoints</div>
-        <ol>
-          <li>User is able to see all of his deliveries assigned on shipments tab</li>
-          <li>User proceeds to fulfill all deliveries in the order given by the app</li>
-          <li>For COD Deliveries — User takes payment and marks the parcel as delivered</li>
-          <li>User selects delivery recipient</li>
-          <li>User clicks a selfie to ensure helmet is visible</li>
-          <li>If customer is unavailable, user marks as undelivered with a reason, and is prompted to enter customer OTP</li>
-          <li>Once payment is done, user needs to mark as complete</li>
-          <li>For a prepaid order, user needs to get customer signature or click a picture</li>
-        </ol>
-      </div>
-      <div class="card">
-        <div class="card-label warn">Challenges — Users</div>
-        <ol>
-          <li>The map location vs the actual location of the customer is quite different for a lot of customers, and app highlights it that way as well — this results in delivery delays</li>
-          <li>For a prepaid order, some customers are reluctant to give signatures/photos. In that case, self-signature is made for marking a successful delivery, which is a loophole and defeats the purpose of keeping the verification flow</li>
-          <li>Click a selfie appears late when user has made one or few deliveries</li>
-          <li>App updates happen anytime in the day, which renders the app to show an updating status. This is critical for users trying to deliver something while being on the field</li>
-          <li>OTP for cancellations does not appear for some of the customers by WhatsApp/SMS, and there is no other mechanism for cancelling an order</li>
-          <li>For some orders, cancel order does not work for a user</li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Design Challenges -->
-    <div class="cards-row">
-      <div class="card full">
-        <div class="card-label warn">Challenges — Design</div>
-        <ol>
-          <li>
-            <strong>Payment collection flows are confusing</strong>
-            <span class="detail">For COD orders, showing a warning before payment creates a poor experience. Payment options for UPI don't feel like clear CTAs. The "Payer" label confuses the customer with the rider. If a digital payment link is already triggered, allowing cash collection creates split logic.</span>
-          </li>
-          <li>
-            <strong>Delivery verification has usability issues</strong>
-            <span class="detail">The selfie requirement appears late in the flow. For prepaid orders, some customers are reluctant to give signatures/photos, and the self-signature workaround defeats the verification purpose. OTP for cancellations doesn't reach some customers via WhatsApp/SMS, and there's no alternative mechanism.</span>
-          </li>
-          <li>
-            <strong>The cancel order flow is problematic</strong>
-            <span class="detail">Cancel doesn't work for some orders. There's no refund notification on cancellation, and no clear next steps after cancelling. The cancellation OTP requirement adds unnecessary friction.</span>
-          </li>
-          <li>
-            <strong>Map location vs actual customer location discrepancy</strong>
-            <span class="detail">Causes delivery delays, and the app highlights this inaccuracy without helping resolve it.</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Metrics -->
-    <div class="cards-row">
-      <div class="card full">
-        <div class="card-label metric">Metrics to Track</div>
-        <div class="metric-grid">
-          <div class="metric-item">
-            <div class="m-title">First Attempt Delivery Rate (FADR)</div>
-            <div class="m-desc">% of shipments delivered on the first attempt. The single most important operational metric. Customer complaints about fake attempts, no-call-no-delivery, and repeated "out for delivery" statuses all point to a low FADR. Every failed first attempt costs money.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">Fake Attempt Rate</div>
-            <div class="m-desc">% of delivery attempts marked as "attempted" or "customer refused" without actual contact. Customers on PissedConsumer and Quora consistently report this. The app allows riders to mark attempts without sufficient verification.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">Average Delivery Time per Shipment</div>
-            <div class="m-desc">Time from dispatch to delivery completion. No route optimization, no shortest-path guidance, and manual direction-finding for each location — all inflate this number.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">COD Collection Success Rate</div>
-            <div class="m-desc">% of COD orders where payment is successfully collected on first attempt. Confusing payment flows (QR code issues, Paytm warnings, split cash/digital logic), and customers report OTP harassment and COD scam concerns.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">App Crash/Downtime During Delivery</div>
-            <div class="m-desc">Frequency and duration of app unavailability during active delivery windows. App updates happen mid-day, and loading screens are longer than expected. For a field app, even 2 minutes of downtime during a delivery attempt is a failed delivery.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">Customer Escalation Rate</div>
-            <div class="m-desc">% of deliveries that trigger a customer complaint (call to support, social media post, PissedConsumer review) during or immediately after the delivery attempt. The 1.2★ rating with 3,888 reviews on PissedConsumer suggests this is very high.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">RTO (Return to Origin) Rate</div>
-            <div class="m-desc">% of shipments that go back to the warehouse undelivered. Every RTO is a direct cost — reverse logistics, re-processing, potential customer loss. Fake attempts, address mismatches, OTP failures, and customer unavailability all feed into RTO.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Opportunity Areas -->
-    <div class="cards-row">
-      <div class="card full opportunity-card">
-        <div class="card-label opportunity">Opportunity Areas</div>
-        <ol>
-          <li>
-            <strong>Overhaul the payment collection flow for COD orders</strong>
-            <span class="detail">The current flow shows warnings before payment, has unclear UPI CTAs, confuses "Payer" labels between customer and rider, and allows cash collection even after a digital payment link is triggered — creating split logic. A single, clear payment path per order (cash OR digital, not both simultaneously) with proper confirmation states would improve COD collection success rate.</span>
-          </li>
-          <li>
-            <strong>Rethink delivery verification to close loopholes while reducing friction</strong>
-            <span class="detail">The selfie requirement appears too late in the flow. For prepaid orders, the self-signature workaround defeats the verification purpose entirely. Meanwhile, OTP for cancellations doesn't reach some customers, and there's no fallback. The verification flow needs to be resequenced (selfie upfront), self-signature loophole closed, and alternative verification methods added (photo of doorstep, location-based confirmation) to reduce fake attempt rate without adding rider friction.</span>
-          </li>
-          <li>
-            <strong>Build a reliable cancellation flow with fallback mechanisms</strong>
-            <span class="detail">Cancel doesn't work for some orders, there's no refund notification, no clear next steps after cancelling, and the OTP requirement adds friction when OTPs don't arrive via WhatsApp/SMS. A cancellation flow that works consistently, with SMS/WhatsApp/in-app OTP fallbacks and clear post-cancellation status, would reduce customer escalation rate and RTO rate.</span>
-          </li>
-          <li>
-            <strong>Address the map-to-actual-location discrepancy actively</strong>
-            <span class="detail">The app shows inaccurate map locations but doesn't help resolve them. This causes delivery delays across a large number of orders. Allowing riders to flag and correct addresses, showing customer-provided landmarks, or enabling a quick call/chat before arrival would improve FADR and reduce wasted time on wrong locations.</span>
-          </li>
-          <li>
-            <strong>Move app updates to off-peak hours</strong>
-            <span class="detail">App updates currently happen anytime during the day, rendering the app unusable mid-delivery. For a field app, this is a critical failure. Scheduling updates to non-delivery hours (late night/early morning) or enabling background updates would directly reduce app crash/downtime during delivery hours.</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-  </div>
-
-  <div class="divider" style="margin: 0 0 80px 0;"></div>
-
-  <!-- ─── STEP 4: SUMMARY ─── -->
-  <div class="journey-step" id="step-4">
-    <div class="step-header">
-      <div class="step-num">4</div>
-      <div class="step-name">Views details of shipments done</div>
-    </div>
-
-    <!-- Touchpoints + User Challenges -->
-    <div class="cards-row">
-      <div class="card">
-        <div class="card-label accent">Touchpoints</div>
-        <ol>
-          <li>User views summary of all parcels delivered according to the status</li>
-          <li>User views total collection that corresponds to the deliveries made, and escalations done (if any)</li>
-        </ol>
-      </div>
-      <div class="card">
-        <div class="card-label warn">Challenges — Users</div>
-        <p>Nothing significant was pointed out by users themselves for this step.</p>
-      </div>
-    </div>
-
-    <!-- Design Challenges -->
-    <div class="cards-row">
-      <div class="card full">
-        <div class="card-label warn">Challenges — Design</div>
-        <ol>
-          <li>
-            <strong>Summary and earnings screens lack clarity</strong>
-            <span class="detail">The incentive milestone chart doesn't clearly explain what values like "50" and "60" represent. Productivity calculation (e.g., "21") is not clarified. Month-wise, week-wise, and day-wise productivity breakdowns are missing. The difference between "picked up" and "pending" orders is not clear.</span>
-          </li>
-          <li>
-            <strong>POD (Proof of Delivery) issues are flagged but not actionable</strong>
-            <span class="detail">POD issues are shown under summary, but if PODs have issues, delivery shouldn't have been possible in the first place — this creates confusion about when and why it's flagged.</span>
-          </li>
-          <li>
-            <strong>Earnings page lacks filtering and payout visibility</strong>
-            <span class="detail">There's no information on how much payout is pending vs completed. Filtering by this week/month/year is missing. For experienced riders, scrolling through dates for earnings is not efficient — a filter mechanism is needed.</span>
-          </li>
-          <li>
-            <strong>Issues here are systemic design debt</strong>
-            <span class="detail">Nothing significant was pointed out by users themselves for this step, which suggests the issues here are more systemic and less immediately felt — but still represent design debt.</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-
-    <!-- Metrics -->
-    <div class="cards-row">
-      <div class="card full">
-        <div class="card-label metric">Metrics to Track</div>
-        <div class="metric-grid">
-          <div class="metric-item">
-            <div class="m-title">Rider Earnings Accuracy</div>
-            <div class="m-desc">Can riders accurately predict their weekly earnings based on what the app shows them? Missing breakdowns, unclear productivity calculations, and no filtering were found. If riders can't understand their pay, they lose trust and churn.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">End-of-day Reconciliation Time</div>
-            <div class="m-desc">Time it takes a rider to complete their summary, submit collections, and punch out. Punch-out isn't at the same hierarchy level as create dispatch, and there's no clear flow from delivery completion to day-end summary. Long reconciliation times mean riders are spending unpaid time on admin.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">Rider NPS (Net Promoter Score)</div>
-            <div class="m-desc">Would riders recommend this job/app to others? Given the Indeed reviews ("employees are being exploited," "too much pressure and less salary"), this is likely very low. Improving the summary experience directly impacts retention.</div>
-          </div>
-          <div class="metric-item">
-            <div class="m-title">Customer CSAT Post-delivery</div>
-            <div class="m-desc">Customer satisfaction score after delivery completion. With a 1.2★ on PissedConsumer and widespread complaints about fake attempts, rude behavior, and no communication, this needs to be tracked per delivery and correlated with specific app flows.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Opportunity Areas -->
-    <div class="cards-row">
-      <div class="card full opportunity-card">
-        <div class="card-label opportunity">Opportunity Areas</div>
-        <ol>
-          <li>
-            <strong>Make earnings and productivity data transparent and filterable</strong>
-            <span class="detail">The incentive milestone chart doesn't explain what values represent, productivity calculations are unclear, and there's no week/month/year filtering. Experienced riders have to scroll through dates manually. Adding clear labels, calculation breakdowns, and time-based filters would improve rider earnings accuracy and reduce end-of-day reconciliation time.</span>
-          </li>
-          <li>
-            <strong>Resolve the POD flagging contradiction</strong>
-            <span class="detail">POD issues are shown under summary, but if PODs had issues, delivery shouldn't have been marked complete in the first place. This creates confusion about when and why it's flagged. Either enforce POD quality at the point of delivery (before marking complete) or clearly explain post-delivery POD flags with actionable next steps — don't leave it ambiguous.</span>
-          </li>
-          <li>
-            <strong>Create a clear end-of-day flow from delivery completion to punch-out</strong>
-            <span class="detail">There's no defined flow from finishing deliveries → reviewing summary → submitting collections → punching out. Punch-out isn't at the same hierarchy level as create dispatch. A guided end-of-day sequence that surfaces pending collections, flags issues, and leads to punch-out would reduce reconciliation time and the unpaid admin burden on riders.</span>
-          </li>
-          <li>
-            <strong>Address systemic design debt as a retention lever</strong>
-            <span class="detail">Users didn't point out issues in this phase, which suggests the problems are less immediately felt but still real — unclear data, missing filters, confusing POD flags. These are the kind of issues that erode trust over time and contribute to low Rider NPS. Treating this phase as a retention lever (clear pay → trust → lower churn) rather than just a summary screen would have outsized impact on rider retention.</span>
-          </li>
-        </ol>
-      </div>
-    </div>
-  </div>
-
-</section>
 
 <!-- FOOTER -->
 <footer>
   <p>LM-FE App — User Journey Research · Data sourced from Figma research artifact · <a href="https://www.figma.com/design/Vw3Y3CjL1HXkhvmqY8lZLB/LM-FE-App-Research?node-id=336-10043" target="_blank" rel="noopener">View in Figma</a></p>
 </footer>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- JAVASCRIPT                              -->
+<!-- ═══════════════════════════════════════ -->
+<script>
+  const stepNames = [
+    'User onboards to the application',
+    'Assigning shipment to the driver',
+    'Driver leaves for deliveries & Completes them',
+    'Views details of shipments done'
+  ];
+
+  let currentStep = 0;
+
+  function showView(view) {
+    document.getElementById('view-summary').classList.toggle('active', view === 'summary');
+    document.getElementById('view-detail').classList.toggle('active', view === 'detail');
+    document.getElementById('nav-summary').classList.toggle('active', view === 'summary');
+    document.getElementById('nav-detail').classList.toggle('active', view === 'detail');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function setStep(index) {
+    currentStep = index;
+    updateStep();
+  }
+
+  function prevStep() {
+    if (currentStep > 0) { currentStep--; updateStep(); }
+  }
+
+  function nextStep() {
+    if (currentStep < 3) { currentStep++; updateStep(); }
+  }
+
+  function goToStep(index) {
+    currentStep = index;
+    showView('detail');
+    updateStep();
+  }
+
+  function updateStep() {
+    // Update step content
+    document.querySelectorAll('.journey-step').forEach(el => {
+      el.classList.toggle('active', parseInt(el.dataset.step) === currentStep);
+    });
+
+    // Update header
+    document.getElementById('detail-step-num').textContent = currentStep + 1;
+    document.getElementById('detail-step-name').textContent = stepNames[currentStep];
+    document.getElementById('step-count').textContent = (currentStep + 1) + ' / 4';
+
+    // Update arrows
+    document.getElementById('btn-prev').disabled = currentStep === 0;
+    document.getElementById('btn-next').disabled = currentStep === 3;
+
+    // Update dots
+    document.querySelectorAll('.step-dots .dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentStep);
+    });
+
+    // Scroll to top of detail view
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (document.getElementById('view-detail').classList.contains('active')) {
+      if (e.key === 'ArrowLeft') prevStep();
+      if (e.key === 'ArrowRight') nextStep();
+    }
+  });
+</script>
 
 </body>
 </html>

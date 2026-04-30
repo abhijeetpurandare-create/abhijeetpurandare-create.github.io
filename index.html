@@ -282,6 +282,41 @@
     .sheet-header h3 {
       font-size: 18px;
       font-weight: 800;
+      flex: 1;
+      min-width: 0;
+    }
+    .sheet-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+    .sheet-nav-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+    }
+    .sheet-nav-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .sheet-nav-btn:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+    .sheet-counter {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+      min-width: 36px;
+      text-align: center;
     }
     .sheet-close {
       width: 36px; height: 36px;
@@ -597,7 +632,7 @@
   <div class="insights-section">
     <h2>Key Findings at a Glance</h2>
 
-    <p style="font-size:13px; font-weight:600; color:var(--red); margin-bottom:12px; letter-spacing:0.5px;">Challenges</p>
+    <p style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:12px; letter-spacing:0.5px;">Challenges</p>
     <div class="insights-grid" style="margin-bottom:32px;">
       <div class="finding-card challenge" onclick="openSheet('c1')">
         <span class="fc-icon">🔗</span>
@@ -622,7 +657,7 @@
         <div class="fc-title">Earnings and summary screens lack clarity</div>      </div>
     </div>
 
-    <p style="font-size:13px; font-weight:600; color:var(--blue); margin-bottom:12px; letter-spacing:0.5px;">Opportunities</p>
+    <p style="font-size:13px; font-weight:600; color:var(--text); margin-bottom:12px; letter-spacing:0.5px;">Opportunities</p>
     <div class="insights-grid">
       <div class="finding-card opportunity" onclick="openSheet('o1')">
         <span class="fc-icon">🧭</span>
@@ -702,7 +737,12 @@
 <div class="bottom-sheet" id="bottom-sheet">
   <div class="sheet-header">
     <h3 id="sheet-title"></h3>
-    <button class="sheet-close" onclick="closeSheet()" aria-label="Close">✕</button>
+    <div class="sheet-controls">
+      <button class="sheet-nav-btn" onclick="sheetPrev()" id="sheet-prev" aria-label="Previous">←</button>
+      <span class="sheet-counter" id="sheet-counter"></span>
+      <button class="sheet-nav-btn" onclick="sheetNext()" id="sheet-next" aria-label="Next">→</button>
+      <button class="sheet-close" onclick="closeSheet()" aria-label="Close">✕</button>
+    </div>
   </div>
   <ul class="sheet-points" id="sheet-points"></ul>
 </div>
@@ -1271,23 +1311,57 @@
     }
   };
 
+  const challengeKeys = ['c1','c2','c3','c4','c5','c6','c7'];
+  const opportunityKeys = ['o1','o2','o3','o4','o5','o6','o7'];
+  let currentSheetId = null;
+  let currentSheetGroup = [];
+
   function openSheet(id) {
     const data = sheetData[id];
     if (!data) return;
+    currentSheetId = id;
+    currentSheetGroup = id.startsWith('c') ? challengeKeys : opportunityKeys;
+    renderSheet();
+    document.getElementById('sheet-overlay').classList.add('open');
+    document.getElementById('bottom-sheet').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function renderSheet() {
+    const data = sheetData[currentSheetId];
     document.getElementById('sheet-title').textContent = data.title;
     const list = document.getElementById('sheet-points');
     list.innerHTML = data.points.map(p =>
       '<li><strong>' + p.bold + '</strong>' + p.desc + '</li>'
     ).join('');
-    document.getElementById('sheet-overlay').classList.add('open');
-    document.getElementById('bottom-sheet').classList.add('open');
-    document.body.style.overflow = 'hidden';
+    const idx = currentSheetGroup.indexOf(currentSheetId);
+    const total = currentSheetGroup.length;
+    document.getElementById('sheet-counter').textContent = (idx + 1) + ' / ' + total;
+    document.getElementById('sheet-prev').disabled = idx === 0;
+    document.getElementById('sheet-next').disabled = idx === total - 1;
+  }
+
+  function sheetPrev() {
+    const idx = currentSheetGroup.indexOf(currentSheetId);
+    if (idx > 0) {
+      currentSheetId = currentSheetGroup[idx - 1];
+      renderSheet();
+    }
+  }
+
+  function sheetNext() {
+    const idx = currentSheetGroup.indexOf(currentSheetId);
+    if (idx < currentSheetGroup.length - 1) {
+      currentSheetId = currentSheetGroup[idx + 1];
+      renderSheet();
+    }
   }
 
   function closeSheet() {
     document.getElementById('sheet-overlay').classList.remove('open');
     document.getElementById('bottom-sheet').classList.remove('open');
     document.body.style.overflow = '';
+    currentSheetId = null;
   }
 
   let currentStep = 0;

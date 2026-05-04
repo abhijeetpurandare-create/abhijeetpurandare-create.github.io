@@ -359,6 +359,93 @@
       .bottom-sheet { padding: 24px; max-width: 100%; }
     }
 
+    /* ── INLINE EDIT ── */
+    .card {
+      position: relative;
+    }
+    .edit-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s;
+      opacity: 0;
+    }
+    .card:hover .edit-btn {
+      opacity: 1;
+    }
+    .edit-btn:hover {
+      border-color: var(--accent-border);
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+    .card.editing {
+      border-color: var(--accent-border);
+    }
+    .card.editing .edit-btn { display: none; }
+    .card.editing .card-content { display: none; }
+    .edit-area {
+      display: none;
+    }
+    .card.editing .edit-area {
+      display: block;
+    }
+    .edit-area textarea {
+      width: 100%;
+      min-height: 200px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'Sen', -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.7;
+      padding: 16px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .edit-area textarea:focus {
+      border-color: var(--accent);
+    }
+    .edit-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      justify-content: flex-end;
+    }
+    .edit-actions button {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Sen', -apple-system, sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-save {
+      background: var(--accent);
+      color: var(--bg);
+      border: none;
+    }
+    .btn-save:hover { opacity: 0.85; }
+    .btn-cancel {
+      background: transparent;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+    }
+    .btn-cancel:hover {
+      border-color: var(--text-muted);
+      color: var(--text);
+    }
+
     /* ── DETAIL VIEW ── */
     .detail-header {
       padding: 100px 48px 0;
@@ -1425,6 +1512,184 @@
       if (e.key === 'ArrowRight') nextStep();
     }
   });
+
+  // ── INLINE EDITING ──
+  (function initEditing() {
+    // Assign unique IDs to all cards in the detail view
+    const cards = document.querySelectorAll('#view-detail .card');
+    cards.forEach((card, i) => {
+      const id = 'card-' + i;
+      card.dataset.editId = id;
+
+      // Wrap existing content
+      const content = card.querySelector('.card-label');
+      if (!content) return;
+
+      // Wrap everything after card-label in a .card-content div
+      const children = Array.from(card.children);
+      const wrapper = document.createElement('div');
+      wrapper.className = 'card-content';
+      children.forEach(child => {
+        if (!child.classList.contains('edit-btn') && !child.classList.contains('edit-area')) {
+          wrapper.appendChild(child);
+        }
+      });
+      card.appendChild(wrapper);
+
+      // Add edit button
+      const editBtn = document.createElement('button');
+      editBtn.className = 'edit-btn';
+      editBtn.innerHTML = '✏️';
+      editBtn.title = 'Edit this section';
+      editBtn.onclick = () => startEdit(card);
+      card.appendChild(editBtn);
+
+      // Add edit area (hidden by default)
+      const editArea = document.createElement('div');
+      editArea.className = 'edit-area';
+      editArea.innerHTML = `
+        <textarea></textarea>
+        <div class="edit-actions">
+          <button class="btn-cancel" onclick="cancelEdit(this)">Cancel</button>
+          <button class="btn-save" onclick="saveEdit(this)">Save</button>
+        </div>
+      `;
+      card.appendChild(editArea);
+
+      // Load saved content from localStorage
+      const saved = localStorage.getItem('lmfe-edit-' + id);
+      if (saved) {
+        applyContent(card, saved);
+      }
+    });
+  })();
+
+  function getTextContent(card) {
+    const content = card.querySelector('.card-content');
+    if (!content) return '';
+    // Get the inner HTML after the card-label
+    const label = content.querySelector('.card-label');
+    const clone = content.cloneNode(true);
+    const cloneLabel = clone.querySelector('.card-label');
+    if (cloneLabel) cloneLabel.remove();
+    return clone.innerHTML.trim();
+  }
+
+  function startEdit(card) {
+    const content = getTextContent(card);
+    // Convert HTML to readable text for editing
+    const textarea = card.querySelector('.edit-area textarea');
+    const temp = document.createElement('div');
+    temp.innerHTML = content;
+    // Convert to plain-ish text preserving structure
+    let text = '';
+    temp.querySelectorAll('li').forEach((li, idx) => {
+      const strong = li.querySelector('strong');
+      const detail = li.querySelector('.detail');
+      if (strong && detail) {
+        text += (idx + 1) + '. ' + strong.textContent.trim() + '\n' + detail.textContent.trim() + '\n\n';
+      } else if (strong) {
+        text += (idx + 1) + '. ' + strong.textContent.trim() + '\n\n';
+      } else {
+        text += (idx + 1) + '. ' + li.textContent.trim() + '\n\n';
+      }
+    });
+    // If no list items, try metric items
+    if (!text) {
+      temp.querySelectorAll('.metric-item').forEach((item, idx) => {
+        const title = item.querySelector('.m-title');
+        const desc = item.querySelector('.m-desc');
+        text += (idx + 1) + '. ' + (title ? title.textContent.trim() : '') + '\n' + (desc ? desc.textContent.trim() : '') + '\n\n';
+      });
+    }
+    // If still nothing, just get text
+    if (!text) {
+      text = temp.textContent.trim();
+    }
+    textarea.value = text.trim();
+    textarea.style.minHeight = Math.max(200, card.querySelector('.card-content').offsetHeight) + 'px';
+    card.classList.add('editing');
+    textarea.focus();
+  }
+
+  function cancelEdit(btn) {
+    const card = btn.closest('.card');
+    card.classList.remove('editing');
+  }
+
+  function saveEdit(btn) {
+    const card = btn.closest('.card');
+    const textarea = card.querySelector('.edit-area textarea');
+    const text = textarea.value.trim();
+    const id = card.dataset.editId;
+
+    // Save raw text to localStorage
+    localStorage.setItem('lmfe-edit-' + id, text);
+
+    // Apply content back
+    applyContent(card, text);
+    card.classList.remove('editing');
+  }
+
+  function applyContent(card, text) {
+    const content = card.querySelector('.card-content');
+    const label = content.querySelector('.card-label');
+    const isMetric = label && label.classList.contains('metric');
+    const isOpportunity = card.classList.contains('opportunity-card');
+
+    // Parse text back into structured HTML
+    const lines = text.split('\n').filter(l => l.trim());
+    let html = '';
+
+    if (isMetric) {
+      // Rebuild as metric grid
+      html = '<div class="metric-grid">';
+      let currentTitle = '';
+      lines.forEach(line => {
+        const numMatch = line.match(/^\d+\.\s*(.*)/);
+        if (numMatch) {
+          if (currentTitle) {
+            html += '</div>';
+          }
+          currentTitle = numMatch[1];
+          html += '<div class="metric-item"><div class="m-title">' + currentTitle + '</div>';
+        } else if (currentTitle) {
+          html += '<div class="m-desc">' + line.trim() + '</div>';
+        }
+      });
+      if (currentTitle) html += '</div>';
+      html += '</div>';
+    } else {
+      // Rebuild as ordered list
+      html = '<ol>';
+      let currentItem = '';
+      let currentDetail = '';
+      lines.forEach(line => {
+        const numMatch = line.match(/^\d+\.\s*(.*)/);
+        if (numMatch) {
+          if (currentItem) {
+            html += '<li><strong>' + currentItem + '</strong>';
+            if (currentDetail) html += '<span class="detail">' + currentDetail + '</span>';
+            html += '</li>';
+          }
+          currentItem = numMatch[1];
+          currentDetail = '';
+        } else if (currentItem) {
+          currentDetail += (currentDetail ? ' ' : '') + line.trim();
+        }
+      });
+      if (currentItem) {
+        html += '<li><strong>' + currentItem + '</strong>';
+        if (currentDetail) html += '<span class="detail">' + currentDetail + '</span>';
+        html += '</li>';
+      }
+      html += '</ol>';
+    }
+
+    // Replace content after label
+    const labelHTML = label ? label.outerHTML : '';
+    content.innerHTML = labelHTML + html;
+  }
 </script>
 
 </body>

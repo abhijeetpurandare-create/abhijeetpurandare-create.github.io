@@ -1585,6 +1585,147 @@ document.addEventListener('keydown', (e) => {
     }
   }
 });
+
+// ── INLINE EDITING ──
+(function initEditing() {
+  const cards = document.querySelectorAll('#view-detail .card');
+  cards.forEach((card, i) => {
+    const proj = card.closest('.project-content');
+    const projName = proj ? proj.dataset.project : 'lmfe';
+    const id = projName + '-card-' + i;
+    card.dataset.editId = id;
+
+    const content = card.querySelector('.card-label');
+    if (!content) return;
+
+    const children = Array.from(card.children);
+    const wrapper = document.createElement('div');
+    wrapper.className = 'card-content';
+    children.forEach(child => {
+      if (!child.classList.contains('edit-btn') && !child.classList.contains('edit-area')) {
+        wrapper.appendChild(child);
+      }
+    });
+    card.appendChild(wrapper);
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'edit-btn';
+    editBtn.innerHTML = '✏️';
+    editBtn.title = 'Edit this section';
+    editBtn.onclick = () => startEdit(card);
+    card.appendChild(editBtn);
+
+    const editArea = document.createElement('div');
+    editArea.className = 'edit-area';
+    editArea.innerHTML = '<textarea></textarea><div class="edit-actions"><button class="btn-cancel" onclick="cancelEdit(this)">Cancel</button><button class="btn-save" onclick="saveEdit(this)">Save</button></div>';
+    card.appendChild(editArea);
+
+    const saved = localStorage.getItem('research-edit-' + id);
+    if (saved) { applyContent(card, saved); }
+  });
+})();
+
+function getTextContent(card) {
+  const content = card.querySelector('.card-content');
+  if (!content) return '';
+  const clone = content.cloneNode(true);
+  const cloneLabel = clone.querySelector('.card-label');
+  if (cloneLabel) cloneLabel.remove();
+  return clone.innerHTML.trim();
+}
+
+function startEdit(card) {
+  const content = getTextContent(card);
+  const textarea = card.querySelector('.edit-area textarea');
+  const temp = document.createElement('div');
+  temp.innerHTML = content;
+  let text = '';
+  temp.querySelectorAll('li').forEach((li, idx) => {
+    const strong = li.querySelector('strong');
+    const detail = li.querySelector('.detail');
+    if (strong && detail) {
+      text += (idx + 1) + '. ' + strong.textContent.trim() + '\n' + detail.textContent.trim() + '\n\n';
+    } else if (strong) {
+      text += (idx + 1) + '. ' + strong.textContent.trim() + '\n\n';
+    } else {
+      text += (idx + 1) + '. ' + li.textContent.trim() + '\n\n';
+    }
+  });
+  if (!text) {
+    temp.querySelectorAll('.metric-item').forEach((item, idx) => {
+      const title = item.querySelector('.m-title');
+      const desc = item.querySelector('.m-desc');
+      text += (idx + 1) + '. ' + (title ? title.textContent.trim() : '') + '\n' + (desc ? desc.textContent.trim() : '') + '\n\n';
+    });
+  }
+  if (!text) { text = temp.textContent.trim(); }
+  textarea.value = text.trim();
+  textarea.style.minHeight = Math.max(200, card.querySelector('.card-content').offsetHeight) + 'px';
+  card.classList.add('editing');
+  textarea.focus();
+}
+
+function cancelEdit(btn) { btn.closest('.card').classList.remove('editing'); }
+
+function saveEdit(btn) {
+  const card = btn.closest('.card');
+  const textarea = card.querySelector('.edit-area textarea');
+  const text = textarea.value.trim();
+  const id = card.dataset.editId;
+  localStorage.setItem('research-edit-' + id, text);
+  applyContent(card, text);
+  card.classList.remove('editing');
+}
+
+function applyContent(card, text) {
+  const content = card.querySelector('.card-content');
+  const label = content.querySelector('.card-label');
+  const isMetric = label && label.classList.contains('metric');
+  const lines = text.split('\n').filter(l => l.trim());
+  let html = '';
+  if (isMetric) {
+    html = '<div class="metric-grid">';
+    let currentTitle = '';
+    lines.forEach(line => {
+      const numMatch = line.match(/^\d+\.\s*(.*)/);
+      if (numMatch) {
+        if (currentTitle) html += '</div>';
+        currentTitle = numMatch[1];
+        html += '<div class="metric-item"><div class="m-title">' + currentTitle + '</div>';
+      } else if (currentTitle) {
+        html += '<div class="m-desc">' + line.trim() + '</div>';
+      }
+    });
+    if (currentTitle) html += '</div>';
+    html += '</div>';
+  } else {
+    html = '<ol>';
+    let currentItem = '';
+    let currentDetail = '';
+    lines.forEach(line => {
+      const numMatch = line.match(/^\d+\.\s*(.*)/);
+      if (numMatch) {
+        if (currentItem) {
+          html += '<li><strong>' + currentItem + '</strong>';
+          if (currentDetail) html += '<span class="detail">' + currentDetail + '</span>';
+          html += '</li>';
+        }
+        currentItem = numMatch[1];
+        currentDetail = '';
+      } else if (currentItem) {
+        currentDetail += (currentDetail ? ' ' : '') + line.trim();
+      }
+    });
+    if (currentItem) {
+      html += '<li><strong>' + currentItem + '</strong>';
+      if (currentDetail) html += '<span class="detail">' + currentDetail + '</span>';
+      html += '</li>';
+    }
+    html += '</ol>';
+  }
+  const labelHTML = label ? label.outerHTML : '';
+  content.innerHTML = labelHTML + html;
+}
 </script>
 </body>
 </html>

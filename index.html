@@ -1993,26 +1993,36 @@ function applyContent(card, text) {
 // ── COMMENTS SYSTEM ──
 let commentMode = false;
 let commentsVisible = true;
-let comments = JSON.parse(localStorage.getItem('research-comments-' + currentProject) || '[]');
+let comments = [];
 let pendingCommentPos = null;
 let activeCommentId = null;
 let deleteTargetId = null;
 
-function getCommentsKey() { return 'research-comments-' + currentProject; }
-function loadComments() { comments = JSON.parse(localStorage.getItem(getCommentsKey()) || '[]'); }
-function saveComments() { localStorage.setItem(getCommentsKey(), JSON.stringify(comments)); }
+// Page key: scopes comments by project + view + step
+function getCommentPageKey() {
+  const view = document.getElementById('view-summary').classList.contains('active') ? 'summary' : 'detail';
+  if (view === 'summary') return currentProject + '_summary';
+  const step = currentProject === 'lmfe' ? currentStep : hlCurrentStep;
+  return currentProject + '_detail_step' + step;
+}
+
+function loadComments() {
+  comments = JSON.parse(localStorage.getItem('rc_' + getCommentPageKey()) || '[]');
+}
+
+function saveComments() {
+  localStorage.setItem('rc_' + getCommentPageKey(), JSON.stringify(comments));
+}
 
 function toggleCommentMode() {
   const btn = document.getElementById('commentToggleBtn');
   if (commentMode) {
-    // Exiting comment mode — toggle visibility
     commentMode = false;
     btn.classList.remove('active');
     document.body.classList.remove('comment-mode');
     commentsVisible = !commentsVisible;
     renderCommentPins();
   } else {
-    // Entering comment mode
     commentMode = true;
     commentsVisible = true;
     btn.classList.add('active');
@@ -2024,23 +2034,17 @@ function toggleCommentMode() {
 
 function handleCommentClick(e) {
   if (!commentMode) return;
-  // Don't place comment if clicking on existing pins or popups
-  if (e.target.closest('.comment-pin') || e.target.closest('.comment-popup') || 
+  if (e.target.closest('.comment-pin') || e.target.closest('.comment-popup') ||
       e.target.closest('.comment-input-popup') || e.target.closest('.comment-toggle-btn') ||
       e.target.closest('.delete-confirm-overlay') || e.target.closest('nav')) return;
 
-  const scrollX = window.scrollX;
-  const scrollY = window.scrollY;
   pendingCommentPos = { x: e.pageX, y: e.pageY };
-
   const popup = document.getElementById('commentInputPopup');
   popup.style.left = (e.pageX + 16) + 'px';
   popup.style.top = (e.pageY + 16) + 'px';
   popup.classList.remove('hidden');
   document.getElementById('commentInputText').value = '';
   document.getElementById('commentInputText').focus();
-
-  // Prevent placing another comment
   e.stopPropagation();
 }
 
@@ -2052,18 +2056,13 @@ function cancelCommentInput() {
 function saveCommentInput() {
   const text = document.getElementById('commentInputText').value.trim();
   if (!text || !pendingCommentPos) return;
-
-  const comment = {
+  comments.push({
     id: Date.now().toString(),
     x: pendingCommentPos.x,
     y: pendingCommentPos.y,
-    text: text,
-    timestamp: new Date().toISOString(),
-    view: document.getElementById('view-summary').classList.contains('active') ? 'summary' : 'detail',
-    project: currentProject
-  };
-
-  comments.push(comment);
+    text,
+    timestamp: new Date().toISOString()
+  });
   saveComments();
   renderCommentPins();
   cancelCommentInput();
@@ -2073,11 +2072,7 @@ function renderCommentPins() {
   const container = document.getElementById('comment-pins-container');
   container.innerHTML = '';
   if (!commentsVisible) return;
-
-  const currentView = document.getElementById('view-summary').classList.contains('active') ? 'summary' : 'detail';
-  const filtered = comments.filter(c => c.project === currentProject && c.view === currentView);
-
-  filtered.forEach((comment, idx) => {
+  comments.forEach((comment, idx) => {
     const pin = document.createElement('div');
     pin.className = 'comment-pin';
     pin.style.left = (comment.x - 14) + 'px';
@@ -2094,7 +2089,7 @@ function showCommentPopup(comment) {
   const popup = document.getElementById('commentViewPopup');
   document.getElementById('commentViewBody').textContent = comment.text;
   const date = new Date(comment.timestamp);
-  document.getElementById('commentViewTime').textContent = date.toLocaleDateString() + ' at ' + date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+  document.getElementById('commentViewTime').textContent = date.toLocaleDateString() + ' at ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   popup.style.left = (comment.x + 20) + 'px';
   popup.style.top = (comment.y) + 'px';
   popup.classList.remove('hidden');
@@ -2127,33 +2122,29 @@ function confirmDeleteComment() {
   deleteTargetId = null;
 }
 
-// Listen for clicks to place comments
 document.addEventListener('click', (e) => {
   if (commentMode) {
     handleCommentClick(e);
   } else {
-    // Close comment popup if clicking outside
     if (!e.target.closest('.comment-popup') && !e.target.closest('.comment-pin')) {
       closeCommentPopups();
     }
   }
 });
 
-// Re-render pins on view/project switch
+// Reload comments on every page/step change
 const origShowView = showView;
-showView = function(view) {
-  origShowView(view);
-  setTimeout(renderCommentPins, 50);
-};
+showView = function(view) { origShowView(view); setTimeout(() => { loadComments(); renderCommentPins(); }, 50); };
 
 const origSwitchProject = switchProject;
-switchProject = function(project) {
-  origSwitchProject(project);
-  loadComments();
-  setTimeout(renderCommentPins, 50);
-};
+switchProject = function(project) { origSwitchProject(project); setTimeout(() => { loadComments(); renderCommentPins(); }, 50); };
 
-// Escape to exit comment mode
+const origUpdateStep = updateStep;
+updateStep = function() { origUpdateStep(); setTimeout(() => { loadComments(); renderCommentPins(); }, 50); };
+
+const origUpdateHlStep = updateHlStep;
+updateHlStep = function() { origUpdateHlStep(); setTimeout(() => { loadComments(); renderCommentPins(); }, 50); };
+
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && commentMode) {
     commentMode = false;
@@ -2163,7 +2154,8 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Initial render
+// Initial load
+loadComments();
 renderCommentPins();
 </script>
 </body>

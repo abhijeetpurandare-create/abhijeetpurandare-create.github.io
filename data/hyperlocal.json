@@ -1,0 +1,447 @@
+{
+  "id": "hyperlocal",
+  "title": "Hyperlocal: The Rider Partner Experience",
+  "subtitle": "Delhivery · Hyperlocal App",
+  "abstract": "A heuristic evaluation and user research artifact documenting the hyperlocal delivery rider's journey — from partner app onboarding through trip management, wallet operations, and support — with design challenges and opportunities mapped across every flow.",
+  "figmaUrl": "https://www.figma.com/design/wOMBKzz9Pky5HxfWY3hGOq/Hyperlocal--App-Research?node-id=0-1",
+  "stages": [
+    {
+      "id": "stage-1",
+      "num": "01",
+      "title": "Onboarding through Partner App",
+      "summary": "The rider's entry point spans two apps — the Partner App for registration and the Hyperlocal App for operations. The two-app transition is the primary drop-off, compounded by document validation gaps and a first-login experience that offers no setup guidance.",
+      "touchpoints": [
+        "Rider downloads Partner App and creates account",
+        "Submits identity documents (Aadhaar, DL, PAN)",
+        "Completes background verification process",
+        "Gets approved and is directed to download the Hyperlocal app",
+        "Logs into Hyperlocal app with registered credentials"
+      ],
+      "userChallenges": [
+        "Phone number input field lacks format guidance and ghost text",
+        "OTP input fields are undersized for touch targets",
+        "Error states use inconsistent color coding across screens",
+        "No back navigation to edit phone number after submission",
+        "New user vs returning user flow is not differentiated"
+      ],
+      "designChallenges": [
+        {
+          "id": "hl-c1-1",
+          "title": "Two-app onboarding creates a fragmented experience",
+          "body": "Riders must navigate between Partner App and Hyperlocal App with no clear handoff. The transition point is confusing — riders don't know when to switch apps or what's expected in each. Document submission happens in one app while account configuration happens in another.",
+          "severity": "critical",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c1-2",
+          "title": "Document upload flow lacks inline validation",
+          "body": "DL number format is not validated in real-time. PAN card upload doesn't confirm successful capture. Bank details form has no auto-fill or IFSC lookup. Users discover errors only after submission, requiring re-upload.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c1-3",
+          "title": "Login screen has multiple usability gaps",
+          "body": "Phone number field has no country code selector or format mask. OTP auto-read is unreliable. PIN setup screen appears without context for new users. No biometric login option despite being a field app used multiple times daily.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c1-4",
+          "title": "Post-login landing doesn't surface pending setup tasks",
+          "body": "After first login, riders see a generic homepage instead of a setup checklist. Pending verifications are buried in settings. No progress indicator showing how close they are to being 'active'.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c1-5",
+          "title": "No accessibility considerations for diverse rider base",
+          "body": "Single language (English), no text scaling, no high-contrast mode. Hyperlocal riders in Tier 2/3 cities need regional language support and simplified visual patterns.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        }
+      ],
+      "metrics": [
+        {
+          "name": "Partner-to-Hyperlocal Conversion Rate",
+          "definition": "% of riders who complete Partner App signup and successfully activate on Hyperlocal App. The two-app transition is a major drop-off point."
+        },
+        {
+          "name": "Document Rejection Rate",
+          "definition": "% of document submissions rejected on first attempt. No inline validation means riders discover errors only after submission."
+        },
+        {
+          "name": "Time to First Trip",
+          "definition": "Duration from account creation to completing the first delivery trip. Longer times indicate onboarding friction."
+        },
+        {
+          "name": "Day-1 to Day-7 Retention",
+          "definition": "% of riders still active after first week. Early churn signals onboarding confusion and unmet expectations."
+        }
+      ],
+      "opportunities": [
+        {
+          "title": "Unify the two-app onboarding into a seamless guided flow",
+          "body": "Create a clear bridge between Partner App and Hyperlocal App with deep links, progress persistence, and a visual checklist that works across both apps. Riders should never wonder 'what do I do next?' during setup.",
+          "addresses": ["hl-c1-1"]
+        },
+        {
+          "title": "Add real-time document validation with smart capture",
+          "body": "Use OCR for DL/PAN capture, auto-fill IFSC from bank name, validate formats inline before submission. Reduce the document rejection rate by catching errors at the point of input.",
+          "addresses": ["hl-c1-2"]
+        },
+        {
+          "title": "Build a first-time user experience with setup progress tracking",
+          "body": "Replace the generic post-login homepage with a setup wizard showing completion percentage, pending tasks, and estimated time to become active.",
+          "addresses": ["hl-c1-3", "hl-c1-4"]
+        }
+      ]
+    },
+    {
+      "id": "stage-2",
+      "num": "02",
+      "title": "Logging into Hyperlocal and homepage",
+      "summary": "The Hyperlocal homepage tries to surface everything — earnings, trips, slots, promotions — without prioritizing any single action. Combined with a split navigation model and popup-heavy first launch, riders spend more time finding what they need than acting on it.",
+      "touchpoints": [
+        "Rider opens Hyperlocal app and views homepage",
+        "Sees available trips and earnings summary",
+        "Navigates to different sections via bottom nav or hamburger menu",
+        "Views notifications and alerts",
+        "Checks slot availability and booking status",
+        "Accesses quick actions (start trip, view wallet)"
+      ],
+      "userChallenges": [
+        "Homepage information density is overwhelming with no clear visual hierarchy",
+        "Critical actions (start trip, view earnings) compete for attention equally",
+        "Navigation between bottom tabs and hamburger menu is inconsistent",
+        "Notification badges don't clear reliably after viewing",
+        "Popup modals interrupt workflow without clear dismiss patterns",
+        "Status indicators use inconsistent color coding across sections"
+      ],
+      "designChallenges": [
+        {
+          "id": "hl-c2-1",
+          "title": "Homepage tries to show everything and prioritizes nothing",
+          "body": "Earnings, trips, slots, notifications, and promotions all compete for the same viewport. There's no clear primary action. Riders have to scan the entire screen to find what they need — whether it's starting a trip or checking their balance.",
+          "severity": "critical",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c2-2",
+          "title": "Navigation model is split between bottom tabs and hamburger menu",
+          "body": "Some features are in bottom tabs, others are hidden in the hamburger menu. There's no consistent logic for what goes where. Wallet is in the menu but trips are in tabs. This forces riders to learn two navigation patterns.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c2-3",
+          "title": "Popup and modal management disrupts workflow",
+          "body": "Promotional popups, permission requests, and system alerts appear without clear hierarchy. Some modals don't have obvious dismiss buttons. Stacked modals create a 'popup hell' experience on first login.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c2-4",
+          "title": "Real-time status updates are not surfaced effectively",
+          "body": "Trip assignments, slot confirmations, and payment updates don't have a unified notification center. Riders miss critical updates because they're scattered across different screens.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        }
+      ],
+      "metrics": [
+        {
+          "name": "Time to Primary Action",
+          "definition": "How long it takes a rider to perform their most common action (start trip, check earnings) from app open. A cluttered homepage inflates this."
+        },
+        {
+          "name": "Navigation Depth per Session",
+          "definition": "Average number of taps to reach key features. Split navigation (tabs + hamburger) increases this unnecessarily."
+        },
+        {
+          "name": "Popup Dismiss Rate",
+          "definition": "% of popups dismissed without interaction. High rates indicate popups are interrupting rather than informing."
+        }
+      ],
+      "opportunities": [
+        {
+          "title": "Redesign homepage as a context-aware mission control",
+          "body": "Show different homepage states based on rider context: pre-trip (available trips + earnings potential), during-trip (active delivery + navigation), post-trip (summary + next actions). One primary CTA per state.",
+          "addresses": ["hl-c2-1"]
+        },
+        {
+          "title": "Consolidate navigation into a single, consistent model",
+          "body": "Move all primary features to bottom tabs with clear icons and labels. Use the hamburger menu only for settings and secondary features. Reduce navigation depth for daily-use features to 1–2 taps maximum.",
+          "addresses": ["hl-c2-2"]
+        },
+        {
+          "title": "Implement a smart notification center with priority queuing",
+          "body": "Replace scattered popups with a unified notification feed. Queue non-urgent notifications. Show critical alerts (trip assignment, payment received) as inline banners, not blocking modals.",
+          "addresses": ["hl-c2-3", "hl-c2-4"]
+        },
+        {
+          "title": "Add contextual quick actions based on time of day and rider state",
+          "body": "Morning: show slot booking + trip availability. During shift: show active trip + earnings counter. End of day: show summary + wallet balance. Reduce cognitive load by showing only what's relevant.",
+          "addresses": ["hl-c2-1", "hl-c2-4"]
+        }
+      ]
+    },
+    {
+      "id": "stage-3",
+      "num": "03",
+      "title": "Trip management and delivery execution",
+      "summary": "Once on the road, riders face information-poor trip assignments, a fragmented in-trip experience that splits map and order details across screens, and over-engineered confirmation steps that add 30–60 seconds per delivery. Error recovery is poor and there is no offline mode.",
+      "touchpoints": [
+        "Rider receives trip assignment notification",
+        "Views trip details (pickup location, drop location, items)",
+        "Navigates to pickup point using in-app maps",
+        "Confirms pickup with store/restaurant",
+        "Navigates to delivery location",
+        "Completes delivery with customer verification",
+        "Marks trip as complete and views earnings"
+      ],
+      "userChallenges": [
+        "Trip assignment notification doesn't show estimated earnings upfront",
+        "Map integration has lag between location updates",
+        "Pickup confirmation flow requires too many taps",
+        "Customer contact options are buried during active delivery",
+        "Trip completion screen doesn't show cumulative daily earnings"
+      ],
+      "designChallenges": [
+        {
+          "id": "hl-c3-1",
+          "title": "Trip assignment lacks decision-support information",
+          "body": "Riders see pickup/drop locations but not estimated earnings, distance, or time. They can't make informed accept/reject decisions. No comparison with alternative trips. Acceptance timeout pressure without adequate information leads to blind acceptance or rejection.",
+          "severity": "critical",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c3-2",
+          "title": "In-trip navigation is disconnected from delivery workflow",
+          "body": "Map view and delivery details are on separate screens. Riders constantly switch between navigation and order info. No integrated view showing route + order details + customer contact in one place.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c3-3",
+          "title": "Pickup and delivery confirmation flows are over-engineered",
+          "body": "Multiple confirmation steps at pickup (arrive → verify items → confirm pickup) and delivery (arrive → verify customer → collect payment → confirm delivery). Each step is a separate screen with loading states. For a time-sensitive workflow, this adds 30–60 seconds per delivery.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c3-4",
+          "title": "Multi-order trip management is confusing",
+          "body": "When assigned multiple pickups/deliveries, the sequencing logic isn't clear. Riders can't easily see which order to handle next. No visual distinction between pickup and delivery stops on the map.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c3-5",
+          "title": "Error recovery during trips is poor",
+          "body": "If a customer is unavailable, the 'mark as undeliverable' flow is buried. If the app crashes mid-trip, resuming requires re-navigating to the active trip. No offline mode for areas with poor connectivity.",
+          "severity": "critical",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c3-6",
+          "title": "Real-time trip status updates to customers are not rider-visible",
+          "body": "Riders don't know what status the customer sees. This leads to mismatched expectations — customer thinks rider is 'arriving' while rider is still at pickup.",
+          "severity": "minor",
+          "screens": [],
+          "evidence": []
+        }
+      ],
+      "metrics": [
+        {
+          "name": "Trip Acceptance Rate",
+          "definition": "% of assigned trips accepted by riders. Low rates indicate poor trip information or unfavorable assignments."
+        },
+        {
+          "name": "Pickup-to-Delivery Time",
+          "definition": "Average time from pickup confirmation to delivery completion. Over-engineered confirmation flows inflate this."
+        },
+        {
+          "name": "App Switches During Active Trip",
+          "definition": "Number of times riders switch to external maps or phone dialer during a trip. High counts indicate in-app tools are insufficient."
+        },
+        {
+          "name": "Trip Cancellation Rate (Post-Accept)",
+          "definition": "% of trips cancelled after acceptance. Often caused by inadequate trip info at assignment time."
+        },
+        {
+          "name": "Customer Complaint Rate per Trip",
+          "definition": "% of trips generating a customer complaint. Mismatched status updates and delivery delays are primary drivers."
+        }
+      ],
+      "opportunities": [
+        {
+          "title": "Show earnings estimate and trip details upfront at assignment",
+          "body": "Display estimated earnings, total distance, estimated time, and number of stops before the rider accepts. Allow comparison with current location. This directly improves trip acceptance rate and reduces post-accept cancellations.",
+          "addresses": ["hl-c3-1"]
+        },
+        {
+          "title": "Build an integrated trip view combining map, order details, and actions",
+          "body": "A single screen showing the route map with order details in a bottom sheet, customer contact as a floating button, and confirmation actions as swipe gestures. Eliminate constant screen-switching during active deliveries.",
+          "addresses": ["hl-c3-2"]
+        },
+        {
+          "title": "Streamline pickup and delivery confirmation to single-action flows",
+          "body": "Replace multi-step confirmation with swipe-to-confirm or single-tap actions. Use location-based auto-detection for arrival. Reduce per-delivery overhead from 30–60 seconds to under 10 seconds.",
+          "addresses": ["hl-c3-3"]
+        },
+        {
+          "title": "Add clear multi-order sequencing with visual route guidance",
+          "body": "For multi-stop trips, show a numbered sequence on the map with color-coded pickup (blue) and delivery (green) markers. Auto-navigate to the next stop after each completion.",
+          "addresses": ["hl-c3-4"]
+        },
+        {
+          "title": "Implement offline mode and crash recovery for active trips",
+          "body": "Cache active trip data locally. If the app crashes or loses connectivity, auto-resume to the exact trip state on relaunch. Queue confirmation actions for sync when connectivity returns.",
+          "addresses": ["hl-c3-5"]
+        }
+      ]
+    },
+    {
+      "id": "stage-4",
+      "num": "04",
+      "title": "Wallet, slots, support, and trip history",
+      "summary": "The support infrastructure — wallet, slot booking, help tickets, and performance history — is where long-term rider trust is built. Currently, all four are opaque: money flow is unexplained, slot demand is invisible, support requires manual context-building, and trip history offers no analytics.",
+      "touchpoints": [
+        "Rider checks wallet balance and transaction history",
+        "Views payout schedule and pending settlements",
+        "Books weekly slots for delivery shifts",
+        "Raises support tickets for trip or payment issues",
+        "Views past trip history and earnings breakdown",
+        "Manages profile settings and documents"
+      ],
+      "userChallenges": [
+        "Wallet balance doesn't distinguish between available and pending amounts",
+        "Slot booking calendar doesn't show earnings potential per slot",
+        "Support ticket status updates are not pushed as notifications",
+        "Trip history lacks filtering and search capabilities"
+      ],
+      "designChallenges": [
+        {
+          "id": "hl-c4-1",
+          "title": "Wallet lacks transparency on money flow",
+          "body": "Riders can't see the breakdown of earnings vs deductions vs pending settlements. Transaction history shows amounts but not context (which trip, which bonus). Payout schedule is not clearly communicated — riders don't know when they'll get paid.",
+          "severity": "critical",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c4-2",
+          "title": "Slot booking is a calendar without intelligence",
+          "body": "Riders see available slots but not which slots have higher demand (and therefore higher earnings potential). No recommendation for optimal slot selection. Fully booked slots show no waitlist option. Cancellation policy for booked slots is unclear.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c4-3",
+          "title": "Support system is reactive, not contextual",
+          "body": "Riders must navigate to a separate support section, select a category, and describe the issue from scratch. No auto-attachment of trip details or screenshots. No estimated resolution time. Ticket status requires manual checking — no push notifications.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c4-4",
+          "title": "Trip history is a flat list with no analytics",
+          "body": "Past trips are shown chronologically with basic details. No earnings trends, no performance insights, no comparison across weeks/months. Riders can't learn from their own data to optimize their work patterns.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c4-5",
+          "title": "Settings and profile management is buried and incomplete",
+          "body": "Document updates (expired DL, new bank account) require navigating deep into settings. No proactive alerts for expiring documents. Vehicle details and insurance information management is missing or hard to find.",
+          "severity": "minor",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c4-6",
+          "title": "Incentive and bonus structures are opaque",
+          "body": "Riders know bonuses exist but can't see clear progress toward them. Milestone thresholds are not displayed. Bonus calculations after payout don't match rider expectations because the rules aren't transparent.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "hl-c4-7",
+          "title": "No offline access to critical information",
+          "body": "Wallet balance, upcoming slots, and active support tickets are not cached. In areas with poor connectivity, riders can't access basic information they need for planning.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        }
+      ],
+      "metrics": [
+        {
+          "name": "Payout Query Rate",
+          "definition": "% of riders who contact support about payment issues. High rates indicate wallet transparency problems."
+        },
+        {
+          "name": "Slot Utilization Rate",
+          "definition": "% of booked slots where riders actually show up and complete trips. Low utilization suggests poor slot selection guidance."
+        },
+        {
+          "name": "Support Resolution Time",
+          "definition": "Average time from ticket creation to resolution. No contextual auto-fill and manual status checking inflate this."
+        },
+        {
+          "name": "Rider Retention at 30/60/90 Days",
+          "definition": "Long-term retention correlated with wallet transparency, earnings predictability, and support quality."
+        }
+      ],
+      "opportunities": [
+        {
+          "title": "Build a transparent wallet with real-time earnings breakdown",
+          "body": "Show available balance, pending settlements, and upcoming payout date prominently. Each transaction should link to its source trip with full context. Add a 'projected earnings this week' based on booked slots and historical data.",
+          "addresses": ["hl-c4-1"]
+        },
+        {
+          "title": "Add intelligence to slot booking with demand-based recommendations",
+          "body": "Show estimated earnings per slot based on historical demand. Recommend optimal slot combinations for maximum earnings. Add waitlist for fully booked high-demand slots.",
+          "addresses": ["hl-c4-2"]
+        },
+        {
+          "title": "Implement contextual, in-flow support with auto-populated details",
+          "body": "Allow raising support tickets from within trip details or wallet transactions with auto-attached context. Show estimated resolution time. Push ticket status updates as notifications.",
+          "addresses": ["hl-c4-3"]
+        },
+        {
+          "title": "Transform trip history into an actionable performance dashboard",
+          "body": "Add weekly/monthly earnings trends, average trip time, peak earning hours, and performance comparisons. Help riders identify their most profitable patterns. Show incentive progress and bonus milestones clearly.",
+          "addresses": ["hl-c4-4", "hl-c4-6"]
+        },
+        {
+          "title": "Proactive document and profile management with alerts",
+          "body": "Push notifications for expiring documents 30/15/7 days before expiry. One-tap document re-upload from the alert. Surface vehicle insurance and registration renewal reminders.",
+          "addresses": ["hl-c4-5"]
+        },
+        {
+          "title": "Make incentive structures transparent with real-time progress tracking",
+          "body": "Show bonus milestones as a progress bar on the homepage. Display exactly how many more trips/hours are needed to hit the next bonus tier. After payout, show a clear breakdown of base earnings + incentives + deductions.",
+          "addresses": ["hl-c4-6"]
+        }
+      ]
+    }
+  ]
+}

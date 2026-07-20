@@ -1,0 +1,381 @@
+{
+  "id": "lmfe",
+  "title": "LM-FE: The Delivery Executive's Journey",
+  "subtitle": "Delhivery · Last Mile FE App",
+  "abstract": "A field research artifact documenting the delivery executive's journey — from onboarding through completing deliveries — with touchpoints, challenges, design insights, and metrics mapped at every stage.",
+  "figmaUrl": "https://www.figma.com/design/Vw3Y3CjL1HXkhvmqY8lZLB/LM-FE-App-Research?node-id=336-10043",
+  "stages": [
+    {
+      "id": "stage-1",
+      "num": "01",
+      "title": "User onboards to the application",
+      "summary": "The rider's first encounter with Delhivery spans two apps — the Partner App for registration and the LM-FE App for daily operations. This handoff is the single largest drop-off point, compounded by document verification gaps and a landing experience that fails to orient new users.",
+      "touchpoints": [
+        "User logs into the partner app",
+        "Applies to work as a Delhivery executive",
+        "Adds Aadhaar details and completes the application",
+        "User is prompted to download the LM-FE app and reach workplace",
+        "User adds driving license, PAN card, and bank details to configure their account on LM-FE App"
+      ],
+      "userChallenges": [
+        "Accessibility of progressive CTAs while onboarding on the partner app can be improved",
+        "FE App can be shown as downloaded, but is not accessible in the downloads"
+      ],
+      "designChallenges": [
+        {
+          "id": "lmfe-c1-1",
+          "title": "Login and onboarding flows lack basic usability polish",
+          "body": "Ghost text for phone number format is missing, error states use incorrect colors (yellow instead of red), and there's no option to go back and edit the phone number once entered. OTP fields are too small, and new users are taken directly to PIN setup without any intimation that they're new.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "lmfe-c1-2",
+          "title": "Document verification and account setup is confusing and error-prone",
+          "body": "The stepper for DL, PAN, and Bank Details is inconsistent — steps 1 and 2 are document uploads while step 3 is a form. Driving License is shown as a 'Number' field when it's actually a 15-digit alphanumeric code. PAN-Aadhaar linking copy needs refinement, and there's no help or guidance if users don't have their cards linked.",
+          "severity": "critical",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "lmfe-c1-3",
+          "title": "The landing page and post-login experience fails to orient the user",
+          "body": "The page hierarchy is off — 'Good morning' is prioritized over pending document verification. The landing page has only one CTA with no other relevant workflow details. Concepts like 'LastMile Pro' and 'permission to auto-start' are not explained. There's no primary navigation — everything is hidden under a menu.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "lmfe-c1-4",
+          "title": "No multilingual support or accessibility features",
+          "body": "Users with lower literacy levels, which is critical for the target user base, have no language options or accessibility accommodations.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        }
+      ],
+      "metrics": [
+        {
+          "name": "Onboarding Completion Rate",
+          "definition": "% of riders who start the Partner App signup and successfully complete all steps (DL, PAN, bank details) to become active on the FE App. The drop-off between Partner App download and first delivery is likely very high given the friction found."
+        },
+        {
+          "name": "First-week Attrition Rate",
+          "definition": "% of riders who leave within 7 days of onboarding. If riders don't understand the app, they churn before generating any value."
+        },
+        {
+          "name": "Document Verification Error Rate",
+          "definition": "% of document submissions that fail on first attempt (DL format errors, PAN-Aadhaar linking failures, bank verification failures)."
+        },
+        {
+          "name": "Support Ticket Volume During Onboarding",
+          "definition": "Number of help requests raised in the first 7 days. If this is high, the app isn't self-explanatory enough."
+        }
+      ],
+      "opportunities": [
+        {
+          "title": "Redesign the login and document verification flow as a single guided experience",
+          "body": "A unified, linear onboarding wizard with proper input masks, inline validation, and clear progress indication would directly reduce the document verification error rate and first-week attrition.",
+          "addresses": ["lmfe-c1-1", "lmfe-c1-2"]
+        },
+        {
+          "title": "Build a meaningful post-login landing experience",
+          "body": "Restructuring the landing page to surface pending actions, explain key concepts, and provide primary navigation would reduce support ticket volume and help new riders orient themselves faster.",
+          "addresses": ["lmfe-c1-3"]
+        },
+        {
+          "title": "Introduce multilingual support and accessibility accommodations",
+          "body": "Adding regional language options and simplified UI patterns (icon-led navigation, voice guidance) would improve onboarding completion rate across Tier 2/3 cities where Delhivery operates heavily.",
+          "addresses": ["lmfe-c1-4"]
+        }
+      ]
+    },
+    {
+      "id": "stage-2",
+      "num": "02",
+      "title": "Assigning shipment to the driver",
+      "summary": "Between punch-in and leaving the depot, riders must navigate slot booking, dispatch creation, and shipment assignment. The flow buries the most-used daily actions and provides no contextual education for the delivery types riders encounter.",
+      "touchpoints": [
+        "User proceeds to book slots",
+        "Selects a week",
+        "Selects a day where slots are not fully booked yet",
+        "Views summary of slots and confirms the slot booking",
+        "Starts delivering by punching in",
+        "Gets deliveries assigned by the TL, shown on the shipments tab"
+      ],
+      "userChallenges": [
+        "User needs to be educated on what FWD, RVP, and Direct orders are — not clear from the UI",
+        "User cannot understand the difference between priority and flash",
+        "Loading screens while creating a dispatch or opening the app takes longer than expected, leading to user frustration"
+      ],
+      "designChallenges": [
+        {
+          "id": "lmfe-c2-1",
+          "title": "Shipment list lacks critical information hierarchy",
+          "body": "Number of packages, proximity from current location, and potential earnings are secondary or missing. Users can't easily filter by priority, and there's no education on what FWD, RVP, and P2P mean — requiring a learning curve.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "lmfe-c2-2",
+          "title": "Route optimization is absent",
+          "body": "There's no shortest-path guidance for multiple delivery points. Riders have to manually find directions for each location one by one, which is inefficient for their workflow.",
+          "severity": "critical",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "lmfe-c2-3",
+          "title": "Create dispatch flow has navigation and status gaps",
+          "body": "How a user navigates from the homepage to the shipment/dispatch screens is unclear. The 'create dispatch' CTA is prominent, but 'punch out' is not at the same hierarchical level despite being used daily. When 0 packages are added, no status or count is shown. When packages are added, the empty state still appears.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "lmfe-c2-4",
+          "title": "Iconography and visual cues are inconsistent",
+          "body": "The lightning icon's purpose is unclear, amount tags are inconsistently shown, and the shipment/summary icons look off in terms of size and weight.",
+          "severity": "minor",
+          "screens": [],
+          "evidence": []
+        }
+      ],
+      "metrics": [
+        {
+          "name": "Dispatch Creation Time",
+          "definition": "Average time from punch-in to first dispatch created. The navigation from homepage to dispatch is unclear, and the create dispatch flow has multiple usability gaps."
+        },
+        {
+          "name": "Dwell Time at Dispatch Center",
+          "definition": "Time spent at the DC before leaving for deliveries. Long dwell times indicate app friction (scanning issues, dispatch approval delays, CM approval wait times)."
+        },
+        {
+          "name": "Unassigned Shipment Ratio",
+          "definition": "% of shipments sitting at the depot without being assigned to a rider. This metric connects rider-side capacity to customer-side delivery promises."
+        }
+      ],
+      "opportunities": [
+        {
+          "title": "Redesign the shipment list with an information hierarchy that supports decision-making",
+          "body": "Surfacing earnings potential, distance, and shipment type with inline education (tooltips or first-time walkthroughs) would reduce dispatch creation time and the learning curve for new riders.",
+          "addresses": ["lmfe-c2-1"]
+        },
+        {
+          "title": "Introduce route optimization for multiple delivery points",
+          "body": "Even a basic route suggestion (ordered delivery sequence based on proximity) would reduce average delivery time per shipment and dwell time at the dispatch center.",
+          "addresses": ["lmfe-c2-2"]
+        },
+        {
+          "title": "Fix the create dispatch and punch-in/punch-out flow hierarchy",
+          "body": "Equalizing the hierarchy of daily-use actions (punch in, create dispatch, punch out) and fixing state management would streamline the DC-to-field transition.",
+          "addresses": ["lmfe-c2-3"]
+        }
+      ]
+    },
+    {
+      "id": "stage-3",
+      "num": "03",
+      "title": "Driver leaves for deliveries and completes them",
+      "summary": "The delivery phase is where operational failures compound most visibly. Payment flows split logic between cash and digital, verification has exploitable loopholes, cancellation is unreliable, and mid-day app updates create downtime at the worst possible moment.",
+      "touchpoints": [
+        "User sees all deliveries assigned on shipments tab",
+        "Proceeds to fulfill deliveries in the order given by the app",
+        "For COD deliveries — takes payment and marks the parcel as delivered",
+        "Selects delivery recipient",
+        "Clicks a selfie to ensure helmet is visible",
+        "If customer is unavailable, marks as undelivered with a reason and enters customer OTP",
+        "Once payment is done, marks as complete",
+        "For a prepaid order, gets customer signature or clicks a picture"
+      ],
+      "userChallenges": [
+        "The map location vs the actual location of the customer is quite different for many customers — the app highlights this but does not help resolve it",
+        "For a prepaid order, some customers are reluctant to give signatures or photos; self-signature is used as a workaround, which defeats the verification purpose",
+        "Click-a-selfie requirement appears late when the user has already made one or a few deliveries",
+        "App updates happen anytime during the day, rendering the app unusable mid-delivery",
+        "OTP for cancellations does not arrive for some customers via WhatsApp/SMS with no alternative mechanism",
+        "For some orders, cancel order does not work for the user"
+      ],
+      "designChallenges": [
+        {
+          "id": "lmfe-c3-1",
+          "title": "Payment collection flows are confusing",
+          "body": "For COD orders, showing a warning before payment creates a poor experience. Payment options for UPI don't feel like clear CTAs. The 'Payer' label confuses the customer with the rider. If a digital payment link is already triggered, allowing cash collection creates split logic.",
+          "severity": "critical",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "lmfe-c3-2",
+          "title": "Delivery verification has usability issues",
+          "body": "The selfie requirement appears late in the flow. For prepaid orders, some customers are reluctant to give signatures/photos, and the self-signature workaround defeats the verification purpose. OTP for cancellations doesn't reach some customers via WhatsApp/SMS, and there's no alternative mechanism.",
+          "severity": "critical",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "lmfe-c3-3",
+          "title": "The cancel order flow is problematic",
+          "body": "Cancel doesn't work for some orders. There's no refund notification on cancellation, and no clear next steps after cancelling. The cancellation OTP requirement adds unnecessary friction.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "lmfe-c3-4",
+          "title": "Map location vs actual customer location discrepancy",
+          "body": "Causes delivery delays, and the app highlights this inaccuracy without helping resolve it.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        }
+      ],
+      "metrics": [
+        {
+          "name": "First Attempt Delivery Rate (FADR)",
+          "definition": "% of shipments delivered on the first attempt. The single most important operational metric. Every failed first attempt costs money."
+        },
+        {
+          "name": "Fake Attempt Rate",
+          "definition": "% of delivery attempts marked as 'attempted' or 'customer refused' without actual contact. The app allows riders to mark attempts without sufficient verification."
+        },
+        {
+          "name": "Average Delivery Time per Shipment",
+          "definition": "Time from dispatch to delivery completion. No route optimization and manual direction-finding for each location inflate this number."
+        },
+        {
+          "name": "COD Collection Success Rate",
+          "definition": "% of COD orders where payment is successfully collected on first attempt. Confusing payment flows and split cash/digital logic create failures."
+        },
+        {
+          "name": "App Crash/Downtime During Delivery",
+          "definition": "Frequency and duration of app unavailability during active delivery windows. App updates happen mid-day. For a field app, even 2 minutes of downtime during a delivery attempt is a failed delivery."
+        },
+        {
+          "name": "Customer Escalation Rate",
+          "definition": "% of deliveries that trigger a customer complaint (call to support, social media post) during or immediately after the delivery attempt."
+        },
+        {
+          "name": "RTO (Return to Origin) Rate",
+          "definition": "% of shipments that go back to the warehouse undelivered. Every RTO is a direct cost — reverse logistics, re-processing, potential customer loss."
+        }
+      ],
+      "opportunities": [
+        {
+          "title": "Overhaul the payment collection flow for COD orders",
+          "body": "A single, clear payment path per order (cash OR digital, not both simultaneously) with proper confirmation states would improve COD collection success rate.",
+          "addresses": ["lmfe-c3-1"]
+        },
+        {
+          "title": "Rethink delivery verification to close loopholes while reducing friction",
+          "body": "Resequence verification (selfie upfront), close the self-signature loophole, and add alternative verification methods (photo of doorstep, location-based confirmation) to reduce fake attempt rate.",
+          "addresses": ["lmfe-c3-2"]
+        },
+        {
+          "title": "Build a reliable cancellation flow with fallback mechanisms",
+          "body": "A cancellation flow that works consistently, with SMS/WhatsApp/in-app OTP fallbacks and clear post-cancellation status, would reduce customer escalation rate and RTO rate.",
+          "addresses": ["lmfe-c3-3"]
+        },
+        {
+          "title": "Address the map-to-actual-location discrepancy actively",
+          "body": "Allow riders to flag and correct addresses, show customer-provided landmarks, or enable a quick call/chat before arrival to improve FADR and reduce wasted time.",
+          "addresses": ["lmfe-c3-4"]
+        },
+        {
+          "title": "Move app updates to off-peak hours",
+          "body": "Scheduling updates to non-delivery hours (late night/early morning) or enabling background updates would directly reduce app downtime during delivery hours.",
+          "addresses": ["lmfe-c3-1", "lmfe-c3-2"]
+        }
+      ]
+    },
+    {
+      "id": "stage-4",
+      "num": "04",
+      "title": "Views details of shipments done",
+      "summary": "The end-of-day summary and earnings screens are where trust in the platform is built or eroded. Users didn't flag these issues directly — suggesting problems are systemic and slower-burning, but ultimately a key driver of rider churn.",
+      "touchpoints": [
+        "User views summary of all parcels delivered according to status",
+        "User views total collection that corresponds to the deliveries made and escalations done (if any)"
+      ],
+      "userChallenges": [
+        "Nothing significant was pointed out by users themselves for this step — issues here are more systemic and less immediately felt, but still represent design debt."
+      ],
+      "designChallenges": [
+        {
+          "id": "lmfe-c4-1",
+          "title": "Summary and earnings screens lack clarity",
+          "body": "The incentive milestone chart doesn't clearly explain what values like '50' and '60' represent. Productivity calculation (e.g., '21') is not clarified. Month-wise, week-wise, and day-wise productivity breakdowns are missing. The difference between 'picked up' and 'pending' orders is not clear.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "lmfe-c4-2",
+          "title": "POD (Proof of Delivery) issues are flagged but not actionable",
+          "body": "POD issues are shown under summary, but if PODs have issues, delivery shouldn't have been possible in the first place — this creates confusion about when and why it's flagged.",
+          "severity": "minor",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "lmfe-c4-3",
+          "title": "Earnings page lacks filtering and payout visibility",
+          "body": "There's no information on how much payout is pending vs completed. Filtering by this week/month/year is missing. For experienced riders, scrolling through dates for earnings is not efficient.",
+          "severity": "major",
+          "screens": [],
+          "evidence": []
+        },
+        {
+          "id": "lmfe-c4-4",
+          "title": "Issues here are systemic design debt",
+          "body": "Nothing significant was pointed out by users themselves for this step, which suggests the issues here are more systemic and less immediately felt — but still represent design debt that erodes trust over time.",
+          "severity": "minor",
+          "screens": [],
+          "evidence": []
+        }
+      ],
+      "metrics": [
+        {
+          "name": "Rider Earnings Accuracy",
+          "definition": "Can riders accurately predict their weekly earnings based on what the app shows them? Missing breakdowns, unclear productivity calculations, and no filtering were found."
+        },
+        {
+          "name": "End-of-day Reconciliation Time",
+          "definition": "Time it takes a rider to complete their summary, submit collections, and punch out. Punch-out isn't at the same hierarchy level as create dispatch, and there's no clear flow from delivery completion to day-end summary."
+        },
+        {
+          "name": "Rider NPS (Net Promoter Score)",
+          "definition": "Would riders recommend this job/app to others? Improving the summary experience directly impacts retention."
+        },
+        {
+          "name": "Customer CSAT Post-delivery",
+          "definition": "Customer satisfaction score after delivery completion. Needs to be tracked per delivery and correlated with specific app flows."
+        }
+      ],
+      "opportunities": [
+        {
+          "title": "Make earnings and productivity data transparent and filterable",
+          "body": "Add clear labels, calculation breakdowns, and time-based filters. Stop forcing experienced riders to scroll through dates manually.",
+          "addresses": ["lmfe-c4-1", "lmfe-c4-3"]
+        },
+        {
+          "title": "Resolve the POD flagging contradiction",
+          "body": "Either enforce POD quality at the point of delivery (before marking complete) or clearly explain post-delivery POD flags with actionable next steps.",
+          "addresses": ["lmfe-c4-2"]
+        },
+        {
+          "title": "Create a clear end-of-day flow from delivery completion to punch-out",
+          "body": "A guided end-of-day sequence that surfaces pending collections, flags issues, and leads to punch-out would reduce reconciliation time and the unpaid admin burden on riders.",
+          "addresses": ["lmfe-c4-1", "lmfe-c4-3"]
+        },
+        {
+          "title": "Address systemic design debt as a retention lever",
+          "body": "Treating this phase as a retention lever (clear pay → trust → lower churn) rather than just a summary screen would have outsized impact on rider retention.",
+          "addresses": ["lmfe-c4-4"]
+        }
+      ]
+    }
+  ]
+}

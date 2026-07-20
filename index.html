@@ -1924,216 +1924,87 @@ function applyContent(card, text) {
   const labelHTML = label ? label.outerHTML : '';
   content.innerHTML = labelHTML + html;
 }
-</script>
 
-<!-- SCREENSHOT FULL-SCREEN PREVIEW -->
-<div class="ss-preview-overlay hidden" id="ssPreviewOverlay">
-  <button class="ss-preview-close" onclick="closeSsPreview()">✕</button>
-  <img id="ssPreviewImg" src="" alt="Screenshot preview">
-</div>
+// ── SCREENSHOTS ──
+function ssKey(id) { return 'ss_' + id; }
 
-<!-- COMMENT PINS CONTAINER -->
-<div id="comment-pins-container"></div>
-
-<!-- COMMENT INPUT POPUP -->
-<div class="comment-input-popup hidden" id="commentInputPopup">
-  <textarea id="commentInputText" placeholder="Add a comment..."></textarea>
-  <div class="comment-input-actions">
-    <button class="ci-cancel" onclick="cancelCommentInput()">Cancel</button>
-    <button class="ci-save" onclick="saveCommentInput()">Post</button>
-  </div>
-</div>
-
-<!-- COMMENT VIEW POPUP -->
-<div class="comment-popup hidden" id="commentViewPopup">
-  <div class="comment-popup-header">
-    <span>Comment</span>
-    <button class="comment-delete-btn" onclick="requestDeleteComment()" title="Delete comment">🗑️</button>
-  </div>
-  <div class="comment-popup-body" id="commentViewBody"></div>
-  <div class="comment-popup-time" id="commentViewTime"></div>
-</div>
-
-<!-- DELETE CONFIRMATION -->
-<div class="delete-confirm-overlay hidden" id="deleteConfirmOverlay">
-  <div class="delete-confirm-box">
-    <h4>Delete comment?</h4>
-    <p>Are you sure you want to delete this comment? This action can't be undone.</p>
-    <div class="dc-actions">
-      <button class="dc-cancel" onclick="cancelDeleteComment()">Cancel</button>
-      <button class="dc-delete" onclick="confirmDeleteComment()">Delete</button>
-    </div>
-  </div>
-</div>
-
-<script>
-// ── COMMENTS SYSTEM ──
-let commentMode = false;
-let commentsVisible = true;
-let comments = [];
-let pendingCommentPos = null;
-let activeCommentId = null;
-let deleteTargetId = null;
-
-// Page key: scopes comments by project + view + step
-function getCommentPageKey() {
-  const view = document.getElementById('view-summary').classList.contains('active') ? 'summary' : 'detail';
-  if (view === 'summary') return currentProject + '_summary';
-  const step = currentProject === 'lmfe' ? currentStep : hlCurrentStep;
-  return currentProject + '_detail_step' + step;
+function loadScreenshots(id) {
+  return JSON.parse(localStorage.getItem(ssKey(id)) || '[]');
 }
 
-function loadComments() {
-  comments = JSON.parse(localStorage.getItem('rc_' + getCommentPageKey()) || '[]');
+function saveScreenshots(id, list) {
+  localStorage.setItem(ssKey(id), JSON.stringify(list));
 }
 
-function saveComments() {
-  localStorage.setItem('rc_' + getCommentPageKey(), JSON.stringify(comments));
-}
-
-function toggleCommentMode() {
-  const btn = document.getElementById('commentToggleBtn');
-  if (commentMode) {
-    commentMode = false;
-    btn.classList.remove('active');
-    document.body.classList.remove('comment-mode');
-    commentsVisible = !commentsVisible;
-    renderCommentPins();
-  } else {
-    commentMode = true;
-    commentsVisible = true;
-    btn.classList.add('active');
-    document.body.classList.add('comment-mode');
-    renderCommentPins();
+function renderScreenshots() {
+  const grid = document.getElementById('ss-grid');
+  if (!grid || !currentSheetId) return;
+  const shots = loadScreenshots(currentSheetId);
+  if (shots.length === 0) {
+    grid.innerHTML = '<p class="ss-empty">No screenshots yet — click "Add screenshot" to attach one.</p>';
+    return;
   }
-  closeCommentPopups();
+  grid.innerHTML = shots.map((s, i) =>
+    '<div class="ss-item">' +
+    '<img src="' + s.data + '" alt="Screenshot ' + (i+1) + '" onclick="openSsPreview(\'' + s.data.replace(/'/g, "\\'") + '\')">' +
+    '<button class="ss-remove" onclick="removeScreenshot(' + i + ')" title="Remove">✕</button>' +
+    '</div>'
+  ).join('');
 }
 
-function handleCommentClick(e) {
-  if (!commentMode) return;
-  if (e.target.closest('.comment-pin') || e.target.closest('.comment-popup') ||
-      e.target.closest('.comment-input-popup') || e.target.closest('.comment-toggle-btn') ||
-      e.target.closest('.delete-confirm-overlay') || e.target.closest('nav')) return;
-
-  pendingCommentPos = { x: e.pageX, y: e.pageY };
-  const popup = document.getElementById('commentInputPopup');
-  popup.style.left = (e.pageX + 16) + 'px';
-  popup.style.top = (e.pageY + 16) + 'px';
-  popup.classList.remove('hidden');
-  document.getElementById('commentInputText').value = '';
-  document.getElementById('commentInputText').focus();
-  e.stopPropagation();
-}
-
-function cancelCommentInput() {
-  document.getElementById('commentInputPopup').classList.add('hidden');
-  pendingCommentPos = null;
-}
-
-function saveCommentInput() {
-  const text = document.getElementById('commentInputText').value.trim();
-  if (!text || !pendingCommentPos) return;
-  comments.push({
-    id: Date.now().toString(),
-    x: pendingCommentPos.x,
-    y: pendingCommentPos.y,
-    text,
-    timestamp: new Date().toISOString()
+function handleScreenshotUpload(event) {
+  const files = Array.from(event.target.files);
+  if (!files.length || !currentSheetId) return;
+  const shots = loadScreenshots(currentSheetId);
+  let loaded = 0;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      shots.push({ data: e.target.result, name: file.name });
+      loaded++;
+      if (loaded === files.length) {
+        saveScreenshots(currentSheetId, shots);
+        renderScreenshots();
+      }
+    };
+    reader.readAsDataURL(file);
   });
-  saveComments();
-  renderCommentPins();
-  cancelCommentInput();
+  event.target.value = '';
 }
 
-function renderCommentPins() {
-  const container = document.getElementById('comment-pins-container');
-  container.innerHTML = '';
-  if (!commentsVisible) return;
-  comments.forEach((comment, idx) => {
-    const pin = document.createElement('div');
-    pin.className = 'comment-pin';
-    pin.style.left = (comment.x - 14) + 'px';
-    pin.style.top = (comment.y - 28) + 'px';
-    pin.innerHTML = '<span class="pin-number">' + (idx + 1) + '</span>';
-    pin.onclick = (e) => { e.stopPropagation(); showCommentPopup(comment); };
-    container.appendChild(pin);
-  });
+function removeScreenshot(idx) {
+  if (!currentSheetId) return;
+  const shots = loadScreenshots(currentSheetId);
+  shots.splice(idx, 1);
+  saveScreenshots(currentSheetId, shots);
+  renderScreenshots();
 }
 
-function showCommentPopup(comment) {
-  closeCommentPopups();
-  activeCommentId = comment.id;
-  const popup = document.getElementById('commentViewPopup');
-  document.getElementById('commentViewBody').textContent = comment.text;
-  const date = new Date(comment.timestamp);
-  document.getElementById('commentViewTime').textContent = date.toLocaleDateString() + ' at ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  popup.style.left = (comment.x + 20) + 'px';
-  popup.style.top = (comment.y) + 'px';
-  popup.classList.remove('hidden');
+function openSsPreview(src) {
+  document.getElementById('ssPreviewImg').src = src;
+  document.getElementById('ssPreviewOverlay').classList.remove('hidden');
 }
 
-function closeCommentPopups() {
-  document.getElementById('commentViewPopup').classList.add('hidden');
-  document.getElementById('commentInputPopup').classList.add('hidden');
-  activeCommentId = null;
+function closeSsPreview() {
+  document.getElementById('ssPreviewOverlay').classList.add('hidden');
+  document.getElementById('ssPreviewImg').src = '';
 }
 
-function requestDeleteComment() {
-  if (!activeCommentId) return;
-  deleteTargetId = activeCommentId;
-  document.getElementById('deleteConfirmOverlay').classList.remove('hidden');
-}
-
-function cancelDeleteComment() {
-  document.getElementById('deleteConfirmOverlay').classList.add('hidden');
-  deleteTargetId = null;
-}
-
-function confirmDeleteComment() {
-  if (!deleteTargetId) return;
-  comments = comments.filter(c => c.id !== deleteTargetId);
-  saveComments();
-  renderCommentPins();
-  closeCommentPopups();
-  document.getElementById('deleteConfirmOverlay').classList.add('hidden');
-  deleteTargetId = null;
-}
-
-document.addEventListener('click', (e) => {
-  if (commentMode) {
-    handleCommentClick(e);
-  } else {
-    if (!e.target.closest('.comment-popup') && !e.target.closest('.comment-pin')) {
-      closeCommentPopups();
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeSheet();
+    closeSsPreview();
+  }
+  if (document.getElementById('view-detail').classList.contains('active')) {
+    if (currentProject === 'lmfe') {
+      if (e.key === 'ArrowLeft') prevStep();
+      if (e.key === 'ArrowRight') nextStep();
+    } else {
+      if (e.key === 'ArrowLeft') prevHlStep();
+      if (e.key === 'ArrowRight') nextHlStep();
     }
   }
 });
-
-// Reload comments on every page/step change
-const origShowView = showView;
-showView = function(view) { origShowView(view); setTimeout(() => { loadComments(); renderCommentPins(); }, 50); };
-
-const origSwitchProject = switchProject;
-switchProject = function(project) { origSwitchProject(project); setTimeout(() => { loadComments(); renderCommentPins(); }, 50); };
-
-const origUpdateStep = updateStep;
-updateStep = function() { origUpdateStep(); setTimeout(() => { loadComments(); renderCommentPins(); }, 50); };
-
-const origUpdateHlStep = updateHlStep;
-updateHlStep = function() { origUpdateHlStep(); setTimeout(() => { loadComments(); renderCommentPins(); }, 50); };
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && commentMode) {
-    commentMode = false;
-    document.getElementById('commentToggleBtn').classList.remove('active');
-    document.body.classList.remove('comment-mode');
-    cancelCommentInput();
-  }
-});
-
-// Initial load
-loadComments();
-renderCommentPins();
 </script>
 </body>
 </html>

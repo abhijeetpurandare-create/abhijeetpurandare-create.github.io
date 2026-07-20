@@ -455,6 +455,120 @@
       font-size: 15px;
     }
 
+    /* ── SCREENSHOTS ── */
+    .sheet-screenshots {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .ss-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .ss-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .ss-add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--text-dim);
+      font-size: 12px;
+      font-weight: 600;
+      font-family: 'Open Sans', -apple-system, sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .ss-add-btn:hover {
+      border-color: var(--accent-border);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .ss-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .ss-item {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      aspect-ratio: 16/10;
+      background: var(--surface-2);
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .ss-item:hover { border-color: var(--accent-border); }
+    .ss-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .ss-item .ss-remove {
+      position: absolute;
+      top: 6px; right: 6px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.7);
+      border: none;
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .ss-item:hover .ss-remove { opacity: 1; }
+    .ss-item .ss-remove:hover { background: var(--red); }
+    .ss-empty {
+      color: var(--text-muted);
+      font-size: 13px;
+      padding: 8px 0;
+    }
+
+    /* Full-screen image preview */
+    .ss-preview-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ss-preview-overlay.hidden { display: none; }
+    .ss-preview-overlay img {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 8px;
+      object-fit: contain;
+    }
+    .ss-preview-close {
+      position: absolute;
+      top: 24px; right: 24px;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ss-preview-close:hover { background: rgba(255,255,255,0.2); }
+
     @media (max-width: 768px) {
       .insights-section { padding: 0 24px; }
       .insights-grid { grid-template-columns: 1fr 1fr; }
@@ -765,229 +879,6 @@
       .cards-row { grid-template-columns: 1fr; }
       .metric-grid { grid-template-columns: 1fr; }
     }
-    /* ── COMMENTS SYSTEM ── */
-    .comment-toggle-btn {
-      width: 36px; height: 36px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-dim);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s;
-      margin-left: 8px;
-    }
-    .comment-toggle-btn:hover {
-      border-color: var(--accent-border);
-      color: var(--accent);
-      background: var(--accent-dim);
-    }
-    .comment-toggle-btn.active {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-dim);
-    }
-
-    body.comment-mode {
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 3h18v13H7l-4 4V3z' fill='%23c9ffde' stroke='%230a0a0a' stroke-width='1.5'/%3E%3C/svg%3E") 0 0, crosshair;
-    }
-    body.comment-mode .card, body.comment-mode .summary-card,
-    body.comment-mode .finding-card, body.comment-mode .stat-item,
-    body.comment-mode .metric-item {
-      cursor: inherit;
-    }
-
-    .comment-pin {
-      position: absolute;
-      width: 28px; height: 28px;
-      background: var(--accent);
-      border-radius: 50% 50% 50% 0;
-      transform: rotate(-45deg);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      z-index: 50;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .comment-pin:hover {
-      transform: rotate(-45deg) scale(1.15);
-      box-shadow: 0 4px 16px rgba(0,0,0,0.5);
-    }
-    .comment-pin .pin-number {
-      transform: rotate(45deg);
-      font-size: 11px;
-      font-weight: 800;
-      color: var(--bg);
-    }
-    .comment-pin.hidden { display: none; }
-
-    .comment-popup {
-      position: absolute;
-      z-index: 51;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      width: 280px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      overflow: hidden;
-    }
-    .comment-popup.hidden { display: none; }
-    .comment-popup-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    .comment-popup-header span {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-    .comment-popup-header .comment-delete-btn {
-      width: 28px; height: 28px;
-      border-radius: 6px;
-      border: none;
-      background: transparent;
-      color: var(--text-muted);
-      font-size: 14px;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: all 0.15s;
-    }
-    .comment-popup-header .comment-delete-btn:hover {
-      background: rgba(255, 107, 107, 0.1);
-      color: var(--red);
-    }
-    .comment-popup-body {
-      padding: 12px 16px;
-      font-size: 14px;
-      color: var(--text);
-      line-height: 1.6;
-      white-space: pre-wrap;
-      max-height: 200px;
-      overflow-y: auto;
-    }
-    .comment-popup-time {
-      padding: 8px 16px 12px;
-      font-size: 11px;
-      color: var(--text-muted);
-    }
-
-    .comment-input-popup {
-      position: absolute;
-      z-index: 52;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      width: 300px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      padding: 16px;
-    }
-    .comment-input-popup.hidden { display: none; }
-    .comment-input-popup textarea {
-      width: 100%;
-      min-height: 80px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: var(--text);
-      font-family: 'Open Sans', -apple-system, sans-serif;
-      font-size: 13px;
-      line-height: 1.5;
-      padding: 12px;
-      resize: vertical;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .comment-input-popup textarea:focus { border-color: var(--accent); }
-    .comment-input-popup .comment-input-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .comment-input-popup .comment-input-actions button {
-      padding: 6px 16px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 700;
-      font-family: 'Open Sans', -apple-system, sans-serif;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .comment-input-popup .ci-cancel {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-dim);
-    }
-    .comment-input-popup .ci-cancel:hover { border-color: var(--text-muted); color: var(--text); }
-    .comment-input-popup .ci-save {
-      background: var(--accent);
-      border: none;
-      color: var(--bg);
-    }
-    .comment-input-popup .ci-save:hover { opacity: 0.85; }
-
-    /* Delete confirmation overlay */
-    .delete-confirm-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.6);
-      z-index: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .delete-confirm-overlay.hidden { display: none; }
-    .delete-confirm-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 32px;
-      max-width: 360px;
-      width: 90%;
-      text-align: center;
-    }
-    .delete-confirm-box h4 {
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .delete-confirm-box p {
-      font-size: 13px;
-      color: var(--text-dim);
-      margin-bottom: 24px;
-      line-height: 1.5;
-    }
-    .delete-confirm-box .dc-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-    }
-    .delete-confirm-box .dc-actions button {
-      padding: 10px 24px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 700;
-      font-family: 'Open Sans', -apple-system, sans-serif;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .delete-confirm-box .dc-cancel {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-dim);
-    }
-    .delete-confirm-box .dc-cancel:hover { border-color: var(--text-muted); color: var(--text); }
-    .delete-confirm-box .dc-delete {
-      background: var(--red);
-      border: none;
-      color: #fff;
-    }
-    .delete-confirm-box .dc-delete:hover { opacity: 0.85; }
 
   </style>
 </head>
@@ -1019,9 +910,6 @@
     <div class="nav-links">
       <a onclick="showView('summary')" class="active" id="nav-summary">Summary</a>
       <a onclick="showView('detail')" id="nav-detail">Detailed Information</a>
-      <button class="comment-toggle-btn" id="commentToggleBtn" onclick="toggleCommentMode()" title="Toggle comments">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2h12v9H5l-3 3V2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="5.5" cy="6.5" r="0.75" fill="currentColor"/><circle cx="8" cy="6.5" r="0.75" fill="currentColor"/><circle cx="10.5" cy="6.5" r="0.75" fill="currentColor"/></svg>
-      </button>
     </div>
   </div>
 </nav>
@@ -1150,6 +1038,19 @@
     </div>
   </div>
   <ul class="sheet-points" id="sheet-points"></ul>
+
+  <!-- SCREENSHOTS SECTION -->
+  <div class="sheet-screenshots">
+    <div class="ss-header">
+      <span class="ss-label">Screenshots</span>
+      <label class="ss-add-btn" for="ss-file-input">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Add screenshot
+        <input type="file" id="ss-file-input" accept="image/*" multiple style="display:none" onchange="handleScreenshotUpload(event)">
+      </label>
+    </div>
+    <div class="ss-grid" id="ss-grid"></div>
+  </div>
 </div>
 
 <!-- ═══════════════════════════════════════ -->
@@ -1730,6 +1631,7 @@ function renderSheet() {
   document.getElementById('sheet-counter').textContent = (idx + 1) + ' / ' + total;
   document.getElementById('sheet-prev').disabled = idx === 0;
   document.getElementById('sheet-next').disabled = idx === total - 1;
+  renderScreenshots();
 }
 
 function sheetPrev() {
@@ -1811,6 +1713,75 @@ document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight') nextHlStep();
     }
   }
+});
+
+// ── SCREENSHOTS ──
+function ssKey(id) { return 'ss_' + id; }
+
+function loadScreenshots(id) {
+  return JSON.parse(localStorage.getItem(ssKey(id)) || '[]');
+}
+
+function saveScreenshots(id, list) {
+  localStorage.setItem(ssKey(id), JSON.stringify(list));
+}
+
+function renderScreenshots() {
+  const grid = document.getElementById('ss-grid');
+  if (!grid || !currentSheetId) return;
+  const shots = loadScreenshots(currentSheetId);
+  if (shots.length === 0) {
+    grid.innerHTML = '<p class="ss-empty">No screenshots yet — click "Add screenshot" to attach one.</p>';
+    return;
+  }
+  grid.innerHTML = shots.map((s, i) =>
+    '<div class="ss-item">' +
+    '<img src="' + s.data + '" alt="Screenshot ' + (i+1) + '" onclick="openSsPreview(\'' + s.data.replace(/'/g, "\\'") + '\')">' +
+    '<button class="ss-remove" onclick="removeScreenshot(' + i + ')" title="Remove">✕</button>' +
+    '</div>'
+  ).join('');
+}
+
+function handleScreenshotUpload(event) {
+  const files = Array.from(event.target.files);
+  if (!files.length || !currentSheetId) return;
+  const shots = loadScreenshots(currentSheetId);
+  let loaded = 0;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      shots.push({ data: e.target.result, name: file.name });
+      loaded++;
+      if (loaded === files.length) {
+        saveScreenshots(currentSheetId, shots);
+        renderScreenshots();
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+  event.target.value = '';
+}
+
+function removeScreenshot(idx) {
+  if (!currentSheetId) return;
+  const shots = loadScreenshots(currentSheetId);
+  shots.splice(idx, 1);
+  saveScreenshots(currentSheetId, shots);
+  renderScreenshots();
+}
+
+function openSsPreview(src) {
+  document.getElementById('ssPreviewImg').src = src;
+  document.getElementById('ssPreviewOverlay').classList.remove('hidden');
+}
+
+function closeSsPreview() {
+  document.getElementById('ssPreviewOverlay').classList.add('hidden');
+  document.getElementById('ssPreviewImg').src = '';
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeSsPreview();
 });
 
 // ── INLINE EDITING ──
@@ -1954,6 +1925,12 @@ function applyContent(card, text) {
   content.innerHTML = labelHTML + html;
 }
 </script>
+
+<!-- SCREENSHOT FULL-SCREEN PREVIEW -->
+<div class="ss-preview-overlay hidden" id="ssPreviewOverlay">
+  <button class="ss-preview-close" onclick="closeSsPreview()">✕</button>
+  <img id="ssPreviewImg" src="" alt="Screenshot preview">
+</div>
 
 <!-- COMMENT PINS CONTAINER -->
 <div id="comment-pins-container"></div>

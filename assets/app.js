@@ -18,13 +18,7 @@
     main.innerHTML = "";
     main.appendChild(renderHero(data));
     main.appendChild(renderExec(data));
-
-    if (data.pendingDetail) {
-      main.appendChild(renderHyperlocalStages(data));
-    } else {
-      data.stages.forEach((stage, i) => main.appendChild(renderStage(data, stage, i)));
-    }
-
+    data.stages.forEach((stage, i) => main.appendChild(renderStage(data, stage, i)));
     renderRail(data);
     renderFooter(data);
     wireEvidenceThumbs(data);
@@ -358,21 +352,6 @@
     if (e.key === "ArrowLeft") stepLightbox(-1);
   });
 
-  /* ---------------- tabs + routing ---------------- */
-  function setProject(key, pushHash){
-    currentProject = key;
-    $$(".tab-btn").forEach(b => b.classList.toggle("active", b.dataset.project === key));
-    renderProject(key);
-    if (pushHash !== false) location.hash = `/${key}`;
-    window.scrollTo(0, 0);
-  }
-
-  function initFromHash(){
-    const m = location.hash.match(/^#\/(\w+)/);
-    const key = (m && SITE_DATA[m[1]]) ? m[1] : "lmfe";
-    setProject(key, false);
-  }
-
   /* ---------------- boot ---------------- */
   document.addEventListener("DOMContentLoaded", () => {
     $("#lb-close").addEventListener("click", closeLightbox);
@@ -380,10 +359,7 @@
     $("#lb-next").addEventListener("click", () => stepLightbox(1));
     $("#lightbox").addEventListener("click", (e) => { if (e.target.id === "lightbox") closeLightbox(); });
 
-    $$(".tab-btn").forEach(b => b.addEventListener("click", () => setProject(b.dataset.project)));
-    window.addEventListener("hashchange", initFromHash);
-
-    initFromHash();
+    renderProject("lmfe");
     updateProgress();
   });
 })();

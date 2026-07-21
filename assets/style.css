@@ -62,7 +62,7 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible{
   z-index:200; transition:width .1s linear;
 }
 .topnav{
-  position:sticky; top:0; z-index:100; background:rgba(240,237,227,.92);
+  position:sticky; top:0; z-index:100; background:rgba(12,12,12,.95);
   backdrop-filter:blur(6px); border-bottom:1px solid var(--hairline);
 }
 .topnav-inner{

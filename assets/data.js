@@ -324,40 +324,5 @@ const SITE_DATA = {
       "reschedule-whatsapp-otp-2": { caption: "Reschedule \u2014 WhatsApp OTP dialog (repeat state)" },
       "reschedule-code-entry":     { caption: "Reschedule \u2014 customer code entry" }
     }
-  },
-
-  hyperlocal: {
-    slug: "hyperlocal",
-    name: "Hyperlocal App",
-    tag: "Rider partner experience",
-    heroTitle: "The rider partner\u2019s experience",
-    heroAbstract: "A heuristic evaluation of the Hyperlocal rider app across eight app sections \u2014 from partner onboarding through trip execution, wallet operations, and support.",
-    figmaUrl: "https://www.figma.com/design/wOMBKzz9Pky5HxfWY3hGOq/Hyperlocal--App-Research?node-id=0-1",
-    correctionNote: "The legacy site listed 30 heuristic issues; only 20 are itemised across the four stages below. Flagged for reconciliation during content migration \u2014 the remaining 10 are not yet mapped to a stage.",
-    pendingDetail: true,
-    stages: [
-      { id: "hl-onboarding", code: "STG\u201101", title: "Onboarding through partner app", counts: { issues: 5, challenges: 5, metrics: 4, opportunities: 3 } },
-      { id: "hl-login", code: "STG\u201102", title: "Logging into Hyperlocal and the homepage", counts: { issues: 6, challenges: 4, metrics: 3, opportunities: 4 } },
-      { id: "hl-trip", code: "STG\u201103", title: "Trip management and delivery execution", counts: { issues: 5, challenges: 6, metrics: 5, opportunities: 5 } },
-      { id: "hl-wallet", code: "STG\u201104", title: "Wallet, slots, support and trip history", counts: { issues: 4, challenges: 7, metrics: 4, opportunities: 6 } }
-    ],
-    execChallenges: [
-      { icon: "\uD83D\uDD10", title: "Login flow has critical usability gaps" },
-      { icon: "\uD83C\uDFE0", title: "Homepage lacks clear navigation hierarchy" },
-      { icon: "\uD83D\uDE97", title: "Trip management flow is complex and error-prone" },
-      { icon: "\uD83D\uDCB3", title: "Wallet and payment flows lack transparency" },
-      { icon: "\uD83C\uDFAB", title: "Slot booking system is confusing" },
-      { icon: "\uD83C\uDD98", title: "Support system is hard to navigate" },
-      { icon: "\u2699\uFE0F", title: "Settings and profile management is buried" }
-    ],
-    execOpportunities: [
-      { icon: "\uD83E\uDDED", title: "Streamlined onboarding with guided setup" },
-      { icon: "\uD83D\uDCF1", title: "Redesigned homepage as a mission control" },
-      { icon: "\uD83D\uDDFA\uFE0F", title: "Simplified trip flow with real-time guidance" },
-      { icon: "\uD83D\uDCB0", title: "Transparent wallet with instant settlements" },
-      { icon: "\uD83D\uDCC5", title: "Intelligent slot recommendations" },
-      { icon: "\uD83D\uDCAC", title: "In-context support with smart resolution" },
-      { icon: "\uD83D\uDCCA", title: "Trip history with actionable analytics" }
-    ]
   }
 };

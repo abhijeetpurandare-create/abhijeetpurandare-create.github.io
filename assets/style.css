@@ -1,37 +1,34 @@
 /* ============================================================
-   DESIGN TOKENS
-   Palette: kraft-manifest paper + case-file ink + one rust-orange
-   signal, drawn from the subject itself — waybills, AWB tags,
-   dispatch stamps. Severity ramp is the only other colour.
-   Type: Space Grotesk (display/structure) + Newsreader (reading
-   serif, inverted from the cliché serif-display pairing) +
-   IBM Plex Mono (data — AWB codes, stats, screen slugs).
+   DESIGN TOKENS — Tarmac TDS Dark Theme
+   Palette: Delhivery dark theme with brand red accent.
+   Spacing: 4px base grid (sm=8, md=12, lg=16, xl=20, 2xl=24, 3xl=32).
+   Font: Inter (TDS standard sans-serif) + IBM Plex Mono (data).
    ============================================================ */
 :root{
-  --paper: #F0EDE3;
-  --paper-raised: #F8F6EF;
-  --ink: #1B1C18;
-  --ink-soft: #55564E;
-  --hairline: #D9D3C1;
-  --hairline-strong: #C7BFA8;
-  --signal: #C1441E;
-  --signal-deep: #8F3115;
-  --signal-tint: #F4E2D8;
-  --board: #17180F;
-  --board-raised: #212216;
-  --board-hair: #3A3B2E;
-  --paper-on-board: #EFEDE3;
+  --paper: #0C0C0C;
+  --paper-raised: #1E1E1E;
+  --ink: #FFFFFF;
+  --ink-soft: #A3AAC2;
+  --hairline: #2A2A2A;
+  --hairline-strong: #3A3B4A;
+  --signal: #E0352B;
+  --signal-deep: #C62D24;
+  --signal-tint: rgba(224, 53, 43, 0.12);
+  --board: #0C0C0C;
+  --board-raised: #1E1E1E;
+  --board-hair: #2A2A2A;
+  --paper-on-board: #FFFFFF;
 
-  --crit-fg: #9A2A1F; --crit-bg: #F6E2DD; --crit-bd: #E2B7AC;
-  --maj-fg:  #8A5A0E; --maj-bg:  #F7EBD2; --maj-bd:  #E4CB94;
-  --min-fg:  #2F5D8A; --min-bg:  #E1EAF3; --min-bd:  #B9CCE0;
+  --crit-fg: #FF6B6B; --crit-bg: rgba(255,107,107,0.12); --crit-bd: rgba(255,107,107,0.25);
+  --maj-fg:  #FFD93D; --maj-bg:  rgba(255,217,61,0.12); --maj-bd:  rgba(255,217,61,0.25);
+  --min-fg:  #7DD3FC; --min-bg:  rgba(125,211,252,0.12); --min-bd:  rgba(125,211,252,0.25);
 
-  --display: 'Space Grotesk', 'IBM Plex Sans', sans-serif;
-  --body: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  --display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --mono: 'IBM Plex Mono', 'SF Mono', monospace;
 
   --measure: 66ch;
-  --radius: 3px;
+  --radius: 8px;
   --ease: cubic-bezier(.2,.7,.3,1);
 }
 

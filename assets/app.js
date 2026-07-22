@@ -144,8 +144,10 @@
         <div class="step"><span class="idx">${idx+1}</span><span class="txt">${esc(t)}</span></div>
       `).join("")}</div>
 
+      <h3 class="section-subtitle">Challenges \u2014 Users</h3>
       ${renderUserNote(stage)}
 
+      <h3 class="section-subtitle">Design challenges</h3>
       <div class="challenges">${stage.challenges.map(c => renderChallengeCard(data, c)).join("")}</div>
 
       ${stage.metrics.length ? `

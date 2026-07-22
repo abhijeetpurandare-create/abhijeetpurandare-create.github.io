@@ -17,7 +17,6 @@ const SITE_DATA = {
     heroTitle: "The delivery executive\u2019s journey",
     heroAbstract: "A field study of the Delhivery LM-FE app, tracing one delivery executive\u2019s path from first login to end-of-day reconciliation \u2014 four stages, twenty-one touchpoints, and the friction hiding inside each one.",
     figmaUrl: "https://www.figma.com/design/Vw3Y3CjL1HXkhvmqY8lZLB/LM-FE-App-Research?node-id=336-10043",
-    correctionNote: "Design-challenge count corrected from 15 (legacy site) to 16 after recounting all four stages \u2014 each stage lists 4.",
     stages: [
       {
         id: "onboards",

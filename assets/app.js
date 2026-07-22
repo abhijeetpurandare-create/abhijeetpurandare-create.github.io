@@ -98,36 +98,39 @@
   function renderExec(data){
     const el = document.createElement("section");
     el.className = "exec";
-    if (data.pendingDetail){
-      el.innerHTML = `
-        <h2>Key findings at a glance</h2>
-        <div class="exec-grid">
-          <div>
-            <div class="exec-col-title">Challenges</div>
-            <ul class="exec-list">${data.execChallenges.map(c => `<li><span class="ico">${c.icon}</span>${esc(c.title)}</li>`).join("")}</ul>
-          </div>
-          <div>
-            <div class="exec-col-title">Opportunities</div>
-            <ul class="exec-list">${data.execOpportunities.map(c => `<li><span class="ico">${c.icon}</span>${esc(c.title)}</li>`).join("")}</ul>
-          </div>
-        </div>`;
-      return el;
-    }
-    const allChal = data.stages.flatMap(s => s.challenges);
-    const allOpp = data.stages.flatMap(s => s.opportunities);
+    // Show top 7 challenges (one per high-level finding) and top 7 opportunities as cards
+    const topChallenges = [
+      { icon: "\uD83D\uDD17", title: "Onboarding is fragmented and confusing", severity: "critical" },
+      { icon: "\uD83C\uDF10", title: "No multilingual support for low-literacy riders", severity: "major" },
+      { icon: "\uD83D\uDCCB", title: "Shipment list lacks information hierarchy", severity: "major" },
+      { icon: "\uD83D\uDDFA\uFE0F", title: "No route optimization for deliveries", severity: "critical" },
+      { icon: "\uD83D\uDCB3", title: "Payment and verification flows break mid-delivery", severity: "critical" },
+      { icon: "\u274C", title: "Cancellation flow is unreliable", severity: "major" },
+      { icon: "\uD83D\uDCCA", title: "Earnings and summary screens lack clarity", severity: "major" }
+    ];
+    const topOpps = [
+      { icon: "\uD83E\uDDED", title: "Unified guided onboarding wizard" },
+      { icon: "\uD83D\uDDE3\uFE0F", title: "Multilingual support and accessibility" },
+      { icon: "\uD83D\uDCCD", title: "Smart shipment list with route optimization" },
+      { icon: "\uD83D\uDCB0", title: "Streamlined COD payment flow" },
+      { icon: "\uD83D\uDD04", title: "Reliable cancellation with OTP fallbacks" },
+      { icon: "\uD83D\uDCB5", title: "Transparent earnings and filtering" },
+      { icon: "\u2705", title: "Guided end-of-day reconciliation flow" }
+    ];
     el.innerHTML = `
       <h2>Key findings at a glance</h2>
       <div class="exec-grid">
         <div>
           <div class="exec-col-title">Challenges</div>
-          <ul class="exec-list">${allChal.map(c => `
-            <li><span class="sevdot ${c.severity}" title="${sevLabel(c.severity)}"></span>
-                <a href="#${c.id}" style="color:inherit;text-decoration:none">${esc(c.title)}</a></li>
-          `).join("")}</ul>
+          <div class="exec-cards">${topChallenges.map(c => `
+            <div class="exec-card challenge"><span class="exec-card-icon">${c.icon}</span><span class="exec-card-title">${esc(c.title)}</span><span class="sev ${c.severity}">${sevLabel(c.severity)}</span></div>
+          `).join("")}</div>
         </div>
         <div>
           <div class="exec-col-title">Opportunities</div>
-          <ul class="exec-list">${allOpp.map((o, i) => `<li><span class="ico">\u2726</span>${esc(o.title)}</li>`).join("")}</ul>
+          <div class="exec-cards">${topOpps.map(o => `
+            <div class="exec-card opportunity"><span class="exec-card-icon">${o.icon}</span><span class="exec-card-title">${esc(o.title)}</span></div>
+          `).join("")}</div>
         </div>
       </div>`;
     return el;

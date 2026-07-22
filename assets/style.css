@@ -177,11 +177,11 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible{
 .stage h2{ font-family:var(--display); font-weight:700; font-size:28px; margin:0 0 16px; max-width:26ch; }
 .stage-narrative{ max-width:var(--measure); font-size:17.5px; color:var(--ink-soft); margin:0 0 28px; }
 
-.stepper{ display:flex; flex-wrap:wrap; gap:0; margin:0 0 30px; padding:18px 0; border-top:1px solid var(--hairline); border-bottom:1px solid var(--hairline); }
-.step{ display:flex; align-items:flex-start; gap:9px; padding:4px 18px 4px 0; margin-right:18px; position:relative; max-width:220px; }
-.step:not(:last-child)::after{ content:'\2192'; position:absolute; right:-4px; top:2px; color:var(--hairline-strong); font-size:13px; }
-.step .idx{ font-family:var(--mono); font-size:11px; color:var(--signal-deep); font-weight:600; flex:none; padding-top:2px; }
-.step .txt{ font-family:var(--display); font-size:13px; line-height:1.35; }
+.stepper{ display:flex; flex-wrap:wrap; gap:16px; margin:0 0 30px; padding:0; align-items:stretch; }
+.step{ display:flex; align-items:center; gap:10px; padding:12px 16px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:var(--radius); position:relative; max-width:260px; min-width:180px; flex:1 1 auto; }
+.step:not(:last-child)::after{ content:''; position:absolute; right:-16px; top:50%; width:16px; height:1px; background:var(--hairline-strong); }
+.step .idx{ font-family:var(--mono); font-size:11px; color:var(--signal); font-weight:700; flex:none; width:22px; height:22px; border-radius:50%; background:var(--signal-tint); display:flex; align-items:center; justify-content:center; }
+.step .txt{ font-family:var(--body); font-size:13px; line-height:1.4; color:var(--ink); }
 
 .user-note{
   font-family:var(--display); font-size:14px; color:var(--ink-soft); font-style:normal;

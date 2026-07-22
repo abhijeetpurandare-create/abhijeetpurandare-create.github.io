@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800;900&family=Noto+Sans+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/style.css?v=9">
+<link rel="stylesheet" href="assets/style.css?v=10">
 </head>
 <body>
 
@@ -17,9 +17,16 @@
 <nav class="topnav">
   <div class="topnav-inner">
     <div class="wordmark"><span class="tick"></span>App Research <small>DELHIVERY &#183; LM-FE APP</small></div>
+    <button class="proto-btn" onclick="openPrototype()">View Improved Version</button>
   </div>
   <div class="toc-toggle" id="toc-toggle"></div>
 </nav>
+
+<!-- PROTOTYPE OVERLAY -->
+<div class="proto-overlay" id="protoOverlay">
+  <button class="proto-close" onclick="closePrototype()" aria-label="Close prototype">&#10005;</button>
+  <iframe class="proto-frame" id="protoFrame" src="" frameborder="0"></iframe>
+</div>
 
 <div class="shell">
   <aside class="rail"><div class="rail-inner" id="rail"></div></aside>
@@ -37,5 +44,17 @@
 
 <script src="assets/data.js?v=7"></script>
 <script src="assets/app.js?v=9"></script>
+<script>
+function openPrototype(){
+  document.getElementById('protoFrame').src = 'prototype/index.html';
+  document.getElementById('protoOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closePrototype(){
+  document.getElementById('protoOverlay').classList.remove('open');
+  document.getElementById('protoFrame').src = '';
+  document.body.style.overflow = '';
+}
+</script>
 </body>
 </html>

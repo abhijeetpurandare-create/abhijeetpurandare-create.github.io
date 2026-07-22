@@ -1,0 +1,348 @@
+Delhivery Rider Ecosystem - IA report Page 1
+Delhivery Rider Ecosystem
+Information architecture — combined map of the onboarding app and
+the FE delivery app
+Scope Detailed — every screen, module, action and state, with scenarios
+Approach As-is structure organised from 39 captured screens, plus marked proposed fixes
+Coverage Onboarding & KYC · FE activation · duty & dispatch · delivery execution · exceptions
+Prepared 17 July 2026 · Abhijeet Purandare, Tarmac Design System
+Contents
+1 · Overview wireflow — six stages, 18 core screens
+2 · Detailed screen-by-screen architecture
+3 · Issues found and proposed fixes
+4 · Appendix — all 39 captured screens, labelled by stage
+
+-- 1 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 2
+1 · Overview wireflow
+Six stages from first login to exception handling. Both apps are shown as one ecosystem: stages 1-2
+live in the Delhivery onboarding app, stages 2-6 in the FE delivery app.
+STAGE 1 · ONBOARDING (DELHIVERY APP)
+Login & OTP
+mobile + SMS code
+Get started
+pick earning role
+Create profile
+Aadhaar KYC stepper
+Next steps
+FE app + DC info
+STAGE 2 · HOME HUBS
+Delhivery home
+earnings + referral
+FE app home
+duty hub, 2 states
+STAGE 3 · ACTIVATION
+Documents
+DL - PAN - bank
+Book slots
+slots + earnings
+STAGE 4 · ON DUTY
+Selfie gate
+attendance check-in
+Dispatch
+scan packages
+Shipments
+map + task list
+Summary
+progress + cash
+STAGE 5 · DELIVER
+Order detail
+checks + actions
+Collect (QR)
+UPI collection
+POD capture
+photo - sign - code
+Delivered
+success dialog
+STAGE 6 · EXCEPTIONS
+NSL reasons
+reason + audio note
+Reschedule OTP
+customer code
+Coral = daily-use hub screens - gray = transactional - arrows = primary happy path
+
+-- 2 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 3
+2 · Detailed screen-by-screen architecture
+Row types — gray: information / content · amber: scenario or state · blue: navigation with target · outlined:
+primary CTA · violet: proposed fix (veto-able). External targets (dialer, maps, camera, WhatsApp) are exits, not
+screens.
+STAGE 1 · ONBOARDING — DELHIVERY APP
+Login
++91 mobile number field · conditions of use and privacy links · referral code entry (inline)
+State — confirmation sheet: verification code sent to the provided number
+CTA — Get OTP → OTP verify
+OTP verify
+6-digit code boxes · resend timer
+State — auto-read via notification (Truecaller overlay observed)
+State — max 3 attempts exceeded → retry in 30 min, boxes turn red
+CTA — Verify → Get started
+Get started
+“Choose how you would like to earn” role card
+Refer a friend · earn up to ₹2500 → Referral flow (uncaptured)
+CTA — Work as Delhivery Executive → Create profile
+Create profile — 4-step stepper
+stepper: Aadhaar · Vehicle · Payout · Location · “fill in 5 mins” banner
+Aadhaar number field · “details remain secure” note · OTP sent to linked mobile
+State — loaders: generating OTP → verifying Aadhaar
+State — OTP max attempts exceeded → retry in 30 min
+verified details: name, gender, DOB, father's name, address, pincode
+State — father's name empty → blocking validation banner
+Vehicle → Payout → Location steps (uncaptured)
+CTA — Next (all steps complete) → Next steps
+Next steps (welcome)
+FE app checklist: driving licence number, bank details, PAN card
+reach your workplace: DC contact person, address, distance
+Get directions → OS maps (external)
+CTA — Download FE app → FE home
+Delhivery app home
+greeting · total earnings ₹0.0 · executive stats (payout, deliveries, hours)
+View details → Earnings (uncaptured)
+Refer now → Referral flow (uncaptured)
+STAGE 2 · FE APP — ACTIVATION
+
+-- 3 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 4
+FE home — one screen, two states
+greeting · avatar · notification bell (target uncaptured)
+state A: documents pending
+documents stepper: driving license → PAN card → bank details
+Add documents → Driving licence sheet
+Book slots banner → View slots
+State — loaders: downloading image model · getting referral banner data
+state B: activated
+upcoming slot card · Premier League ranking banner (uncaptured) · chatbot FAB (uncaptured)
+View slots → View slots
+CTA — Start delivering → Selfie gate
+Proposed — persistent bottom nav: Home · Shipments · Summary
+Driving licence
+DL number field · note: DOB must match Aadhaar
+State — Accepting… busy state on submit
+CTA — Accept → PAN
+PAN
+PAN number entry (inferred)
+State — success sheet: PAN details verified · PAN–Aadhaar linked
+CTA — Verify → Bank details
+Bank details (uncaptured)
+account number, IFSC, holder name — flow not in screenshots
+CTA — Submit → FE home (activated)
+View slots
+DC header: Bangalore_Mahadevapura_D · help icon
+week strip (2 slots / 0 / 0) · tabs: upcoming, history
+slot cards: full day 9:00–7:00 · potential earning ₹1120
+CTA — Book slots → FE home
+STAGE 3 · ON DUTY — DISPATCH
+Selfie gate (attendance)
+checklist: helmet visible · well-lit area · Delhivery T-shirt
+CTA — Take selfie → camera (external) → Dispatch
+Dispatch creation
+empty state: no deliveries assigned — “create dispatch” to scan
+Punch out → FE home
+CTA — Continue dispatch creation → scanner (external) → Shipments
+
+-- 4 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 5
+Safety interstitial
+“Every shipment matters — ride slow, stay safe” card
+CTA — Dismiss → Shipments
+Shipments list
+map with rider position · draggable bottom sheet · fullscreen / locate / map-type controls
+tabs: ALL (5) · FWD (4) · RVP (1) · Direct (0)
+shipment card: consignee, seller, address · tags: COD / prepaid / REPL / priority / flash
+per card: call → dialer (external) · navigate → maps (external)
+search · priority (lightning) filter · hamburger menu (uncaptured)
+State — RVP pickup execution — not captured
+Summary tab → Summary
+CTA — Shipment card → Order detail
+Summary
+escalation for today: closed 0/1 priority · rescued 0/0 fake remarks
+attempted progress 0/5 — delivered / picked up / returned / pending → Shipments (filtered)
+total collection: cash collected · card-UPI-wallet · cash submitted
+State — cash submission flow — dead end today (uncaptured)
+Proposed — Submit cash → Cash submission screen
+STAGE 4 · DELIVERY EXECUTION
+Order detail
+AWB + order ID header · consignee with COD/prepaid tag, delivery window, call → dialer
+address + navigate → maps (external) · geofence map with “x m away” pin
+item description · seller · amount + payment status
+State — checks banner: call attempted 0/2 · 1/2 · 2/2 · call connected
+State — geofence verified (green) vs NOT verified (red radius) — blocks NSL: “activation requires passing checks”
+State — payment pending vs payment successful
+Collect ₹ (COD, unpaid) → QR payment
+Mark undelivered → NSL reasons
+CTA — Deliver (prepaid or paid) → Proof of delivery
+QR payment
+amount “you are paying” · UPI QR code
+State — payment success banner + full-screen confirmation
+State — payment pending → red PENDING retry sheet with close
+CTA — Done → Order detail (payment successful)
+
+-- 5 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 6
+Proof of delivery
+delivery recipient radios: consignee · mailroom/security · other as instructed
+State — QR-paid order: “code/QR verified delivery” + receiver details auto-checked
+photo proof: take 1 image · ask customer permission · Capture → camera (external)
+signature pad · retry/clear
+State — “Delivery successful!” dialog
+CTA — Submit / Complete → Shipments
+Mark undelivered (NSL)
+checks header · note: NSL activation requires passing checks
+reason cards: consignee unavailable · delivery rescheduled by customer · consignee refused / order cancelled
+State — “not attempted” — locked once checks pass
+Others (all unlisted reasons) → sub-reasons (uncaptured)
+audio feedback: mandatory recording, clearly stating the reason, before proceed
+State — reschedule selected → WBN dialog: send WhatsApp OTP / cancel
+Send WhatsApp OTP → Reschedule verify
+CTA — Proceed → Shipments (status updated)
+Reschedule verify
+enter 4-digit verification code from customer · resend OTP
+call consignee → dialer (external) · “get Delhivery app” QR upsell for the customer
+CTA — Submit → Shipments (rescheduled)
+PROPOSED ADDITIONS
+Cash submission (proposed fix)
+day's cash total · DC handover reference · TL confirmation
+State — mismatch between collected and submitted → flag
+CTA — Confirm submission → Summary
+Profile and menu drawer (proposed fix)
+home for the uncaptured hamburger: profile, earnings, slot history, help/chatbot, safety content, logout
+Slot history → View slots
+
+-- 6 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 7
+3 · Issues found and proposed fixes
+Dead end — cash Summary shows “Cash Submitted ₹0.00” but no path to submit cash exists in the
+captured flows. Proposed: a Cash submission screen reachable from Summary.
+Orphaned targets Six taps lead to screens missing from the capture set: Earnings “View details”, Referral
+flow, Premier League ranking, notification bell, hamburger menu, NSL “Others”
+sub-reasons. Audit whether they exist or are unbuilt.
+No persistent global
+nav
+FE home, Shipments and Summary are three hubs with no shared bottom nav; returning
+Home from duty context is not visible. Proposed: fixed 3-tab bottom nav (Home /
+Shipments / Summary) — the highest-impact fix for one-handed, on-road use.
+Duplicated home Docs-pending home and activated home are one screen with two states — modelled as a
+single stateful screen so design doesn't fork.
+RVP gap RVP has a tab and a count but no captured pickup-execution flow — the reverse-pickup
+counterpart of delivery is a mapping gap.
+Field-driver principles
+applied
+NSL, POD and payment are modelled as states/branches of Order detail so a rider is
+never more than 2 taps from Deliver, Collect or Mark undelivered; every blocking state
+(geofence, call attempts) surfaces on the screen it blocks. Backlog: offline queue for POD
+submissions; auto-advance to nearest next shipment after Complete.
+
+-- 7 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 8
+4 · Appendix — captured screens
+All 39 screenshots, ordered by journey stage and labelled with the screen they evidence.
+Stage 1 · Onboarding
+Login — OTP sent confirmation FE app update download loader
+
+-- 8 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 9
+Get started — role selection Aadhaar entry — generating OTP
+
+-- 9 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 10
+Aadhaar OTP — max attempts error Verifying Aadhaar loader
+
+-- 10 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 11
+Aadhaar verified — details + validation Next steps — FE app + workplace
+
+-- 11 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 12
+Delhivery app home — earnings
+
+-- 12 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 13
+Stage 2 · FE activation
+FE home — documents pending Driving licence — accepting
+
+-- 13 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 14
+PAN verified — Aadhaar linked View slots — book slots
+
+-- 14 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 15
+FE home — activated, upcoming slot
+
+-- 15 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 16
+Stage 3 · On duty
+Attendance selfie gate Safety interstitial
+
+-- 16 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 17
+Dispatch — no deliveries assigned Shipments — map view
+
+-- 17 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 18
+Shipments — expanded list Summary — progress + collection
+
+-- 18 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 19
+Stage 4 · Delivery execution
+Order detail — COD, payment pending Order detail — payment successful
+
+-- 19 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 20
+Order detail — COD, call 0/2 Order detail — call attempted 2/2
+
+-- 20 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 21
+Order detail — payment PENDING retry Order detail — QR-verified COD
+
+-- 21 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 22
+QR payment — successful POD — delivery recipient options
+
+-- 22 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 23
+POD — code/QR verified checklist POD — signature pad
+
+-- 23 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 24
+POD — photo capture POD — delivery successful (signed)
+
+-- 24 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 25
+POD — delivery successful dialog Mark undelivered — reasons + audio
+
+-- 25 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 26
+Mark undelivered — reason selected Reschedule — WhatsApp OTP dialog
+
+-- 26 of 27 --
+
+Delhivery Rider Ecosystem - IA report Page 27
+Reschedule — WhatsApp OTP dialog (2) Reschedule — customer code entry
+
+-- 27 of 27 --
+

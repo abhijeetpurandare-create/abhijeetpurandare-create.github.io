@@ -1,0 +1,5 @@
+/* Tarmac Design System — global CSS entry. @import lines only. */
+@import './tokens/fonts.css';
+@import './tokens/fig-tokens.css';
+@import './tokens/fig-typography.css';
+@import './tokens/base.css';

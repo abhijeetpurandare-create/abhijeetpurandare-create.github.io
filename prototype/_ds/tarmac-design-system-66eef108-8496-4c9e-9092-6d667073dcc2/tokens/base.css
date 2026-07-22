@@ -1,0 +1,5 @@
+/* Base resets + link colors from Tarmac tokens */
+:root{--font-family-body:'Noto Sans';--font-family-data:'Inter';--font-family-docs:'IBM Plex Sans'}
+body{font-family:var(--font-family-body),sans-serif;color:var(--text-body-primary,#2b2b2b)}
+a{color:var(--text-info-blue-primary,#0d69d4);text-decoration:none}
+a:hover{color:var(--text-info-blue-secondary,#0b5cb8);text-decoration:underline}

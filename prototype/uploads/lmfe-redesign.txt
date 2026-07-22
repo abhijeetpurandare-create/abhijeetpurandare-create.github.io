@@ -1,0 +1,337 @@
+LM-FE redesign package - prompt / IA v2 / issue map Page 1
+LM-FE Redesign Package
+Master design prompt · updated information architecture (v2) ·
+research-issue traceability
+Input 4-stage LM-FE user journey research (touchpoints, user + design challenges, metrics,
+opportunities)
+Output 1 One copy-pasteable master prompt for the design tool — resolves all 27 findings
+Output 2 IA v2 — restructured ecosystem map with 7 new screens and 3 redesigned hubs
+Output 3 Issue → screen → fix mapping, so every research finding is traceable to a change
+Visual
+direction
+Tarmac design system: Delhivery red, ink + chalk neutrals, polished but not playful
+
+-- 1 of 8 --
+
+LM-FE redesign package - prompt / IA v2 / issue map Page 2
+1 · Master design prompt
+Paste the block below into the design tool as one prompt. It assumes the tool already holds the UI
+generated from IA v1 and instructs it to restructure and re-skin.
+CONTEXT
+You are updating the Delhivery LM-FE rider app you previously generated from my information architecture.
+Apply every change below. Keep what already works; restructure and re-skin the rest. Target user: delivery
+riders in Indian Tier 1–3 cities, often first-time smartphone-heavy users, riding one-handed, outdoors, in
+sunlight, sometimes offline.
+VISUAL DIRECTION — TARMAC DESIGN SYSTEM (fixes: plain UI, wrong error colors, inconsistent
+icons)
+1. Color: Delhivery red #ED1B36 is reserved for primary CTAs, the active nav tab, and brand moments;
+pressed state #A31226. Ink #16171B for text, chalk #FBFAF8 surfaces layered on white cards. Semantic colors
+only for status: green = success, amber = advisory, red = error/blocked. Errors are ALWAYS red with inline
+helper text — never yellow.
+2. Type and touch: 16sp minimum body, 20sp+ for amounts and counts, 48dp minimum tap targets, AA+
+contrast for sunlight. Numbers (earnings, COD amounts, counts) always in a tabular bold style.
+3. Components: 12px-radius cards with 1px hairlines, tinted tag pills (COD amber, prepaid green, priority red,
+flash violet, REPL teal), one consistent 24px outline icon set, icons always paired with labels for primary
+actions.
+4. Signature element: kilometre-stone progress markers (Tarmac motif) for all steppers and progress —
+onboarding wizard, docs, day progress. Subtle, geometric, brand red.
+5. Motion: 150–250 ms ease-out on state changes and progress only; success check-draw <= 400 ms. No
+bouncing, no mascots, nothing childish. Skeleton loaders (never blank spinners) with step captions for anything
+> 1 s.
+GLOBAL STRUCTURE (fixes: no primary nav, hidden menu, orientation)
+6. Add a persistent 4-tab bottom nav across the FE app: Home · Shipments · Summary · Earnings. Active tab in
+red. Remove navigation from the hamburger; the menu keeps only profile, language, help, safety, logout.
+7. Add a language selector at first launch and in the menu (English, Hindi, Kannada, Tamil, Telugu, Marathi,
+Bengali to start). All strings localizable; icon+label patterns throughout; optional voice guidance toggle for key
+flows.
+8. Inline education pattern: small tappable '?' chips beside any jargon — FWD, RVP, Direct, Priority vs Flash,
+LastMile Pro, auto-start permission — opening a 2-line plain-language sheet with an illustration.
+9. Offline-first: queue POD, status and payment confirmations locally with a sync badge; optimistic UI. App
+updates download in the background and install only off-duty — never block a rider mid-delivery; show a
+deferred 'update ready' banner instead.
+SCREEN 1 — LANGUAGE SELECT (new)
+First-launch screen: language grid with native-script labels, continue CTA. Reachable later from menu.
+SCREEN 2 — LOGIN + OTP (redesign; fixes: ghost text, edit number, small OTP boxes, silent PIN
+setup)
+10. Phone field with +91 prefix and ghost text '98765 43210', numeric keypad, live 10-digit validation.
+11. OTP screen shows the number with an 'edit' affordance returning to the field. Six 48dp OTP boxes,
+auto-advance, auto-read consent. Resend with visible timer. Attempt-lock errors in red with a countdown chip.
+12. New users get an explicit interstitial — 'You're new here. Next: set a 4-digit PIN to secure your account' —
+before PIN setup. Returning users go straight to PIN entry.
+SCREEN 3 — UNIFIED ONBOARDING WIZARD (restructure; fixes: two disjoint flows, inconsistent
+stepper, DL field, PAN–Aadhaar, progressive CTAs)
+13. Merge the partner-app application and FE document setup into ONE linear guided wizard: Mobile ->
+Aadhaar -> Vehicle -> Payout (bank) -> Location -> Driving licence -> PAN. Kilometre-stone stepper with
+percent complete and 'save and resume later'.
+
+-- 2 of 8 --
+
+LM-FE redesign package - prompt / IA v2 / issue map Page 3
+14. Every step uses the same two-beat pattern: capture -> confirm. No mixing of upload steps and form steps
+without warning; each step states what is needed and why, up front.
+15. Driving licence field relabelled 'Driving licence (15-character code)' with an alphanumeric input mask (e.g.
+MH12 20180054797), format hint, and DOB-must-match-Aadhaar note shown BEFORE input.
+16. PAN step checks Aadhaar-link status and, when unlinked, opens a 'Not linked? Here's how' help sheet with
+steps and a retry — plain-language copy, no dead ends.
+17. All wizard CTAs are sticky full-width bottom buttons, always reachable one-handed; disabled states carry a
+reason line above the button.
+SCREEN 4 — HANDOFF / INSTALL VERIFY (fixes: FE app 'downloaded but not accessible')
+18. After the wizard, the handoff screen verifies the FE app via deep link: primary CTA 'Open FE App' (not
+'download'); if the app isn't resolvable it falls back to the store with install-state detection and a
+troubleshooting line. Keep the workplace card (DC contact, distance, directions).
+SCREEN 5 — HOME (redesign; fixes: hierarchy, single CTA, unexplained concepts)
+19. Reorder: (1) pending-action stack — document verification, unbooked slots, cash due, update ready — as
+red-edged task cards; (2) next-best-action card ('Book tomorrow's slot', 'Start delivering'); (3) today's slot +
+projected earnings; (4) banners last. Greeting shrinks to a single line.
+20. Every concept on this page (LastMile Pro, auto-start permission, league) gets a '?' education chip. Bottom
+nav present.
+SCREEN 6 — EARNINGS (new tab; fixes: payout visibility, filters, incentive chart, productivity)
+21. Pending vs completed payouts as two totals with dates; week / month / year filter; per-day list.
+22. Incentive milestone chart with labelled axes and rupee values at each stone; 'How productivity is
+calculated' expandable formula breakdown; earnings-per-shipment transparency.
+SCREEN 7 — PUNCH-IN (resequenced; fixes: selfie appears late)
+23. The helmet selfie moves to punch-in — before any shipment work, one selfie gates the duty session
+(checklist: helmet, lit, T-shirt). Remove selfie from the mid-delivery flow entirely.
+SCREEN 8 — DISPATCH (fixes: hierarchy, loading, navigation gaps)
+24. 'Create dispatch' and 'Punch out' become equal-weight side-by-side actions. Scanning shows a live package
+count. Loading uses skeletons with step captions ('Fetching assignments 2/3') so long waits read as progress,
+and the route from Home -> duty -> dispatch is a single visible path.
+SCREEN 9 — ROUTE VIEW (new; fixes: no route optimization)
+25. After dispatch: an ordered stop list optimized by proximity — total distance and ETA on top, numbered
+stops, drag-to-reorder, 'Start route' launching turn-by-turn per leg, auto-advance to the next stop after each
+completion.
+SCREEN 10 — SHIPMENTS LIST (redesign; fixes: information hierarchy, filters, iconography)
+26. Each card leads with what riders decide by: packages count, distance from current position, earning for the
+stop, then consignee + short address. Type tags use the tinted pill set with a one-tap legend; the lightning icon
+is defined once (priority) and never reused.
+27. Filter chips under the tabs: Priority, Flash, COD, Prepaid, Nearby. List defaults to route order. Tab icons
+re-drawn to consistent size and weight.
+SCREEN 11 — ORDER DETAIL (redesign; fixes: map mismatch not actionable, checks clutter)
+28. Consolidate the three checks into one status strip (calls, geofence, payment) with a fix-action on any failing
+check.
+29. Address accuracy module: customer-provided landmark line, 'Flag wrong location' action that captures the
+corrected pin for ops, and pre-arrival call / WhatsApp chat shortcuts — the app helps resolve mismatch instead
+of only flagging distance.
+SCREEN 12 — PAYMENT (redesign; fixes: COD warning, UPI CTAs, payer label, split logic)
+
+-- 3 of 8 --
+
+LM-FE redesign package - prompt / IA v2 / issue map Page 4
+30. One payment path per order: an explicit choice screen — Cash OR UPI QR — as two large cards; no
+simultaneous split. Chosen method opens a focused screen with a real full-width CTA. 'Payer' renamed
+'Customer pays'. Success and pending-retry states are full-screen and unambiguous; cash path gets a
+confirm-amount keypad.
+SCREEN 13 — PROOF OF DELIVERY (redesign; fixes: self-signature loophole, reluctant customers)
+31. Order: recipient -> proof. Signature switches to a customer-facing flip mode (rotated canvas + 'hand the
+phone to the customer' prompt) with random photo audits to close the self-sign loophole; QR/code-verified
+orders keep the auto-verified fast path.
+32. When a customer declines signature/photo: alternative proofs — delivery-code confirmation or doorstep
+parcel photo (no face) — so prepaid deliveries never stall on consent.
+SCREEN 14 — NSL / CANCELLATION (redesign; fixes: OTP not arriving, cancel failing, no refund
+status)
+33. Verification fallback ladder: WhatsApp OTP -> SMS OTP -> in-app customer link, each with resend timers; if
+all fail, TL-override path with mandatory audio note. Cancel actions get explicit failure states with retry +
+support escalation instead of failing silently.
+34. Post-cancellation status screen: what happens next for the rider, automatic refund-initiated notification to
+the customer, and the shipment's new state on the route.
+SCREEN 15 — SUMMARY (redesign; fixes: POD contradiction, unclear metrics)
+35. POD quality is enforced at capture (blur/dark detection before submit). Any post-delivery POD flags appear
+as actionable tasks — what is wrong, how to fix, deadline — never as unexplained accusations. Progress adds a
+time-of-day breakdown.
+SCREEN 16 — END OF DAY (new; fixes: reconciliation, cash dead end)
+36. Guided punch-out sequence: pending collections review -> cash submission (day total, DC handover
+reference, TL confirm, mismatch flag) -> flagged-issue review -> punch out with day recap (delivered, earned,
+streak). This is the only path to punch out once cash was collected.
+SUCCESS METRICS THESE CHANGES TARGET
+Onboarding completion rate, first-week attrition, document verification error rate, support tickets in week 1,
+dispatch creation time, first-attempt delivery rate, fake-attempt rate, COD collection success, end-of-day
+reconciliation time, rider NPS.
+
+-- 4 of 8 --
+
+LM-FE redesign package - prompt / IA v2 / issue map Page 5
+2 · Updated information architecture (v2)
+Violet = new screens · coral = redesigned hubs · gray = updated in place. A persistent bottom nav
+(Home · Shipments · Summary · Earnings) binds the four hubs; the hamburger menu keeps only profile,
+language, help, safety and logout.
+STAGE 0 · ENTRY
+Language select
+native scripts
+Login + OTP v2
+masks, edit, red errors
+New-user intimation
+PIN setup notice
+STAGE 1 · ONBOARDING
+Guided wizard
+7 linear KYC steps
+Install verify
+deep-link handoff
+STAGE 2 · HUBS (BOTTOM NAV)
+Home v2
+tasks-first hub
+Earnings
+payouts + filters
+Slots
+calc explained
+STAGE 3 · DUTY
+Punch-in selfie
+moved upfront
+Dispatch v2
+equal actions
+Route view
+optimized stops
+Shipments v2
+decision cards
+STAGE 4 · DELIVER
+Order detail v2
+checks + address fix
+Payment v2
+cash OR UPI
+POD v2
+flip-sign, audits
+Auto next stop
+route advance
+STAGE 5 · EXCEPTIONS
+NSL v2
+reason + audio
+OTP fallbacks
+WA / SMS / link
+Refund status
+next steps
+STAGE 6 · END OF DAY
+EOD checklist
+guided punch-out
+Cash submission
+DC handover
+Punch out
+day recap
+Violet dashed = new screen - coral = redesigned hub - gray = updated in place - arrows = primary path
+What changed from v1
+
+-- 5 of 8 --
+
+LM-FE redesign package - prompt / IA v2 / issue map Page 6
+• New (7): Language select · New-user intimation · Install verify · Earnings tab · Route view · OTP
+fallback ladder + Refund status · End-of-day flow with Cash submission.
+• Redesigned hubs (4): unified onboarding wizard (merges partner-app KYC and FE documents), Home
+(tasks-first), Shipments (decision-first cards), Order detail (actionable checks + address correction).
+• Resequenced: helmet selfie moves from mid-delivery to punch-in; auto-advance to the next route stop
+replaces returning to the list.
+• Bound together by the persistent bottom nav — the v1 orphan targets (earnings, menu, notifications)
+now have real destinations.
+
+-- 6 of 8 --
+
+LM-FE redesign package - prompt / IA v2 / issue map Page 7
+3 · Research issue → screen → fix
+Every finding from the four journey stages, the screen that owns it in v2, and the prompt directive that
+resolves it (D# = design challenge, U# = user challenge as ordered in the research).
+Stage 1 · Onboarding
+Finding Screen (v2) Fix
+U1 · Progressive CTAs hard to reach
+while onboarding
+Guided wizard Sticky full-width bottom CTAs on every step; disabled
+states explain why (#17)
+U2 · FE app shows downloaded but isn't
+accessible
+Install verify (new) Deep-link 'Open FE App' with install-state detection
+and store fallback (#18)
+D1 · No ghost text, yellow errors, can't
+edit number, tiny OTP boxes, silent PIN
+setup
+Login + OTP v2 Input mask + ghost text, editable number, 48dp OTP
+boxes, red-only errors, new-user intimation (#10–12)
+D2 · Inconsistent DL/PAN/bank stepper;
+DL mislabeled; PAN–Aadhaar copy; no
+help
+Guided wizard One linear capture→confirm pattern; DL as 15-char
+masked code; link-status check + help sheet (#13–16)
+D3 · Greeting over pending docs; single
+CTA; unexplained concepts; no primary
+nav
+Home v2 + global
+nav
+Tasks-first hierarchy, next-best-action card, '?'
+education chips, 4-tab bottom nav (#6, 8, 19–20)
+D4 · No multilingual support or
+accessibility
+Language select
+(new)
+First-launch + in-menu language selection, icon+label
+patterns, voice guidance option (#7)
+Stage 2 · Assignment and dispatch
+Finding Screen (v2) Fix
+U3 · FWD / RVP / Direct unexplained Shipments v2 Tag legend + '?' chips with 2-line plain-language
+sheets (#8, 26)
+U4 · Priority vs Flash unclear Shipments v2 Defined pill set; lightning icon means priority only,
+defined once (#26)
+U5 · Long dispatch loading Dispatch v2 Skeleton loaders with step captions and live package
+count (#24)
+D5 · List lacks packages, proximity,
+earnings; no priority filter
+Shipments v2 Decision-first cards (count, distance, earning) + filter
+chips (#26–27)
+D6 · No route optimization Route view (new) Proximity-ordered stops, ETA, drag-to-reorder, per-leg
+navigation, auto-advance (#25)
+D7 · Home→dispatch path unclear;
+punch-out hierarchy wrong
+Dispatch v2 Equal-weight create-dispatch / punch-out; single visible
+Home→duty path (#24)
+D8 · Inconsistent iconography and tags Global system One 24px outline set, consistent tag pills, redrawn tab
+icons (#3, 27)
+
+-- 7 of 8 --
+
+LM-FE redesign package - prompt / IA v2 / issue map Page 8
+Stage 3 · Delivery execution
+Finding Screen (v2) Fix
+U6 / D12 · Map vs actual location
+mismatch, not actionable
+Order detail v2 Landmark line, flag-wrong-location correction to ops,
+pre-arrival call/chat (#29)
+U7 · Customers reluctant to sign / be
+photographed
+POD v2 Alternative proofs: delivery code or doorstep parcel
+photo (#32)
+U8 / D10 · Selfie appears late;
+self-signature loophole
+Punch-in + POD v2 Selfie moved to punch-in; customer-facing flip
+signature + random audits (#23, 31)
+U9 · App updates mid-delivery Global Background download, install deferred off-duty, never
+blocking (#9)
+U10 / U11 / D11 · Cancellation OTP not
+arriving; cancel fails; no refund status
+NSL v2 + fallbacks
+(new)
+WA→SMS→in-app OTP ladder, TL override with audio,
+explicit failure states, refund-status screen (#33–34)
+D9 · Confusing payment: COD warning,
+weak UPI CTAs, 'payer', split logic
+Payment v2 Single path per order (cash OR UPI), real CTAs,
+'Customer pays', confirm keypad, clear states (#30)
+Stage 4 · Summary and earnings
+Finding Screen (v2) Fix
+D13 · Incentive chart unlabelled;
+productivity opaque; no time
+breakdown
+Earnings (new) +
+Summary v2
+Labelled milestone chart, formula breakdown,
+time-of-day progress (#21–22, 35)
+D14 · POD flagged post-delivery —
+contradiction
+Summary v2 Quality enforced at capture; post-flags become
+actionable tasks with fix path (#35)
+D15 · No pending vs completed payout;
+no filters
+Earnings (new) Two payout totals with dates; week/month/year filters;
+per-day list (#21)
+D16 · Systemic trust-eroding design
+debt
+End of day (new) Guided reconciliation → cash submission → punch-out
+with day recap; transparency as retention lever (#36)
+Coverage check: 6 + 8 + 10 + 4 findings mapped — all 27 research items (Stage 4 user challenges were nil) resolve
+to a v2 screen and a numbered prompt directive.
+
+-- 8 of 8 --
+

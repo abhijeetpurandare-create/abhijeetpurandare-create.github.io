@@ -23,9 +23,9 @@
   --maj-fg:  #FFD93D; --maj-bg:  rgba(255,217,61,0.12); --maj-bd:  rgba(255,217,61,0.25);
   --min-fg:  #7DD3FC; --min-bg:  rgba(125,211,252,0.12); --min-bd:  rgba(125,211,252,0.25);
 
-  --display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --mono: 'IBM Plex Mono', 'SF Mono', monospace;
+  --display: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --body: 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --mono: 'Noto Sans Mono', 'IBM Plex Mono', monospace;
 
   --measure: 66ch;
   --radius: 8px;
@@ -90,9 +90,9 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible{
 /* ---------- shell layout ---------- */
 .shell{
   max-width:1240px; margin:0 auto; padding:0 28px;
-  display:grid; grid-template-columns:220px minmax(0,1fr); gap:48px;
+  display:grid; grid-template-columns:minmax(0,1fr) 220px; gap:48px;
 }
-.rail{ padding-top:40px; }
+.rail{ padding-top:40px; order:2; }
 .rail-inner{ position:sticky; top:76px; }
 .rail-title{ font-family:var(--mono); font-size:10.5px; letter-spacing:.14em; color:var(--ink-soft); text-transform:uppercase; margin-bottom:10px; }
 .rail-item{

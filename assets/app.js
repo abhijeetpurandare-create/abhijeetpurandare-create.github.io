@@ -38,15 +38,6 @@
         <div class="stat"><span class="num" data-countup="${s.value}">0</span><span class="lbl">${esc(s.label)}</span></div>
       `).join("")}</div>
       ${data.correctionNote ? `<div class="stat-note">\u25B8 ${esc(data.correctionNote)}</div>` : ""}
-      <div class="minimap">${
-        (data.stages || []).map((s, i) => {
-          const count = data.pendingDetail ? s.counts.challenges : s.challenges.length;
-          return `<a class="mini-stub" href="#${s.id}">
-            <div class="code">${esc(s.code)}</div>
-            <div class="t"><span class="dot"></span>${esc(s.title)}</div>
-          </a>`;
-        }).join("")
-      }</div>
     `;
     requestAnimationFrame(() => animateCountups(el));
     return el;

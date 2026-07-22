@@ -194,9 +194,9 @@
     return `
       <article class="chal-card" id="${c.id}">
         <div class="chal-head"><span class="sev ${c.severity}">${sevLabel(c.severity)}</span><h3>${esc(c.title)}</h3></div>
-        <p class="chal-body clamp">${esc(c.body)}</p>
-        <button class="chal-more" type="button">Read more</button>
-        ${thumbs ? `<div class="ev-rail">${thumbs}</div>` : ""}
+        <p class="chal-body${c.body.length > 120 ? ' clamp' : ''}">${esc(c.body)}</p>
+        ${c.body.length > 120 ? '<button class="chal-more" type="button">Read more</button>' : ''}
+        ${thumbs ? `<button class="ev-toggle" type="button">Show screenshots</button><div class="ev-rail hidden">${thumbs}</div>` : ""}
       </article>`;
   }
 
@@ -254,6 +254,13 @@
         const body = btn.previousElementSibling;
         const collapsed = body.classList.toggle("clamp");
         btn.textContent = collapsed ? "Read more" : "Show less";
+      });
+    });
+    $$(".ev-toggle").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const rail = btn.nextElementSibling;
+        const isHidden = rail.classList.toggle("hidden");
+        btn.textContent = isHidden ? "Show screenshots" : "Hide screenshots";
       });
     });
   }

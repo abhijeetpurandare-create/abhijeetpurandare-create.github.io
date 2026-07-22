@@ -118,7 +118,7 @@
           `).join("")}</div>
         </div>
         <div>
-          <div class="exec-col-title">Opportunities</div>
+          <div class="exec-col-title">Possible solutions</div>
           <div class="exec-cards">${topOpps.map(o => `
             <div class="exec-card opportunity"><span class="exec-card-icon">${o.icon}</span><span class="exec-card-title">${esc(o.title)}</span></div>
           `).join("")}</div>
@@ -149,11 +149,13 @@
       <div class="challenges">${stage.challenges.map(c => renderChallengeCard(data, c)).join("")}</div>
 
       ${stage.metrics.length ? `
+      <h3 class="section-subtitle">Metrics to be targeted</h3>
       <table class="metrics-table">
         <thead><tr><th>Metric</th><th>What it tells us</th></tr></thead>
         <tbody>${stage.metrics.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.def)}</td></tr>`).join("")}</tbody>
       </table>` : ""}
 
+      <h3 class="section-subtitle">Possible solutions</h3>
       <div class="opps">${stage.opportunities.map(o => `
         <div class="opp-card">
           <h4>${esc(o.title)}</h4>

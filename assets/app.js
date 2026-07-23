@@ -129,7 +129,7 @@
       { icon: "\u2705", title: "Guided end-of-day reconciliation flow" }
     ];
     el.innerHTML = `
-      <h2 style="font-weight:bold">Key recommendations from design team</h2>
+      <h2 style="font-family:var(--display);font-weight:700;font-size:44px;line-height:1.06;letter-spacing:-.01em;text-transform:none">Top 10 Recommendations From Design Team</h2>
       <div class="exec-grid">
         <div>
           <div class="exec-col-title">Challenges</div>

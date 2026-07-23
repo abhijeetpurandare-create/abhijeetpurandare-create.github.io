@@ -141,18 +141,18 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible{
 }
 
 /* ---------- executive summary ---------- */
-.exec{ padding:36px 0; border-bottom:1px solid var(--hairline); }
-.exec h2{ font-family:var(--display); font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 18px; }
+.exec{ padding:36px 0; border-bottom:1px solid var(--hairline); background:#fff; color:#000; }
+.exec h2{ font-family:var(--display); font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:#000; margin:0 0 18px; }
 .exec-grid{ display:grid; grid-template-columns:1fr 1fr; gap:40px; }
-.exec-col-title{ font-family:var(--display); font-weight:600; font-size:15px; margin:0 0 14px; }
+.exec-col-title{ font-family:var(--display); font-weight:600; font-size:15px; margin:0 0 14px; color:#000; }
 .exec-cards{ display:flex; flex-direction:column; gap:8px; }
-.exec-card{ display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:var(--radius); border:1px solid var(--hairline); background:var(--paper-raised); transition:border-color .15s var(--ease), transform .15s var(--ease); cursor:default; }
-.exec-card:hover{ border-color:var(--hairline-strong); transform:translateY(-1px); }
+.exec-card{ display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:var(--radius); border:1px solid #ddd; background:#fff; transition:border-color .15s var(--ease), transform .15s var(--ease); cursor:default; }
+.exec-card:hover{ border-color:#999; transform:translateY(-1px); }
 .exec-card-icon{ font-size:18px; flex-shrink:0; }
-.exec-card-title{ font-size:14px; font-weight:500; color:var(--ink); flex:1; }
+.exec-card-title{ font-size:14px; font-weight:500; color:#000; flex:1; }
 .exec-card .sev{ flex-shrink:0; }
 .exec-list{ list-style:none; margin:0; padding:0; }
-.exec-list li{ display:flex; gap:10px; padding:9px 0; border-top:1px solid var(--hairline); font-size:15.5px; }
+.exec-list li{ display:flex; gap:10px; padding:9px 0; border-top:1px solid #ddd; font-size:15.5px; color:#000; }
 .exec-list li:first-child{ border-top:0; }
 .exec-list .ico{ flex:none; }
 

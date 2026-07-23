@@ -168,6 +168,19 @@ a:focus-visible, button:focus-visible, [tabindex]:focus-visible{
   border:1px solid var(--hairline-strong); border-radius:var(--radius); padding:6px 14px 6px 10px;
   margin-bottom:18px; position:relative;
 }
+
+/* ---------- stage pill tabs ---------- */
+.stages-tabbed{ margin-top:40px; }
+.stage-pills{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:32px; }
+.stage-pill{
+  font-family:var(--mono); font-size:13px; font-weight:600;
+  padding:8px 18px; border-radius:999px;
+  border:1px solid var(--hairline-strong);
+  background:var(--paper-raised); color:var(--ink-soft);
+  cursor:pointer; transition:all .15s ease;
+}
+.stage-pill:hover{ border-color:var(--signal-deep); color:var(--signal-deep); }
+.stage-pill.active{ background:var(--signal-deep); color:#fff; border-color:var(--signal-deep); }
 .stage-stub::before, .stage-stub::after{
   content:''; position:absolute; width:9px; height:9px; background:var(--paper);
   border:1px solid var(--hairline-strong); border-radius:50%; top:50%; transform:translateY(-50%);

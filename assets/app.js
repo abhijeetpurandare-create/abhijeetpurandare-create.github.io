@@ -18,7 +18,27 @@
     main.innerHTML = "";
     main.appendChild(renderHero(data));
     main.appendChild(renderExec(data));
-    data.stages.forEach((stage, i) => main.appendChild(renderStage(data, stage, i)));
+    // Build pill tabs + stage panels
+    const stagesContainer = document.createElement("div");
+    stagesContainer.className = "stages-tabbed";
+    const pillBar = document.createElement("div");
+    pillBar.className = "stage-pills";
+    data.stages.forEach((stage, i) => {
+      const pill = document.createElement("button");
+      pill.className = "stage-pill" + (i === 0 ? " active" : "");
+      pill.setAttribute("data-stage-index", i);
+      pill.textContent = stage.code;
+      pillBar.appendChild(pill);
+    });
+    stagesContainer.appendChild(pillBar);
+    data.stages.forEach((stage, i) => {
+      const panel = renderStage(data, stage, i);
+      panel.classList.add("stage-panel");
+      if (i !== 0) panel.style.display = "none";
+      stagesContainer.appendChild(panel);
+    });
+    main.appendChild(stagesContainer);
+    wireStagesTabs();
     renderRail(data);
     renderFooter(data);
     wireEvidenceThumbs(data);
@@ -241,6 +261,21 @@
         <p>${esc(data.name)} \u2014 user journey research \u00b7 Data sourced from a Figma research artifact \u00b7
         <a href="${esc(data.figmaUrl)}" target="_blank" rel="noopener">View in Figma \u2197</a></p>
       </div>`;
+  }
+
+  function wireStagesTabs(){
+    const pills = $$(".stage-pill");
+    const panels = $$(".stage-panel");
+    pills.forEach(pill => {
+      pill.addEventListener("click", () => {
+        const idx = parseInt(pill.getAttribute("data-stage-index"), 10);
+        pills.forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        panels.forEach((panel, i) => {
+          panel.style.display = i === idx ? "" : "none";
+        });
+      });
+    });
   }
 
   function wireExpandButtons(){

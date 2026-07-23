@@ -14,7 +14,7 @@ const SITE_DATA = {
     slug: "lmfe",
     name: "LM-FE App",
     tag: "Last-mile delivery executive",
-    heroTitle: "The delivery executive\u2019s journey",
+    heroTitle: "Last Mile delivery executive\u2019s journey",
     heroAbstract: "A field study of the Delhivery LM-FE app, tracing one delivery executive\u2019s path from first login to end-of-day reconciliation \u2014 four stages, twenty-one touchpoints, and the friction hiding inside each one.",
     figmaUrl: "https://www.figma.com/design/Vw3Y3CjL1HXkhvmqY8lZLB/LM-FE-App-Research?node-id=336-10043",
     stages: [

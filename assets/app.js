@@ -109,7 +109,7 @@
       { icon: "\u2705", title: "Guided end-of-day reconciliation flow" }
     ];
     el.innerHTML = `
-      <h2>Key findings at a glance</h2>
+      <h2 style="font-weight:bold">Key recommendations from design team</h2>
       <div class="exec-grid">
         <div>
           <div class="exec-col-title">Challenges</div>
@@ -231,17 +231,8 @@
   function renderRail(data){
     const rail = $("#rail");
     const toc = $("#toc-toggle");
-    if (data.pendingDetail){
-      rail.innerHTML = `<div class="rail-title">On this page</div>
-        <a class="rail-item" href="#hl-stages"><span class="n">\u2022</span>Journey stages</a>
-        <div class="rail-meta">${esc(data.stages.length)} stages scoped<br><a href="${esc(data.figmaUrl)}" target="_blank" rel="noopener">View research in Figma \u2197</a></div>`;
-      toc.innerHTML = `<a href="#hl-stages" class="current">Stages</a>`;
-      return;
-    }
-    rail.innerHTML = `<div class="rail-title">On this page</div>
-      ${data.stages.map((s, i) => `<a class="rail-item" data-target="${s.id}" href="#${s.id}"><span class="n">${String(i+1).padStart(2,"0")}</span>${esc(shorten(s.title, 26))}</a>`).join("")}
-      <div class="rail-meta">${data.stages.length} stages \u00b7 ${data.stages.reduce((a,s)=>a+s.challenges.length,0)} challenges<br><a href="${esc(data.figmaUrl)}" target="_blank" rel="noopener">View research in Figma \u2197</a></div>`;
-    toc.innerHTML = data.stages.map((s, i) => `<a data-target="${s.id}" href="#${s.id}">${String(i+1).padStart(2,"0")}</a>`).join("");
+    rail.innerHTML = "";
+    toc.innerHTML = "";
   }
 
   function renderFooter(data){

@@ -21,13 +21,18 @@
     // Build pill tabs + stage panels
     const stagesContainer = document.createElement("div");
     stagesContainer.className = "stages-tabbed";
+    const stagesHeading = document.createElement("h2");
+    stagesHeading.className = "stages-heading";
+    stagesHeading.textContent = "User Journeys";
+    stagesContainer.appendChild(stagesHeading);
     const pillBar = document.createElement("div");
     pillBar.className = "stage-pills";
     data.stages.forEach((stage, i) => {
       const pill = document.createElement("button");
       pill.className = "stage-pill" + (i === 0 ? " active" : "");
       pill.setAttribute("data-stage-index", i);
-      pill.textContent = stage.code;
+      const pillLabels = ["Onboarding", "Dispatch", "Delivery", "Settlement"];
+      pill.textContent = pillLabels[i] || stage.code;
       pillBar.appendChild(pill);
     });
     stagesContainer.appendChild(pillBar);
@@ -47,17 +52,21 @@
   }
 
   function renderHero(data){
-    const totals = computeTotals(data);
     const el = document.createElement("section");
     el.className = "hero";
     el.innerHTML = `
-      <div class="eyebrow">${esc(data.tag)} \u2014 research artifact</div>
-      <h1>${esc(data.heroTitle)}</h1>
-      <p class="hero-abstract">${esc(data.heroAbstract)}</p>
-      <div class="stat-strip">${totals.stats.map(s => `
-        <div class="stat"><span class="num" data-countup="${s.value}">0</span><span class="lbl">${esc(s.label)}</span></div>
-      `).join("")}</div>
-      ${data.correctionNote ? `<div class="stat-note">\u25B8 ${esc(data.correctionNote)}</div>` : ""}
+      <div class="hero-gradient-bg"></div>
+      <div class="hero-content">
+        <h1>${esc(data.heroTitle)}</h1>
+        <p class="hero-abstract">A field study of the Delhivery LM-FE app, tracing delivery executive\u2019s path from first login to end-of-day reconciliation.</p>
+        <div class="stat-strip">
+          <div class="stat"><span class="num" data-countup="4">0</span><span class="lbl">User Journeys</span></div>
+          <div class="stat"><span class="num" data-countup="21">0</span><span class="lbl">Touchpoints mapped</span></div>
+          <div class="stat"><span class="num" data-countup="16">0</span><span class="lbl">Design challenges</span></div>
+          <div class="stat"><span class="num" data-countup="18">0</span><span class="lbl">Metrics identified</span></div>
+          <div class="stat"><span class="num" data-countup="15">0</span><span class="lbl">Opportunity areas</span></div>
+        </div>
+      </div>
     `;
     requestAnimationFrame(() => animateCountups(el));
     return el;
@@ -109,41 +118,118 @@
   function renderExec(data){
     const el = document.createElement("section");
     el.className = "exec";
-    // Show top 7 challenges (one per high-level finding) and top 7 opportunities as cards
-    const topChallenges = [
-      { icon: "\uD83D\uDD17", title: "Onboarding is fragmented and confusing", severity: "critical" },
-      { icon: "\uD83C\uDF10", title: "No multilingual support for low-literacy riders", severity: "major" },
-      { icon: "\uD83D\uDCCB", title: "Shipment list lacks information hierarchy", severity: "major" },
-      { icon: "\uD83D\uDDFA\uFE0F", title: "No route optimization for deliveries", severity: "critical" },
-      { icon: "\uD83D\uDCB3", title: "Payment and verification flows break mid-delivery", severity: "critical" },
-      { icon: "\u274C", title: "Cancellation flow is unreliable", severity: "major" },
-      { icon: "\uD83D\uDCCA", title: "Earnings and summary screens lack clarity", severity: "major" }
-    ];
-    const topOpps = [
-      { icon: "\uD83E\uDDED", title: "Unified guided onboarding wizard" },
-      { icon: "\uD83D\uDDE3\uFE0F", title: "Multilingual support and accessibility" },
-      { icon: "\uD83D\uDCCD", title: "Smart shipment list with route optimization" },
-      { icon: "\uD83D\uDCB0", title: "Streamlined COD payment flow" },
-      { icon: "\uD83D\uDD04", title: "Reliable cancellation with OTP fallbacks" },
-      { icon: "\uD83D\uDCB5", title: "Transparent earnings and filtering" },
-      { icon: "\u2705", title: "Guided end-of-day reconciliation flow" }
+    const recommendations = [
+      { num: 1, title: "Unified guided onboarding wizard", challenge: "Onboarding is fragmented and confusing", metric: "Adoption", evidence: ["login-otp-sent", "aadhaar-otp-generating", "aadhaar-otp-maxattempts", "fe-home-docs-pending"] },
+      { num: 2, title: "Multilingual support and accessibility", challenge: "No multilingual support for low-literacy riders", metric: "Inclusion", evidence: ["get-started", "fe-app-download"] },
+      { num: 3, title: "Smart shipment list with route optimization", challenge: "Shipment list lacks information hierarchy", metric: "Efficiency", evidence: ["shipments-list", "shipments-map"] },
+      { num: 4, title: "Streamlined COD payment flow", challenge: "Payment and verification flows break mid-delivery", metric: "Trust", evidence: ["order-detail-pending", "payment-pending-retry", "qr-verified-cod", "qr-payment-success"] },
+      { num: 5, title: "Route optimization for deliveries", challenge: "No route optimization for deliveries", metric: "Efficiency", evidence: ["shipments-map"] },
+      { num: 6, title: "Reliable cancellation with OTP fallbacks", challenge: "Cancellation flow is unreliable", metric: "Reliability", evidence: ["nsl-reasons", "nsl-reschedule-selected", "reschedule-whatsapp-otp"] },
+      { num: 7, title: "Transparent earnings and filtering", challenge: "Earnings and summary screens lack clarity", metric: "Trust", evidence: ["summary-progress"] },
+      { num: 8, title: "Redesign the Escalation card so it speaks like the rider does", challenge: "Current version can\u2019t tell what the escalation card wants riders to do", metric: "Clarity", evidence: [] }
     ];
     el.innerHTML = `
-      <h2 style="font-family:var(--display);font-weight:700;font-size:44px;line-height:1.06;letter-spacing:-.01em;text-transform:none">Top 10 Recommendations From Design Team</h2>
-      <div class="exec-grid">
-        <div>
-          <div class="exec-col-title">Challenges</div>
-          <div class="exec-cards">${topChallenges.map(c => `
-            <div class="exec-card challenge"><span class="exec-card-icon">${c.icon}</span><span class="exec-card-title">${esc(c.title)}</span><span class="sev ${c.severity}">${sevLabel(c.severity)}</span></div>
-          `).join("")}</div>
-        </div>
-        <div>
-          <div class="exec-col-title">Possible solutions</div>
-          <div class="exec-cards">${topOpps.map(o => `
-            <div class="exec-card opportunity"><span class="exec-card-icon">${o.icon}</span><span class="exec-card-title">${esc(o.title)}</span></div>
-          `).join("")}</div>
-        </div>
+      <h2 class="exec-heading">Top 10 Recommendations From Design Team</h2>
+      <div class="rec-cards">
+        ${recommendations.map(r => `
+          <div class="rec-card">
+            <div class="rec-card-header">
+              <span class="rec-num">${r.num}</span>
+              <div class="rec-body">
+                <div class="rec-top-row">
+                  <div class="rec-text">
+                    <h3 class="rec-title">${esc(r.title)}</h3>
+                    <p class="rec-challenge">${esc(r.challenge)} ${r.evidence.length ? `<button class="rec-evidence-btn" type="button">Show evidence</button>` : ""}</p>
+                  </div>
+                  <div class="rec-meta">
+                    <span class="rec-metric">${esc(r.metric)}</span>
+                  </div>
+                </div>
+              </div>
+              <button class="rec-arrow" aria-label="View screenshots" style="display:none">\u203A</button>
+            </div>
+            ${r.evidence.length ? `<div class="rec-evidence-panel hidden">
+              <div class="rec-evidence-grid">
+                ${r.evidence.map(key => `<button class="rec-ev-thumb ev-thumb" data-ev="${key}" data-project="lmfe" type="button"><img loading="lazy" src="assets/screens/${key}.webp" alt="${key}"><span class="rec-ev-cap">${key}</span></button>`).join("")}
+              </div>
+            </div>` : ""}
+          </div>
+        `).join("")}
       </div>`;
+    // Wire accordion
+    el.querySelectorAll(".rec-evidence-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const card = btn.closest(".rec-card");
+        const panel = card.querySelector(".rec-evidence-panel");
+        const isHidden = panel.classList.toggle("hidden");
+        btn.textContent = isHidden ? "Show evidence" : "Hide evidence";
+      });
+    });
+    el.querySelectorAll(".rec-arrow").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const card = btn.closest(".rec-card");
+        const panel = card.querySelector(".rec-evidence-panel");
+        if (!panel) return;
+        const isHidden = panel.classList.toggle("hidden");
+        const evBtn = card.querySelector(".rec-evidence-btn");
+        if (evBtn) evBtn.textContent = isHidden ? "Show evidence" : "Hide evidence";
+      });
+    });
+    // Wire evidence thumbs to lightbox
+    el.querySelectorAll(".ev-thumb").forEach(btn => {
+      btn.addEventListener("click", () => openLightbox(btn.dataset.project, btn.dataset.ev));
+    });
+
+    // Easy wins section
+    const easyWins = [
+      { num: 1, title: "Fix ghost text and error state colours", challenge: "Phone number field has no format hint, error states use wrong colours (yellow instead of red)", metric: "Usability", evidence: ["login-otp-sent", "aadhaar-otp-maxattempts"] },
+      { num: 2, title: "Add input masks and field labels", challenge: "Driving licence shown as generic \u201cNumber\u201d field when it\u2019s a 15-digit alphanumeric code, no formatting guidance", metric: "Clarity", evidence: ["driving-licence-accepting", "pan-verified", "aadhaar-verified-validation"] },
+      { num: 3, title: "Consistent iconography and visual weight", challenge: "Lightning icon purpose is unclear, amount tags inconsistently shown, shipment icons mismatched in size", metric: "Polish", evidence: ["shipments-list", "shipments-map"] }
+    ];
+    const easyWinsHTML = document.createElement("div");
+    easyWinsHTML.className = "easy-wins-section";
+    easyWinsHTML.innerHTML = `
+      <h2 class="exec-heading easy-wins-heading">3 Easy Wins</h2>
+      <div class="rec-cards">
+        ${easyWins.map(w => `
+          <div class="rec-card">
+            <div class="rec-card-header">
+              <span class="rec-num">${w.num}</span>
+              <div class="rec-body">
+                <div class="rec-top-row">
+                  <div class="rec-text">
+                    <h3 class="rec-title">${esc(w.title)}</h3>
+                    <p class="rec-challenge">${esc(w.challenge)} ${w.evidence.length ? `<button class="rec-evidence-btn" type="button">Show evidence</button>` : ""}</p>
+                  </div>
+                  <div class="rec-meta">
+                    <span class="rec-metric">${esc(w.metric)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            ${w.evidence.length ? `<div class="rec-evidence-panel hidden">
+              <div class="rec-evidence-grid">
+                ${w.evidence.map(key => `<button class="rec-ev-thumb ev-thumb" data-ev="${key}" data-project="lmfe" type="button"><img loading="lazy" src="assets/screens/${key}.webp" alt="${key}"><span class="rec-ev-cap">${key}</span></button>`).join("")}
+              </div>
+            </div>` : ""}
+          </div>
+        `).join("")}
+      </div>`;
+    el.appendChild(easyWinsHTML);
+
+    // Wire easy wins accordions and lightbox
+    easyWinsHTML.querySelectorAll(".rec-evidence-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const card = btn.closest(".rec-card");
+        const panel = card.querySelector(".rec-evidence-panel");
+        const isHidden = panel.classList.toggle("hidden");
+        btn.textContent = isHidden ? "Show evidence" : "Hide evidence";
+      });
+    });
+    easyWinsHTML.querySelectorAll(".ev-thumb").forEach(btn => {
+      btn.addEventListener("click", () => openLightbox(btn.dataset.project, btn.dataset.ev));
+    });
+
     return el;
   }
 
@@ -155,8 +241,6 @@
     stage.challenges.forEach(c => (c.evidence || []).forEach(k => evidenceUsed.add(k)));
 
     el.innerHTML = `
-      <div class="ghost-num">${String(i+1).padStart(2,"0")}</div>
-      <div class="stage-stub"><span class="code">${esc(stage.code)}</span></div>
       <h2>${esc(stage.title)}</h2>
       <p class="stage-narrative">${esc(stage.narrative)}</p>
 
@@ -164,27 +248,43 @@
         <div class="step"><span class="idx">${idx+1}</span><span class="txt">${esc(t)}</span></div>
       `).join("")}</div>
 
-      <h3 class="section-subtitle">Challenges \u2014 Users</h3>
-      ${renderUserNote(stage)}
+      <div class="stage-accordion">
+        <button class="accordion-toggle" type="button"><span class="accordion-title">Challenges \u2014 Users</span><span class="accordion-icon">+</span></button>
+        <div class="accordion-panel hidden">
+          ${renderUserNote(stage)}
+        </div>
+      </div>
 
-      <h3 class="section-subtitle">Design challenges</h3>
-      <div class="challenges">${stage.challenges.map(c => renderChallengeCard(data, c)).join("")}</div>
+      <div class="stage-accordion">
+        <button class="accordion-toggle" type="button"><span class="accordion-title">Design challenges</span><span class="accordion-icon">+</span></button>
+        <div class="accordion-panel hidden">
+          <div class="challenges">${stage.challenges.map(c => renderChallengeCard(data, c)).join("")}</div>
+        </div>
+      </div>
 
       ${stage.metrics.length ? `
-      <h3 class="section-subtitle">Metrics to be targeted</h3>
-      <table class="metrics-table">
-        <thead><tr><th>Metric</th><th>What it tells us</th></tr></thead>
-        <tbody>${stage.metrics.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.def)}</td></tr>`).join("")}</tbody>
-      </table>` : ""}
-
-      <h3 class="section-subtitle">Possible solutions</h3>
-      <div class="opps">${stage.opportunities.map(o => `
-        <div class="opp-card">
-          <h4>${esc(o.title)}</h4>
-          <p>${esc(o.body)}</p>
-          ${o.addresses && o.addresses.length ? `<div class="opp-links">${o.addresses.map(id => `<a href="#${id}">resolves \u2192 ${esc(findChallengeTitle(stage, id))}</a>`).join("")}</div>` : ""}
+      <div class="stage-accordion">
+        <button class="accordion-toggle" type="button"><span class="accordion-title">Metrics to be targeted</span><span class="accordion-icon">+</span></button>
+        <div class="accordion-panel hidden">
+          <table class="metrics-table">
+            <thead><tr><th>Metric</th><th>What it tells us</th></tr></thead>
+            <tbody>${stage.metrics.map(m => `<tr><td>${esc(m.name)}</td><td>${esc(m.def)}</td></tr>`).join("")}</tbody>
+          </table>
         </div>
-      `).join("")}</div>
+      </div>` : ""}
+
+      <div class="stage-accordion">
+        <button class="accordion-toggle" type="button"><span class="accordion-title">Possible solutions</span><span class="accordion-icon">+</span></button>
+        <div class="accordion-panel hidden">
+          <div class="opps">${stage.opportunities.map(o => `
+            <div class="opp-card">
+              <h4>${esc(o.title)}</h4>
+              <p>${esc(o.body)}</p>
+              ${o.addresses && o.addresses.length ? `<div class="opp-links">${o.addresses.map(id => `<a href="#${id}">resolves \u2192 ${esc(findChallengeTitle(stage, id))}</a>`).join("")}</div>` : ""}
+            </div>
+          `).join("")}</div>
+        </div>
+      </div>
     `;
     return el;
   }
@@ -216,12 +316,11 @@
       </button>`;
     }).join("");
     return `
-      <article class="chal-card" id="${c.id}">
+      <div class="chal-item" id="${c.id}">
         <div class="chal-head"><span class="sev ${c.severity}">${sevLabel(c.severity)}</span><h3>${esc(c.title)}</h3></div>
-        <p class="chal-body${c.body.length > 120 ? ' clamp' : ''}">${esc(c.body)}</p>
-        ${c.body.length > 120 ? '<button class="chal-more" type="button">Read more</button>' : ''}
+        <p class="chal-body">${esc(c.body)}</p>
         ${thumbs ? `<button class="ev-toggle" type="button">Show screenshots</button><div class="ev-rail hidden">${thumbs}</div>` : ""}
-      </article>`;
+      </div>`;
   }
 
   function renderHyperlocalStages(data){
@@ -291,6 +390,14 @@
         const rail = btn.nextElementSibling;
         const isHidden = rail.classList.toggle("hidden");
         btn.textContent = isHidden ? "Show screenshots" : "Hide screenshots";
+      });
+    });
+    // Stage section accordions
+    $$(".accordion-toggle").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const panel = btn.nextElementSibling;
+        const isHidden = panel.classList.toggle("hidden");
+        btn.querySelector(".accordion-icon").textContent = isHidden ? "+" : "\u2212";
       });
     });
   }

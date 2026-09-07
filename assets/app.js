@@ -182,14 +182,21 @@
 
     // Easy wins section
     const easyWins = [
-      { num: 1, title: "Fix ghost text and error state colours", challenge: "Phone number field has no format hint, error states use wrong colours (yellow instead of red)", metric: "Usability", evidence: ["login-otp-sent", "aadhaar-otp-maxattempts"] },
-      { num: 2, title: "Add input masks and field labels", challenge: "Driving licence shown as generic \u201cNumber\u201d field when it\u2019s a 15-digit alphanumeric code, no formatting guidance", metric: "Clarity", evidence: ["driving-licence-accepting", "pan-verified", "aadhaar-verified-validation"] },
-      { num: 3, title: "Consistent iconography and visual weight", challenge: "Lightning icon purpose is unclear, amount tags inconsistently shown, shipment icons mismatched in size", metric: "Polish", evidence: ["shipments-list", "shipments-map"] }
+      { num: 1, title: "Fix error state colours on login", challenge: "Error states use yellow instead of red — doesn\u2019t communicate severity clearly", metric: "Feedback", evidence: ["login-otp-sent", "aadhaar-otp-maxattempts"] },
+      { num: 2, title: "Add ghost text to phone number field", challenge: "No format hint on the phone input — users don\u2019t know the expected format", metric: "Usability", evidence: ["login-otp-sent"] },
+      { num: 3, title: "Relabel driving licence as alphanumeric field", challenge: "Field labelled as \u201cNumber\u201d for a 15-character alphanumeric code with no input mask", metric: "Clarity", evidence: ["driving-licence-accepting"] },
+      { num: 4, title: "Surface pending verification above greeting", challenge: "\u201cGood morning\u201d is visually dominant over a blocking doc verification task", metric: "Hierarchy", evidence: ["fe-home-docs-pending"] },
+      { num: 5, title: "Explain \u2018LastMile Pro\u2019 and auto-start permission inline", challenge: "Concepts introduced without explanation, causing confusion for first-time users", metric: "Discoverability", evidence: ["next-steps-welcome"] },
+      { num: 6, title: "Add legend for lightning icon in shipment list", challenge: "Lightning glyph appears with no explanation — its meaning (priority) is never shown on screen", metric: "Learnability", evidence: ["shipments-list"] },
+      { num: 7, title: "Equalise \u2018Punch out\u2019 and \u2018Create dispatch\u2019 hierarchy", challenge: "Punch out is buried while Create dispatch is prominent — opposite of daily-use frequency", metric: "Navigation", evidence: ["fe-home-activated", "dispatch-empty"] },
+      { num: 8, title: "Resequence selfie capture to start of delivery", challenge: "Selfie check appears late in the flow after rider is already at the customer\u2019s door", metric: "Flow", evidence: ["pod-photo-capture"] },
+      { num: 9, title: "Relabel \u2018Payer\u2019 to plain language in COD flow", challenge: "\u201cPayer\u201d label confuses riders — unclear if it means the customer or the executive", metric: "Clarity", evidence: ["order-detail-pending", "qr-verified-cod"] },
+      { num: 10, title: "Add inline labels and breakdown to incentive milestone chart", challenge: "Incentive chart shows values with no explanation of what they mean or how they\u2019re calculated", metric: "Transparency", evidence: ["summary-progress"] }
     ];
     const easyWinsHTML = document.createElement("div");
     easyWinsHTML.className = "easy-wins-section";
     easyWinsHTML.innerHTML = `
-      <h2 class="exec-heading easy-wins-heading">3 Easy Wins</h2>
+      <h2 class="exec-heading easy-wins-heading">10 Easy Wins</h2>
       <div class="rec-cards">
         ${easyWins.map(w => `
           <div class="rec-card">

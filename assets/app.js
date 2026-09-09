@@ -131,7 +131,7 @@
       { num: 10, title: "Improve the Earnings page to answer: How much, why, and when?", challenge: "Current summary feels like a list of numbers with no narrative. Weekly, daily, incentives and deductions compete equally with no hierarchy. Spacing, typography and dividers are inconsistent across the three screens. The earnings chart lacks a timeframe filter or visual selection indicator for the current week.", metric: "Trust", evidence: ["summary-progress"] }
     ];
     el.innerHTML = `
-      <h2 class="exec-heading">Top 10 Recommendations From Design Team</h2>
+      <h2 class="exec-heading">Top 10 UX recommendations</h2>
       <div class="rec-cards">
         ${recommendations.map(r => `
           <div class="rec-card">
